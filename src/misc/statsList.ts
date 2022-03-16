@@ -1,4 +1,4 @@
-type StatsType<T> = {
+type StatsType<T extends number | string> = {
 	str: T,
 	dex: T,
 	con: T,

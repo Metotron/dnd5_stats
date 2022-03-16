@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { statsList } from '../misc/statsList'
-import type { StatsType } from '../misc/statsList';
+import type { StatsType } from '../misc/statsList'
+
+import { useStatsStore } from '../stores/stats'
 
 
 const props = defineProps({
+	// Значение характеристики
 	value: {
 		type: Number,
-		validator(value: number) {
-			return value > 0 && value <= 20
-		}
+		validator: (value: number) => value > 0 && value <= 20
+	},
+
+	// Индекс значения в массиве исходных данных, по нему производится привязка к характеристикам
+	valueIndex: {
+		type: Number,
+		validator: (index: number) => index >= 0 && index < 6
 	}
 })
+
+const statsStore = useStatsStore()
 
 const statsSelectorNames: Array<keyof StatsType<string>> = []
 let statName: keyof StatsType<string>
@@ -60,9 +69,8 @@ function getReadableStatName(statName: keyof StatsType<string>): string {
 	margin-top: 8px;
 }
 
-input {
-	width: 52px;
-}
+input { width: 52px; }
+input, select { min-height: 26px; }
 
 .arrow {
 	display: inline-block;
