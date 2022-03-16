@@ -1,13 +1,9 @@
 /**
  * Генерация шести значений для дальнейшего распределения по характеристикам
- * @param {function} generator - Функция — генератор значения. Если не передавать, будет использована getRandomValue
+ * @param {function} generator - Функция — генератор значения. Если не передавать, будет использована diceRoller
  */
-function getRandomValues(generator?: () => number): number[] {
+function getRandomValues(generator: () => number = diceRoller): number[] {
 	const randomValues: number[] = []
-	if (generator === undefined) {
-		generator = getRandomValue
-	}
-
 	for (let idx = 0; idx < 6; ++idx) {
 		randomValues.push(generator())
 	}
@@ -18,7 +14,7 @@ function getRandomValues(generator?: () => number): number[] {
 /**
  * Генерация одного случайного значения, являющегося суммой трёл лучших значений кубиков из четырёх брошенных
  */
-function getRandomValue(): number {
+function diceRoller(): number {
 	let values: number[] = []
 
 	// Бросаем 4 кубика
