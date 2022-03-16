@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
-import { getRandomValues, discardOneMinimum } from '../../misc/randomValues'
+import { getRandomValues, discardOneMinimum } from '@/misc/randomValues'
 
-describe('random dice values', () => {
+describe('random dice values generator', () => {
 	const numbersGenerator = vi.fn()
 	numbersGenerator
 		.mockReturnValueOnce(8)
