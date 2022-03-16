@@ -1,0 +1,74 @@
+<script setup lang="ts">
+	import { ref } from 'vue'
+	// import { useStatsStore } from './stores/stats'
+
+	import { getRandomValues } from './misc/randomValues'
+	import ValueLink from './components/ValueLink.vue'
+
+	// Сгенерированные значения характеристик
+	const randomValues = ref<number[]>([])
+
+	// const stats = useStatsStore()
+	// Генерация стартовых значений характеристик
+	generateRandomValues()
+
+	/**
+	 * Сброс сгенерированного списка числовых значений
+	 */
+	function generateRandomValues(): void {
+		randomValues.value = getRandomValues()
+
+		resetStatLinks()
+	}
+
+	/**
+	 * Сброс привязки характеристик к исходным числовым значениям
+	 */
+	function resetStatLinks(): void {
+
+	}
+</script>
+
+
+<template lang="pug">
+header Характеристики персонажа
+.pageBlock
+	.blockTitle Числовые значения
+	.blockBody
+		input(type="button" value="🎲" title="Сгенерировать" @click="generateRandomValues")
+		.valuesToStats
+			ValueLink(v-for="(value, idx) in randomValues" :value="value" :key="idx")
+</template>
+
+
+<style lang="scss" scoped>
+	* { box-sizing: border-box; }
+
+	html, body {
+		margin: 0;
+		padding: 0;
+		font-size: 16px;
+		color: #000;
+	}
+
+	.pageBlock {
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		margin-top: 1em;
+		display: inline-block;
+		padding-bottom: 8px;
+
+		.blockTitle {
+			background-color: #e2e2e2;
+			padding: 4px 8px;
+		}
+
+		.blockBody {
+			padding: 8px;
+		}
+
+		input[type="button"] {
+			cursor: pointer;
+		}
+	}
+</style>
