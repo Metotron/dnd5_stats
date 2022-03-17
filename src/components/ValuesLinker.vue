@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { getRandomValues } from '@/misc/randomValues'
 import { useStatsStore } from '@/stores/stats'
+import { globalEvents, fireEvent } from '@/misc/globalEvents'
 
 import ValueLink from '@/components/ValueLink.vue'
 
@@ -23,8 +24,14 @@ function generateRandomValues(): void {
 
 // Сброс привязки характеристик к исходным числовым значениям
 function resetStatLinks(): void {
-	// Вызываем на window событие, которое будут слушать компоненты ValueLink, чтобы сбросить состояние своих селектов
-	window.dispatchEvent(new Event('ResetStatsStore'))
+	// Это событие слушают ValueLink, чтобы сбросить состояние своих селектов
+	fireEvent(globalEvents.ResetStatsStore)
+}
+
+// Загрузить числовые данные в чарлист
+function loadValuesToCharlist(): void {
+	// Перенос привязанных значений в чарлист
+	fireEvent(globalEvents.LoadValuesToCharlist)
 }
 </script>
 
@@ -42,7 +49,12 @@ function resetStatLinks(): void {
 				:value-index="idx"
 				:key="idx"
 			)
-		input(type="button" value="📝 Привязать" :disabled="!statsStore.isAllFieldsLinked")
+		input(
+			type="button"
+			value="📝 Применить"
+			:disabled="!statsStore.isAllFieldsLinked"
+			@click="loadValuesToCharlist"
+		)
 </template>
 
 

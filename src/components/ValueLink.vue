@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { statsList } from '@/misc/statsList'
+import { globalEvents } from '@/misc/globalEvents'
 import type { StatsType } from '@/misc/statsList'
 
 import { useStatsStore } from '@/stores/stats'
@@ -46,10 +47,10 @@ watch(value, (newValue, oldValue)  => {
 // Характеристика, с которой будет связано значение value
 const selectedStatToLink = ref<keyof StatsType<string> | '-'>('-')
 onMounted(() => {
-	window.addEventListener('ResetStatsStore', resetSelectToDefault)
+	window.addEventListener(globalEvents.ResetStatsStore, resetSelectToDefault)
 })
 onBeforeUnmount(() => {
-	window.removeEventListener('ResetStatsStore', resetSelectToDefault)
+	window.removeEventListener(globalEvents.ResetStatsStore, resetSelectToDefault)
 })
 // Сохраняем выбранное значение селекта в стор
 watch(selectedStatToLink, newValue => {
