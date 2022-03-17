@@ -41,7 +41,7 @@ function loadValuesToCharlist(): void {
 	.blockTitle
 		slot
 	.blockBody
-		input(type="button" value="🔧 Сгенерировать" @click="generateRandomValues")
+		input.button(type="button" value="🔧 Сгенерировать" @click="generateRandomValues")
 		.valuesToStats
 			value-link(
 				v-for="(value, idx) in randomValues"
@@ -49,7 +49,7 @@ function loadValuesToCharlist(): void {
 				:value-index="idx"
 				:key="idx"
 			)
-		input(
+		input.button(
 			type="button"
 			value="📝 Применить"
 			:disabled="!statsStore.isAllFieldsLinked"

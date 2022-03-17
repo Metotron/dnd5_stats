@@ -24,7 +24,7 @@ html, body {
 
 .blocksArea {
 	display: grid;
-	grid-template-columns: 250px 1fr;
+	grid-template-columns: 250px min(100%, 400px);
 	grid-template-areas: "class charlist"
 	                     "stats charlist";
 	gap: 10px;
@@ -54,4 +54,8 @@ html, body {
 <style>
 * { box-sizing: border-box; }
 input, select { min-height: 26px; }
+.button {
+	min-width: 150px;
+	min-height: 28px
+}
 </style>

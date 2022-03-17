@@ -77,7 +77,22 @@ function getReadableStatName(statName: keyof StatsType<string>): string {
 
 	return statName
 }
-//TODO Сделать блокировку занятых значений селектов
+
+// Определение, что характеристика уже распределена
+function isCharInUse(charName: keyof StatsType<string> | '-'): boolean {
+	if (charName === '-') {
+		return false
+	}
+
+	for (const N in statsStore.dataToStatsLinks) {
+		if (statsStore.dataToStatsLinks[N] === charName) {
+			return true
+		}
+	}
+
+	return false
+}
+
 </script>
 
 
@@ -91,6 +106,7 @@ function getReadableStatName(statName: keyof StatsType<string>): string {
 			v-for="statName in statsSelectorNames"
 			:value="statName"
 			:key="(statName)"
+			:disabled="isCharInUse(statName)"
 		) {{ getReadableStatName(statName) }}
 </template>
 

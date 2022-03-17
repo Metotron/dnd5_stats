@@ -22,7 +22,7 @@ function loadValuesToCharlist() {
 </script>
 
 <template lang="pug">
-.pageBlock.CharList
+.pageBlock.charList
 	.blockTitle
 		slot
 	.blockBody
@@ -32,5 +32,7 @@ function loadValuesToCharlist() {
 </template>
 
 <style lang="scss" scoped>
-
+.charList {
+	align-self: start;
+}
 </style>
