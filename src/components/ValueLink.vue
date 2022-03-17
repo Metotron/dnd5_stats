@@ -8,6 +8,15 @@ import { useStatsStore } from '@/stores/stats'
 
 type TOptionValue = TStats | '-'  // Тип значения опшена в селекте
 
+const autoLinksValues: Record<number, TStats> = {
+	0: 'str',
+	1: 'dex',
+	2: 'con',
+	3: 'int',
+	4: 'wis',
+	5: 'cha'
+}
+
 const props = defineProps({
 	// Значение характеристики
 	value: {
@@ -56,9 +65,11 @@ const selectedStatToLink = ref<TOptionValue>('-')
 onMounted(() => {
 	statsStore.setGeneratedValue(props.valueIndex, value.value)
 	window.addEventListener(globalEvents.ResetStatsStore, resetSelectToDefault)
+	window.addEventListener(globalEvents.AutoLinkStats, autoLinkStats)
 })
 onBeforeUnmount(() => {
 	window.removeEventListener(globalEvents.ResetStatsStore, resetSelectToDefault)
+	window.removeEventListener(globalEvents.AutoLinkStats, autoLinkStats)
 })
 // Сохраняем выбранное значение селекта в стор
 watch(selectedStatToLink, newValue => {
@@ -70,6 +81,11 @@ watch(selectedStatToLink, newValue => {
 function resetSelectToDefault() {
 	selectedStatToLink.value = '-'
 	statsStore.setValueLink(props.valueIndex, null)
+}
+
+// Авторасстановка привязок
+function autoLinkStats() {
+	selectedStatToLink.value = autoLinksValues[props.valueIndex]
 }
 
 // Получение читаемого названия характеристики из её кода

@@ -16,20 +16,26 @@ onMounted(() => {
 })
 
 // Обновление сгенерированного списка числовых значений и сброс имеющихся привязок
-function generateRandomValues(): void {
+function generateRandomValues() {
 	randomValues.value = getRandomValues()
 }
 
 // Сброс привязки характеристик к исходным числовым значениям
-function resetStatLinks(): void {
+function resetStatLinks() {
 	// Это событие слушают ValueLink, чтобы сбросить состояние своих селектов
 	fireEvent(globalEvents.ResetStatsStore)
 }
 
 // Загрузить числовые данные в чарлист
-function loadValuesToCharlist(): void {
-	// Перенос привязанных значений в чарлист
+function loadValuesToCharlist() {
+	// Событие слушается в компоненте CharList
 	fireEvent(globalEvents.LoadValuesToCharlist)
+}
+
+// Автоматическая расстановка привязок
+function autoLink() {
+	// Слушают компоненты ValueLink и каждый ставит привязку согласно своему valueIndex
+	fireEvent(globalEvents.AutoLinkStats)
 }
 </script>
 
@@ -39,7 +45,9 @@ function loadValuesToCharlist(): void {
 	.blockTitle
 		slot
 	.blockBody
-		input.fullWidth(type="button" value="🔧 Сгенерировать" @click="generateRandomValues")
+		.buttons.asymmetric
+			input.fullWidth(type="button" value="🔧 Сгенерировать" @click="generateRandomValues")
+			input.short(type="button" value="⤵️" title="Автопривязка" @click="autoLink")
 		.valuesToStats
 			value-link(
 				v-for="(value, idx) in randomValues"
@@ -67,5 +75,11 @@ input[type="button"] {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 12px;
+
+	&.asymmetric {
+		display: flex;
+
+		.short { flex-shrink: 0; }
+	}
 }
 </style>

@@ -1,6 +1,7 @@
 enum globalEvents {
 	ResetStatsStore = 'ResetStatsStore',
-	LoadValuesToCharlist = 'LoadValuesToCharlist'
+	LoadValuesToCharlist = 'LoadValuesToCharlist',
+	AutoLinkStats = 'AutoLinkStats'
 }
 
 /**
