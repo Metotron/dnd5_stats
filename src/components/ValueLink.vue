@@ -32,7 +32,8 @@ for (statName in statsList) {
 }
 
 // Внутреннее числовое значение, может изменяться вручную
-const value = ref(props.value)
+const value = ref(0)
+value.value = props.value
 // Обновление внутреннего значение при изменении props
 watch(() => props.value,  newValue => {
 	value.value = newValue
@@ -40,8 +41,13 @@ watch(() => props.value,  newValue => {
 
 // Ограничение значения сверху и снизу
 watch(value, (newValue, oldValue)  => {
-	if (!newValue || newValue < 1 || newValue > 20)
+	if (!newValue || newValue < 1 || newValue > 20) {
 		value.value = oldValue
+	}
+	else {
+		// Функция могла бы выкинуть исключение, но условие выше его предотвращает
+		statsStore.setGeneratedValue(props.valueIndex, value.value)
+	}
 })
 
 // Характеристика, с которой будет связано значение value
@@ -71,6 +77,7 @@ function getReadableStatName(statName: keyof StatsType<string>): string {
 
 	return statName
 }
+//TODO Сделать блокировку занятых значений селектов
 </script>
 
 

@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import ClassSelector from '@/components/ClassSelector.vue'
 import ValuesLinker from '@/components/ValuesLinker.vue'
+import CharList from '@/components/CharList.vue'
 </script>
 
 
 <template lang="pug">
-header Характеристики персонажа
+header Генерация характеристик персонажа на первом уровне (D&amp;D 5e)
 .blocksArea
 	class-selector 🧍 Класс персонажа
 	values-linker 🎲 Числовые значения
+	char-list 📎 Характеристики персонажа
 </template>
 
 
@@ -36,6 +38,7 @@ html, body {
 
 	&.charClass { grid-area: class; }
 	&.charStats { grid-area: stats; }
+	&.charList  { grid-area: charlist; }
 
 	:deep(.blockTitle) {
 		background-color: #e2e2e2;

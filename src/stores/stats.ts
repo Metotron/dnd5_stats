@@ -4,12 +4,16 @@ import type { StatsType } from '@/misc/statsList'
 export const useStatsStore = defineStore({
 	id: 'stats',
 	state: (): {
+		generatedValues: number[],
 		stats: StatsType<number>,
 		dataToStatsLinks: {
 			[index: number]: keyof StatsType<number> | null
 		}
 	} => ({
-		// Значения характеристик, выбранные для использования
+		// Сгенерированные значения
+		generatedValues: [0, 0, 0, 0, 0, 0],
+
+		// Значения характеристик, выбранные для использования в чарлисте
 		stats: {
 			str: 0,
 			dex: 0,
@@ -31,20 +35,37 @@ export const useStatsStore = defineStore({
 	}),
 
 	actions: {
-		// Сброс привязок в null
+		/**
+		 * Сброс привязок в null
+		 */
 		resetStatsLinks() {
 			for (const idx in this.dataToStatsLinks) {
 				this.dataToStatsLinks[idx] = null
 			}
 		},
 
-		// Установка привязки для числа в позиции с указанным индексом
+		/**
+		 * Установка привязки для числа в позиции с указанным индексом
+		 */
 		setValueLink(position: number, linkTo: keyof StatsType<string> | null) {
 			if (position < 0 || position > 5) {
 				return 0
 			}
 
 			this.dataToStatsLinks[position] = linkTo
+		},
+
+		/**
+		 * Сохранение сырых значений после генерации
+		 * @param {number} index - индекс сохраняемого значения
+		 * @param {number} value - сохраняемое значение в пределах 1-20
+		 */
+		setGeneratedValue(index: number, value: number) {
+			if (value < 1 || value > 20) {
+				throw 'Некорректное сохраняемое значение. Характеристика должна быть в пределах от 1 до 20';
+			}
+
+			this.generatedValues[index] = value
 		}
 	},
 

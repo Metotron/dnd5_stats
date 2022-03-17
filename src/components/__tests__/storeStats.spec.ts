@@ -7,9 +7,12 @@ describe('store tests', () => {
 		setActivePinia(createPinia())
 	})
 
-	it('setting value 0', () => {
+	it('changing stat value 0', () => {
 		const valueIndex = 0
 		const store = useStatsStore()
+
+		expect(store.dataToStatsLinks[valueIndex]).toBeNull()
+
 		store.setValueLink(valueIndex, 'str')
 		expect(store.dataToStatsLinks[valueIndex]).toEqual('str')
 
@@ -17,13 +20,27 @@ describe('store tests', () => {
 		expect(store.dataToStatsLinks[valueIndex]).toBeNull()
 	})
 
-	it('setting value 4', () => {
+	it('changing stat value 4', () => {
 		const valueIndex = 4
 		const store = useStatsStore()
+
+		expect(store.dataToStatsLinks[valueIndex]).toBeNull()
+
 		store.setValueLink(valueIndex, 'dex')
 		expect(store.dataToStatsLinks[valueIndex]).toEqual('dex')
 
 		store.resetStatsLinks()
 		expect(store.dataToStatsLinks[valueIndex]).toBeNull()
+	})
+
+
+	it('store numeric value to position 0', () => {
+		const store = useStatsStore()
+		expect(store.generatedValues).toEqual([0, 0, 0, 0, 0, 0])
+
+		store.setGeneratedValue(0, 8)
+		expect(store.generatedValues).toEqual([8, 0, 0, 0, 0, 0])
+
+		expect(() => { store.setGeneratedValue(0, 21) }).toThrowError()
 	})
 })
