@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { maxStatValue } from '@/misc/statsList'
 import type { TStats, TStatsList } from '@/misc/statsList'
 
 export const useStatsStore = defineStore({
@@ -66,7 +67,7 @@ export const useStatsStore = defineStore({
 		 * @param {number} value - сохраняемое значение в пределах 1-20
 		 */
 		setGeneratedValue(index: number, value: number) {
-			if (value < 1 || value > 20) {
+			if (value < 1 || value > maxStatValue) {
 				throw 'Некорректное сохраняемое значение. Характеристика должна быть в пределах от 1 до 20';
 			}
 

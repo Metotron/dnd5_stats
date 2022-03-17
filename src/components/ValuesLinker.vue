@@ -46,7 +46,7 @@ function autoLink() {
 		slot
 	.blockBody
 		.buttons.asymmetric
-			input.fullWidth(type="button" value="🔧 Сгенерировать" @click="generateRandomValues")
+			input.fullWidth(type="button" value="🔧 Сгенерировать" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3–18)" @click="generateRandomValues")
 			input.short(type="button" value="⤵️" title="Автопривязка" @click="autoLink")
 		.valuesToStats
 			value-link(
@@ -69,7 +69,7 @@ input[type="button"] {
 	&.fullWidth { width: 100%; }
 }
 
-.valuesToStats { margin-bottom: 1em; }
+.valuesToStats { margin-bottom: var(--blockPadding); }
 
 .buttons {
 	display: grid;

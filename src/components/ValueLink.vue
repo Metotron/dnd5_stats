@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
-import { statsList } from '@/misc/statsList'
+import { statsList, maxStatValue, getReadableStatName } from '@/misc/statsList'
 import { globalEvents } from '@/misc/globalEvents'
 import type { TStats } from '@/misc/statsList'
 
@@ -22,7 +22,7 @@ const props = defineProps({
 	value: {
 		type: Number,
 		required: true,
-		validator: (value: number) => value > 0 && value <= 20
+		validator: (value: number) => value > 0 && value <= maxStatValue
 	},
 
 	// Индекс значения в массиве исходных данных, по нему производится привязка к характеристикам
@@ -51,7 +51,7 @@ watch(() => props.value,  newValue => {
 
 // Ограничение значения сверху и снизу
 watch(value, (newValue, oldValue)  => {
-	if (!newValue || newValue < 1 || newValue > 20) {
+	if (!newValue || newValue < 1 || newValue > maxStatValue) {
 		value.value = oldValue
 	}
 	else {
@@ -88,14 +88,6 @@ function autoLinkStats() {
 	selectedStatToLink.value = autoLinksValues[props.valueIndex]
 }
 
-// Получение читаемого названия характеристики из её кода
-function getReadableStatName(statName: TStats): string {
-	if (statName in statsList)
-		return statsList[statName]
-
-	return statName
-}
-
 // Определение, что характеристика уже распределена
 function isCharInUse(charName: TOptionValue): boolean {
 	if (charName === '-') {
@@ -116,7 +108,7 @@ function isCharInUse(charName: TOptionValue): boolean {
 
 <template lang="pug">
 .valueLink
-	input(v-model.number="value" type="number" min="1" max="20")
+	input(v-model.number="value" type="number" min="1" :max="maxStatValue")
 	span.arrow →
 	select(v-model="selectedStatToLink")
 		option -
@@ -132,7 +124,7 @@ function isCharInUse(charName: TOptionValue): boolean {
 <style lang="scss" scoped>
 .valueLink {
 	display: flex;
-	margin-top: 8px;
+	margin-top: var(--blockPadding);
 }
 
 input { width: 52px; }

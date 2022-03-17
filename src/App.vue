@@ -27,14 +27,13 @@ html, body {
 	grid-template-columns: 270px min(100%, 400px);
 	grid-template-areas: "class charlist"
 	                     "stats charlist";
-	gap: 16px;
+	gap: calc(var(--blockPadding) * 2);
 	margin-top: 1em;
 }
 
 .pageBlock {
-	border: 1px solid #ccc;
+	border: 1px solid var(--borderColor);
 	border-radius: 3px;
-	padding-bottom: 8px;
 
 	&.charClass { grid-area: class; }
 	&.charStats { grid-area: stats; }
@@ -42,11 +41,11 @@ html, body {
 
 	:deep(.blockTitle) {
 		background-color: #e2e2e2;
-		padding: 4px 8px;
+		padding: 4px var(--blockPadding);
 	}
 
 	:deep(.blockBody) {
-		padding: 8px;
+		padding: var(--blockPadding);
 	}
 }
 </style>
@@ -54,4 +53,8 @@ html, body {
 <style>
 * { box-sizing: border-box; }
 input, select { min-height: 26px; }
+:root {
+	--borderColor: #ccc;
+	--blockPadding: 8px;
+}
 </style>

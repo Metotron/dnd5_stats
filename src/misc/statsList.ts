@@ -11,5 +11,16 @@ const statsList: TStatsList<string> = {
 	cha: 'Харизма'
 }
 
-export { statsList }
+// Получение читаемого названия характеристики из её кода
+function getReadableStatName(statName: TStats): string {
+	if (statName in statsList)
+		return statsList[statName]
+
+	return statName
+}
+
+// Максимальное значение характеристики (в книге игрока — 30)
+const maxStatValue = 30
+
+export { statsList, maxStatValue, getReadableStatName }
 export type { TStats, TStatsList }

@@ -3,6 +3,7 @@ import { onMounted, onBeforeUnmount } from 'vue'
 import { useStatsStore } from '@/stores/stats'
 import { useCharClassStore } from '@/stores/charClass'
 import { globalEvents } from '@/misc/globalEvents'
+import { getReadableStatName, maxStatValue } from '@/misc/statsList'
 
 const statsStore = useStatsStore()
 const charClassStore = useCharClassStore()
@@ -27,6 +28,22 @@ function loadValuesToCharlist() {
 		statsStore.setStatValue(statsLinks[idx]!, stats[idx])
 	}
 }
+
+// Расчёт модификатора характеристики
+function getStatModificator(statValue: number): string | null {
+	// Проверка на выход за допустимый диапазон
+	if (statValue < 1 || statValue > maxStatValue) {
+		return null
+	}
+
+	const modificator = Math.ceil((statValue - 11) / 2)
+
+	if (modificator == 0) {
+		return '0'
+	}
+
+	return (Math.sign(modificator) > 0 ? '+' : '-') + Math.abs(modificator)
+}
 </script>
 
 <template lang="pug">
@@ -34,13 +51,60 @@ function loadValuesToCharlist() {
 	.blockTitle
 		slot
 	.blockBody
-		| {{ statsStore.stats }}
-		hr
-		| {{ charClassStore.charClass }}, {{ charClassStore.charHitDice }}
+		.valueBlock
+			.stats
+				div(v-for="(stat, statName) in statsStore.stats" :key="statName")
+					span {{ getReadableStatName(statName) }}:
+					span.statValue
+						| {{ stat }}
+						span.value(v-if="getStatModificator(stat) !== null") ({{ getStatModificator(stat) }})
+
+		.valueBlock
+			span(title="Зависит от выбранного класса") Кость хитов:
+			span.value d{{ charClassStore.charHitDice }}
+
+		.valueBlock(v-if="getStatModificator(statsStore.stats.dex) !== null")
+			span(title="Зависит от выбранного класса") Инициатива:
+			span.value {{ 10 + +getStatModificator(statsStore.stats.dex) }}
 </template>
 
 <style lang="scss" scoped>
-.charList {
+.pageBlock.charList {
 	align-self: start;
+
+	.blockBody {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.valueBlock {
+		border-bottom: 1px solid var(--borderColor);
+		padding: var(--blockPadding);
+		font-size: 16px;
+
+		&:first-child { padding-top: 0; }
+		&:last-child {
+			padding-bottom: 0;
+			border-bottom: none;
+		}
+
+		.statValue, .value {
+			display: inline-block;
+			color: #e07014;
+			margin-left: 0.4em;
+		}
+
+		.statValue {
+			color: #999;
+		}
+	}
+
+	.stats {
+		display: grid;
+		grid-template-columns: 1.3fr 1fr;
+		grid-template-rows: repeat(3, auto);
+		grid-auto-flow: column;
+		gap: var(--blockPadding) calc(var(--blockPadding) * 2);
+	}
 }
 </style>
