@@ -2,10 +2,11 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { statsList } from '@/misc/statsList'
 import { globalEvents } from '@/misc/globalEvents'
-import type { StatsType } from '@/misc/statsList'
+import type { TStats } from '@/misc/statsList'
 
 import { useStatsStore } from '@/stores/stats'
 
+type TOptionValue = TStats | '-'  // Тип значения опшена в селекте
 
 const props = defineProps({
 	// Значение характеристики
@@ -25,8 +26,8 @@ const props = defineProps({
 
 const statsStore = useStatsStore()
 
-const statsSelectorNames: Array<keyof StatsType<string>> = []
-let statName: keyof StatsType<string>
+const statsSelectorNames: Array<TStats> = []
+let statName: TStats
 for (statName in statsList) {
 	statsSelectorNames.push(statName)
 }
@@ -51,7 +52,7 @@ watch(value, (newValue, oldValue)  => {
 })
 
 // Характеристика, с которой будет связано значение value
-const selectedStatToLink = ref<keyof StatsType<string> | '-'>('-')
+const selectedStatToLink = ref<TOptionValue>('-')
 onMounted(() => {
 	window.addEventListener(globalEvents.ResetStatsStore, resetSelectToDefault)
 })
@@ -71,7 +72,7 @@ function resetSelectToDefault() {
 }
 
 // Получение читаемого названия характеристики из её кода
-function getReadableStatName(statName: keyof StatsType<string>): string {
+function getReadableStatName(statName: TStats): string {
 	if (statName in statsList)
 		return statsList[statName]
 
@@ -79,7 +80,7 @@ function getReadableStatName(statName: keyof StatsType<string>): string {
 }
 
 // Определение, что характеристика уже распределена
-function isCharInUse(charName: keyof StatsType<string> | '-'): boolean {
+function isCharInUse(charName: TOptionValue): boolean {
 	if (charName === '-') {
 		return false
 	}

@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
-import type { StatsType } from '@/misc/statsList'
+import type { TStats, TStatsList } from '@/misc/statsList'
 
 export const useStatsStore = defineStore({
 	id: 'stats',
 	state: (): {
 		generatedValues: number[],
-		stats: StatsType<number>,
+		stats: TStatsList<number>,
 		dataToStatsLinks: {
-			[index: number]: keyof StatsType<number> | null
+			[index: number]: TStats | null
 		}
 	} => ({
 		// Сгенерированные значения
@@ -47,7 +47,7 @@ export const useStatsStore = defineStore({
 		/**
 		 * Установка привязки для числа в позиции с указанным индексом
 		 */
-		setValueLink(position: number, linkTo: keyof StatsType<string> | null) {
+		setValueLink(position: number, linkTo: TStats | null) {
 			if (position < 0 || position > 5) {
 				return 0
 			}

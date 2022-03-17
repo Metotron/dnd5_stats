@@ -1,13 +1,8 @@
-type StatsType<T extends number | string> = {
-	str: T,
-	dex: T,
-	con: T,
-	int: T,
-	wis: T,
-	cha: T
-}
+type TStats = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
 
-const statsList: StatsType<string> = {
+type TStatsList<T extends number | string> = Record<TStats, T>
+
+const statsList: TStatsList<string> = {
 	str: 'Сила',
 	dex: 'Ловкость',
 	con: 'Телосложение',
@@ -17,4 +12,4 @@ const statsList: StatsType<string> = {
 }
 
 export { statsList }
-export type { StatsType }
+export type { TStats, TStatsList }
