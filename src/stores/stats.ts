@@ -44,6 +44,11 @@ export const useStatsStore = defineStore({
 			}
 		},
 
+		// Установка значений харатеристик в чарлисте
+		setStatValue(stat: TStats, value: number) {
+			this.stats[stat] = value
+		},
+
 		/**
 		 * Установка привязки для числа в позиции с указанным индексом
 		 */

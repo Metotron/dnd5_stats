@@ -54,6 +54,7 @@ watch(value, (newValue, oldValue)  => {
 // Характеристика, с которой будет связано значение value
 const selectedStatToLink = ref<TOptionValue>('-')
 onMounted(() => {
+	statsStore.setGeneratedValue(props.valueIndex, value.value)
 	window.addEventListener(globalEvents.ResetStatsStore, resetSelectToDefault)
 })
 onBeforeUnmount(() => {
@@ -124,4 +125,6 @@ input { width: 52px; }
 	display: inline-block;
 	margin: 0 4px;
 }
+
+select { width: 100%; }
 </style>

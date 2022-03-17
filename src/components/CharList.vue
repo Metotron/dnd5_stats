@@ -17,7 +17,15 @@ onBeforeUnmount(() => {
 // Загрузка имеющихся значений характеристик
 function loadValuesToCharlist() {
 	const stats = statsStore.generatedValues
-	//TODO дописать применение характеристик к чарлисту
+	const statsLinks = statsStore.dataToStatsLinks
+
+	for (const idx in statsLinks) {
+		if (statsLinks[idx] === null) {
+			continue
+		}
+
+		statsStore.setStatValue(statsLinks[idx]!, stats[idx])
+	}
 }
 </script>
 

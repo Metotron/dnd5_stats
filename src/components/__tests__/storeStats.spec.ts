@@ -43,4 +43,8 @@ describe('store tests', () => {
 
 		expect(() => { store.setGeneratedValue(0, 21) }).toThrowError()
 	})
+
+	it('set charlist stats values', () => {
+		//TODO Написать тест для этого
+	})
 })

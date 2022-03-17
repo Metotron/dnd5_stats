@@ -18,8 +18,6 @@ onMounted(() => {
 // Обновление сгенерированного списка числовых значений и сброс имеющихся привязок
 function generateRandomValues(): void {
 	randomValues.value = getRandomValues()
-
-	resetStatLinks()
 }
 
 // Сброс привязки характеристик к исходным числовым значениям
@@ -41,7 +39,7 @@ function loadValuesToCharlist(): void {
 	.blockTitle
 		slot
 	.blockBody
-		input.button(type="button" value="🔧 Сгенерировать" @click="generateRandomValues")
+		input.fullWidth(type="button" value="🔧 Сгенерировать" @click="generateRandomValues")
 		.valuesToStats
 			value-link(
 				v-for="(value, idx) in randomValues"
@@ -49,21 +47,25 @@ function loadValuesToCharlist(): void {
 				:value-index="idx"
 				:key="idx"
 			)
-		input.button(
-			type="button"
-			value="📝 Применить"
-			:disabled="!statsStore.isAllFieldsLinked"
-			@click="loadValuesToCharlist"
-		)
+		.buttons
+			input(type="button" value="📝 Применить" @click="loadValuesToCharlist" :disabled="!statsStore.isAllFieldsLinked")
+			input(type="button" value="♻️ Сбросить" @click="resetStatLinks")
 </template>
 
 
 <style lang="scss" scoped>
-input[type="button"]:not([disabled]) {
-	cursor: pointer;
+input[type="button"] {
+	min-height: 28px;
+
+	&:not([disabled]) { cursor: pointer; }
+	&.fullWidth { width: 100%; }
 }
 
-.valuesToStats {
-	margin-bottom: 1em;
+.valuesToStats { margin-bottom: 1em; }
+
+.buttons {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
 }
 </style>
