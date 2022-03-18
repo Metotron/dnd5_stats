@@ -59,7 +59,7 @@ function getStatModificator(statValue: number): string | null {
 					span {{ getReadableStatName(statName) }}:
 					span.statValue
 						| {{ stat }}
-						span.value(v-if="getStatModificator(stat) !== null") ({{ getStatModificator(stat) }})
+						span.value(v-if="getStatModificator(stat) !== null") (#[span(title="Применяемый модификатор") {{ getStatModificator(stat) }}])
 
 		.valueBlock(v-if="getStatModificator(statsStore.stats.dex) !== null")
 			span Инициатива:
