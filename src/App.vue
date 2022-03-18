@@ -20,6 +20,7 @@ html, body {
 	padding: 0;
 	font-size: 16px;
 	color: #000;
+	background-color: #fff;
 }
 
 .blocksArea {
@@ -34,6 +35,7 @@ html, body {
 .pageBlock {
 	border: 1px solid var(--borderColor);
 	border-radius: 3px;
+	box-shadow: 1px 1px 6px 0 rgb(150, 150, 150, 0.1);
 
 	&.charClass { grid-area: class; }
 	&.charStats { grid-area: stats; }

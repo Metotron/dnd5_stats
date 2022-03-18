@@ -65,7 +65,7 @@ function getStatModificator(statValue: number): string | null {
 
 		.valueBlock(v-if="getStatModificator(statsStore.stats.dex) !== null")
 			span(title="Зависит от выбранного класса") Инициатива:
-			span.value {{ 10 + +getStatModificator(statsStore.stats.dex) }}
+			span.value {{ 10 + Number(getStatModificator(statsStore.stats.dex)) }}
 </template>
 
 <style lang="scss" scoped>
