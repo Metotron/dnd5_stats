@@ -40,7 +40,6 @@ select { width: 100%; }
 }
 
 .hitDice {
-	text-align: right;
 	color: var(--accentColor);
 	font-size: 0.85rem;
 }
