@@ -19,7 +19,7 @@ watch(selectedCharClass, newValue => {
 		select(v-model="selectedCharClass")
 			option(v-for="(dataValue, className) in charClasses" :key="className" :value="className") {{ dataValue.name }}
 		span.arrow →
-		span.hitDice(title="Хитпойнты (здоровье)") HP: {{ classStore.charHitDice }}
+		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ classStore.charHitDice }}
 </template>
 
 

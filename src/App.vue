@@ -6,7 +6,8 @@ import CharList from '@/components/CharList.vue'
 
 
 <template lang="pug">
-header Генерация характеристик персонажа на первом уровне (D&amp;D 5e)
+header
+	h1 Генерация характеристик персонажа на первом уровне (D&amp;D 5e)
 .blocksArea
 	class-selector 🧍 Класс персонажа
 	values-linker 🎲 Числовые значения
@@ -15,12 +16,10 @@ header Генерация характеристик персонажа на п�
 
 
 <style lang="scss" scoped>
-html, body {
-	margin: 0;
-	padding: 0;
-	font-size: 16px;
-	color: #000;
-	background-color: #fff;
+h1 {
+	font-size: 1.2em;
+	margin: 0 0 1em;
+	font-weight: normal;
 }
 
 .blocksArea {
@@ -60,7 +59,16 @@ html, body {
 
 <style>
 * { box-sizing: border-box; }
+html, body {
+	margin: 0;
+	padding: var(--blockPadding);
+	font-size: 16px;
+	color: #000;
+	background-color: #fff;
+}
+
 input, select { min-height: 26px; }
+
 :root {
 	--borderColor: #ccc;
 	--blockPadding: 8px;
