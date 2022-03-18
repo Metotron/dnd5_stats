@@ -65,6 +65,7 @@ html, body {
 	font-size: 16px;
 	color: #000;
 	background-color: #fff;
+	font-family: Droid sans, serif;
 }
 
 input, select { min-height: 26px; }
