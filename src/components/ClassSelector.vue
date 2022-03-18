@@ -11,7 +11,6 @@ watch(selectedCharClass, newValue => {
 })
 </script>
 
-
 <template lang="pug">
 .pageBlock.charClass
 	.blockTitle
@@ -19,11 +18,30 @@ watch(selectedCharClass, newValue => {
 	.blockBody
 		select(v-model="selectedCharClass")
 			option(v-for="(dataValue, className) in charClasses" :key="className" :value="className") {{ dataValue.name }}
+		span.arrow →
+		span.hitDice(title="Хитпойнты (здоровье)") HP: {{ classStore.charHitDice }}
 </template>
 
 
 <style lang="scss" scoped>
-select {
-	width: 100%;
+.blockBody {
+	display: grid;
+	grid-template-columns: 1fr auto 50px;
+	gap: calc(var(--blockPadding) / 2);
+	align-items: center;
+}
+
+select { width: 100%; }
+
+.arrow {
+	display: inline-block;
+	margin: 0 4px;
+	align-self: stretch;
+}
+
+.hitDice {
+	text-align: right;
+	color: var(--accentColor);
+	font-size: 0.85rem;
 }
 </style>

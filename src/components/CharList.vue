@@ -44,6 +44,8 @@ function getStatModificator(statValue: number): string | null {
 
 	return (Math.sign(modificator) > 0 ? '+' : '-') + Math.abs(modificator)
 }
+
+//TODO Вывести поле для отметки владения навыком внимательности
 </script>
 
 <template lang="pug">
@@ -66,6 +68,10 @@ function getStatModificator(statValue: number): string | null {
 		.valueBlock(v-if="getStatModificator(statsStore.stats.wis) !== null")
 			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
 			span.value {{ 10 + Number(getStatModificator(statsStore.stats.wis)) }}
+
+		.valueBlock(v-if="getStatModificator(statsStore.stats.con) !== null")
+			span(:title="`Для каждого последующего уровня нужно бросать d${charClassStore.charHitDice} и к значению прибавлять ${Number(getStatModificator(statsStore.stats.con))}`") Количество хитов:
+			span.value {{ 10 + Number(getStatModificator(statsStore.stats.con)) }}
 
 		.valueBlock
 			span(title="Зависит от выбранного класса") Кость хитов:
@@ -94,7 +100,7 @@ function getStatModificator(statValue: number): string | null {
 
 		.statValue, .value {
 			display: inline-block;
-			color: #e07014;
+			color: var(--accentColor);
 			margin-left: 0.4em;
 		}
 

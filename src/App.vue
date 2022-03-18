@@ -35,6 +35,7 @@ html, body {
 .pageBlock {
 	border: 1px solid var(--borderColor);
 	border-radius: 3px;
+	overflow: hidden;
 	box-shadow: 1px 1px 6px 0 rgb(150, 150, 150, 0.1);
 
 	&.charClass { grid-area: class; }
@@ -58,5 +59,6 @@ input, select { min-height: 26px; }
 :root {
 	--borderColor: #ccc;
 	--blockPadding: 8px;
+	--accentColor: #e07014;
 }
 </style>
