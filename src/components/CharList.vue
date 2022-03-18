@@ -59,13 +59,17 @@ function getStatModificator(statValue: number): string | null {
 						| {{ stat }}
 						span.value(v-if="getStatModificator(stat) !== null") ({{ getStatModificator(stat) }})
 
-		.valueBlock
-			span(title="Зависит от выбранного класса") Кость хитов:
-			span.value d{{ charClassStore.charHitDice }}
-
 		.valueBlock(v-if="getStatModificator(statsStore.stats.dex) !== null")
 			span(title="Зависит от выбранного класса") Инициатива:
 			span.value {{ 10 + Number(getStatModificator(statsStore.stats.dex)) }}
+
+		.valueBlock(v-if="getStatModificator(statsStore.stats.wis) !== null")
+			span(title="Зависит от выбранного класса") Пассивная мудрость:
+			span.value {{ 10 + Number(getStatModificator(statsStore.stats.wis)) }}
+
+		.valueBlock
+			span(title="Зависит от выбранного класса") Кость хитов:
+			span.value d{{ charClassStore.charHitDice }}
 </template>
 
 <style lang="scss" scoped>
