@@ -60,11 +60,11 @@ function getStatModificator(statValue: number): string | null {
 						span.value(v-if="getStatModificator(stat) !== null") ({{ getStatModificator(stat) }})
 
 		.valueBlock(v-if="getStatModificator(statsStore.stats.dex) !== null")
-			span(title="Зависит от выбранного класса") Инициатива:
+			span Инициатива:
 			span.value {{ 10 + Number(getStatModificator(statsStore.stats.dex)) }}
 
 		.valueBlock(v-if="getStatModificator(statsStore.stats.wis) !== null")
-			span(title="Зависит от выбранного класса") Пассивная мудрость:
+			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
 			span.value {{ 10 + Number(getStatModificator(statsStore.stats.wis)) }}
 
 		.valueBlock
