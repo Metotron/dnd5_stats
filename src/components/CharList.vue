@@ -71,7 +71,7 @@ function getStatModificator(statValue: number): string | null {
 
 		.valueBlock(v-if="getStatModificator(statsStore.stats.con) !== null")
 			span(:title="`Для каждого последующего уровня нужно бросать d${charClassStore.charHitDice} и к значению прибавлять ${Number(getStatModificator(statsStore.stats.con))}`") Количество хитов:
-			span.value {{ 10 + Number(getStatModificator(statsStore.stats.con)) }}
+			span.value {{ charClassStore.charHitDice + Number(getStatModificator(statsStore.stats.con)) }}
 
 		.valueBlock
 			span(title="Зависит от выбранного класса") Кость хитов:
@@ -115,6 +115,11 @@ function getStatModificator(statValue: number): string | null {
 		grid-template-rows: repeat(3, auto);
 		grid-auto-flow: column;
 		gap: var(--blockPadding) calc(var(--blockPadding) * 2);
+
+		@media (max-width: 700px) {
+			grid-template-columns: 100%;
+			grid-auto-flow: row;
+		}
 	}
 }
 </style>

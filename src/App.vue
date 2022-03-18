@@ -30,6 +30,11 @@ html, body {
 	                     "stats charlist";
 	gap: calc(var(--blockPadding) * 2);
 	margin-top: 1em;
+
+	@media (max-width: 700px) {
+		grid-template-columns: 100%;
+		grid-template-areas: "class" "stats" "charlist";
+	}
 }
 
 .pageBlock {
