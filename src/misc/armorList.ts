@@ -37,12 +37,14 @@ const armorList: Record<TArmorType, TArmorDescription[]> = {
 		{
 			type: TArmor.leather,
 			name: 'Кожаный доспех',
-			AC: 11
+			AC: 11,
+			useDexModifier: true
 		},
 		{
 			type: TArmor.studdedLeather,
 			name: 'Проклёпанная кожа',
-			AC: 12
+			AC: 12,
+			useDexModifier: true
 		}
 	],
 	'Средний доспех': [

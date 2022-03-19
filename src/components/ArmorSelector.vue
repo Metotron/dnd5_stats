@@ -27,6 +27,7 @@ const armorDetails = computed<TDetails>(() => {
 	return null
 })
 
+
 const armorClass = computed<number | null>(() => {
 	if (!armorDetails.value) {
 		return null
@@ -34,6 +35,7 @@ const armorClass = computed<number | null>(() => {
 
 	const baseAC = armorDetails.value.AC
 	let ACModifier = 0
+
 	if (armorDetails.value.useDexModifier) {
 		ACModifier = Math.ceil((statsStore.stats.dex - 11) / 2)
 		if (armorDetails.value.maximumDexModifier) {
