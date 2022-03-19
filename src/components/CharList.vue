@@ -32,19 +32,19 @@ function loadValuesToCharlist() {
 }
 
 // Расчёт модификатора характеристики
-function getStatModificator(statValue: number): string | null {
+function getStatModifier(statValue: number): string | null {
 	// Проверка на выход за допустимый диапазон
 	if (statValue < 1 || statValue > maxStatValue) {
 		return null
 	}
 
-	const modificator = Math.ceil((statValue - 11) / 2)
+	const modifier = Math.ceil((statValue - 11) / 2)
 
-	if (modificator == 0) {
+	if (modifier == 0) {
 		return '0'
 	}
 
-	return (Math.sign(modificator) > 0 ? '+' : '-') + Math.abs(modificator)
+	return (Math.sign(modifier) > 0 ? '+' : '-') + Math.abs(modifier)
 }
 
 //TODO Вывести поле для отметки владения навыком внимательности
@@ -61,19 +61,19 @@ function getStatModificator(statValue: number): string | null {
 					span {{ getReadableStatName(statName) }}:
 					span.statValue
 						| {{ stat }}
-						span.value(v-if="getStatModificator(stat) !== null") (#[span(title="Применяемый модификатор") {{ getStatModificator(stat) }}])
+						span.value(v-if="getStatModifier(stat) !== null") (#[span(title="Применяемый модификатор") {{ getStatModifier(stat) }}])
 
-		.valueBlock(v-if="getStatModificator(statsStore.stats.dex) !== null")
+		.valueBlock(v-if="getStatModifier(statsStore.stats.dex) !== null")
 			span Инициатива:
-			span.value {{ 10 + Number(getStatModificator(statsStore.stats.dex)) }}
+			span.value {{ 10 + Number(getStatModifier(statsStore.stats.dex)) }}
 
-		.valueBlock(v-if="getStatModificator(statsStore.stats.wis) !== null")
+		.valueBlock(v-if="getStatModifier(statsStore.stats.wis) !== null")
 			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
-			span.value {{ 10 + Number(getStatModificator(statsStore.stats.wis)) }}
+			span.value {{ 10 + Number(getStatModifier(statsStore.stats.wis)) }}
 
-		.valueBlock(v-if="getStatModificator(statsStore.stats.con) !== null")
-			span(:title="`Для каждого последующего уровня нужно бросать d${charClassStore.charHitDice} и к значению прибавлять ${Number(getStatModificator(statsStore.stats.con))}`") Количество хитов:
-			span.value {{ charClassStore.charHitDice + Number(getStatModificator(statsStore.stats.con)) }}
+		.valueBlock(v-if="getStatModifier(statsStore.stats.con) !== null")
+			span(:title="`Для каждого последующего уровня нужно бросать d${charClassStore.charHitDice} и к значению прибавлять ${Number(getStatModifier(statsStore.stats.con))}`") Количество хитов:
+			span.value {{ charClassStore.charHitDice + Number(getStatModifier(statsStore.stats.con)) }}
 
 		.valueBlock
 			span(title="Зависит от выбранного класса") Кость хитов:

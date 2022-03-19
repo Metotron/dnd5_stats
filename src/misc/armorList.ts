@@ -19,8 +19,8 @@ type TArmorDescription = {
 	type: TArmor,
 	name: string,
 	AC: number,
-	useDexModificator?: true,
-	maximumDexModificator?: number,
+	useDexModifier?: true,
+	maximumDexModifier?: number,
 	minimumStr?: number,
 	stealthDisadvantage?: true
 }

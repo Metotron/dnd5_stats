@@ -33,15 +33,15 @@ const armorClass = computed<number | null>(() => {
 	}
 
 	const baseAC = armorDetails.value.AC
-	let ACModificator = 0
-	if (armorDetails.value.useDexModificator) {
-		ACModificator = Math.ceil((statsStore.stats.dex - 11) / 2)
-		if (armorDetails.value.maximumDexModificator) {
-			ACModificator = Math.max(ACModificator, armorDetails.value.maximumDexModificator)
+	let ACModifier = 0
+	if (armorDetails.value.useDexModifier) {
+		ACModifier = Math.ceil((statsStore.stats.dex - 11) / 2)
+		if (armorDetails.value.maximumDexModifier) {
+			ACModifier = Math.max(ACModifier, armorDetails.value.maximumDexModifier)
 		}
 	}
 
-	return baseAC + ACModificator
+	return baseAC + ACModifier
 })
 
 watch(armorClass, newValue => {
@@ -74,11 +74,11 @@ const selectTitle = computed<string>(() => {
 	}
 
 	let result = armorDetails.value.AC.toString()
-	if (armorDetails.value.useDexModificator) {
+	if (armorDetails.value.useDexModifier) {
 		result += ' + ловкость'
 
-		if (armorDetails.value.maximumDexModificator !== undefined) {
-			result += ` (макс. ${armorDetails.value.maximumDexModificator})`
+		if (armorDetails.value.maximumDexModifier !== undefined) {
+			result += ` (макс. ${armorDetails.value.maximumDexModifier})`
 		}
 	}
 
