@@ -2,11 +2,13 @@
 import { onMounted, onBeforeUnmount } from 'vue'
 import { useStatsStore } from '@/stores/stats'
 import { useCharClassStore } from '@/stores/charClass'
+import { useArmorStore } from '@/stores/armor'
 import { globalEvents } from '@/misc/globalEvents'
 import { getReadableStatName, maxStatValue } from '@/misc/statsList'
 
 const statsStore = useStatsStore()
 const charClassStore = useCharClassStore()
+const armorStore = useArmorStore()
 
 onMounted(() => {
 	window.addEventListener(globalEvents.LoadValuesToCharlist, loadValuesToCharlist)
@@ -76,6 +78,10 @@ function getStatModificator(statValue: number): string | null {
 		.valueBlock
 			span(title="Зависит от выбранного класса") Кость хитов:
 			span.value d{{ charClassStore.charHitDice }}
+
+		.valueBlock(v-if="armorStore.armorClass !== null && !armorStore.needMoreStrength && statsStore.stats.str")
+			span Класс доспеха:
+			span.value {{ armorStore.armorClass }}
 </template>
 
 <style lang="scss" scoped>

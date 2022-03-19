@@ -45,13 +45,19 @@ export const useStatsStore = defineStore({
 			}
 		},
 
-		// Установка значений харатеристик в чарлисте
+		/**
+		 * Установка значений харатеристик в чарлисте
+		 * @param {string} stat - псевдоним характеристики
+		 * @param {number} value - числовое значение характеристики
+		 */
 		setStatValue(stat: TStats, value: number) {
 			this.stats[stat] = value
 		},
 
 		/**
 		 * Установка привязки для числа в позиции с указанным индексом
+		 * @param {number} position - Индекс устанавливаемой привязки
+		 * @param {string|null} linkTo - Псевдоним характеристики
 		 */
 		setValueLink(position: number, linkTo: TStats | null) {
 			if (position < 0 || position > 5) {

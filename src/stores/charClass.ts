@@ -9,6 +9,10 @@ export const useCharClassStore = defineStore({
 	}),
 
 	actions: {
+		/**
+		 * Установка класса персонажа
+		 * @param {string} classID - Псевдоним класса
+		 */
 		setCharClass(classID: CharClassID) {
 			this.charClass = classID
 		}

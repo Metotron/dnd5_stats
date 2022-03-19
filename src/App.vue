@@ -2,6 +2,7 @@
 import ClassSelector from '@/components/ClassSelector.vue'
 import ValuesLinker from '@/components/ValuesLinker.vue'
 import CharList from '@/components/CharList.vue'
+import ArmorSelector from '@/components/ArmorSelector.vue';
 </script>
 
 
@@ -10,6 +11,7 @@ header
 	h1 Генерация характеристик персонажа на первом уровне (D&amp;D 5e)
 .blocksArea
 	class-selector 🧍 Класс персонажа
+	armor-selector 🛡️ Надетая броня
 	values-linker 🎲 Числовые значения
 	char-list 📎 Характеристики персонажа
 </template>
@@ -26,6 +28,7 @@ h1 {
 	display: grid;
 	grid-template-columns: 270px min(100%, 400px);
 	grid-template-areas: "class charlist"
+	                     "armor charlist"
 	                     "stats charlist";
 	gap: calc(var(--blockPadding) * 2);
 	margin-top: 1em;
@@ -43,6 +46,7 @@ h1 {
 	box-shadow: 1px 1px 6px 0 rgb(150, 150, 150, 0.1);
 
 	&.charClass { grid-area: class; }
+	&.armor { grid-area: armor; }
 	&.charStats { grid-area: stats; }
 	&.charList  { grid-area: charlist; }
 
