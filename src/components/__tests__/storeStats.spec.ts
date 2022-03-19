@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useStatsStore } from '@/stores/stats'
+import { maxStatValue } from '@/misc/statsList'
 
 describe('store tests', () => {
 	beforeEach(() => {
@@ -33,7 +34,6 @@ describe('store tests', () => {
 		expect(store.dataToStatsLinks[valueIndex]).toBeNull()
 	})
 
-
 	it('store numeric value to position 0', () => {
 		const store = useStatsStore()
 		expect(store.generatedValues).toEqual([0, 0, 0, 0, 0, 0])
@@ -41,10 +41,14 @@ describe('store tests', () => {
 		store.setGeneratedValue(0, 8)
 		expect(store.generatedValues).toEqual([8, 0, 0, 0, 0, 0])
 
-		expect(() => { store.setGeneratedValue(0, 21) }).toThrowError()
+		expect(() => { store.setGeneratedValue(0, maxStatValue + 1) }).toThrowError()
 	})
 
 	it('set charlist stats values', () => {
-		//TODO Написать тест для этого
+		const store = useStatsStore()
+		expect(store.stats.dex).toEqual(0)
+
+		store.setStatValue('dex', 15)
+		expect(store.stats.dex).toEqual(15)
 	})
 })

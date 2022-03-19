@@ -70,7 +70,7 @@ export const useStatsStore = defineStore({
 		/**
 		 * Сохранение сырых значений после генерации
 		 * @param {number} index - индекс сохраняемого значения
-		 * @param {number} value - сохраняемое значение в пределах 1-20
+		 * @param {number} value - сохраняемое значение в пределах 1-maxStatValue (по умолчанию 20)
 		 */
 		setGeneratedValue(index: number, value: number) {
 			if (value < 1 || value > maxStatValue) {
