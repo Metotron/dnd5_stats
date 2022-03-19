@@ -20,7 +20,8 @@ function setProficiencyState(skill: TSkill, event: Event) {
 // Модификатор характеристики, на коротой основан навык
 function getStatModifier(skillName: TSkill): number {
 	const statName = skillsList[skillName].statType
-	const modifier = Math.ceil((statsStore.stats[statName] - 11) / 2)
+	const statValue = statsStore.stats[statName]
+	const modifier = statValue > 0 ? Math.ceil((statValue - 11) / 2) : 0
 	return modifier + (skillsStore.skillsProficiencies[skillName] ? 2 : 0)
 }
 </script>

@@ -53,6 +53,7 @@ function getStatModifier(statValue: number): string | null {
 const perceptionSkillComponent = computed<number>(() => {
 	return skillsStore.skillsProficiencies[TSkill.perception] ? 2 : 0
 })
+//TODO Отобразить наличие помехи для скрытность от доспехов
 </script>
 
 <template lang="pug">
