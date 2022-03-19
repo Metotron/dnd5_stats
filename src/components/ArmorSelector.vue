@@ -37,7 +37,7 @@ const armorClass = computed<number | null>(() => {
 	if (armorDetails.value.useDexModifier) {
 		ACModifier = Math.ceil((statsStore.stats.dex - 11) / 2)
 		if (armorDetails.value.maximumDexModifier) {
-			ACModifier = Math.max(ACModifier, armorDetails.value.maximumDexModifier)
+			ACModifier = Math.min(ACModifier, armorDetails.value.maximumDexModifier)
 		}
 	}
 
@@ -83,7 +83,6 @@ const selectTitle = computed<string>(() => {
 	}
 
 	return result
-	//FIXME Показывает только AC, не показывает модификатор
 })
 </script>
 
