@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount } from 'vue'
+import { onMounted, onBeforeUnmount, computed } from 'vue'
 import { useStatsStore } from '@/stores/stats'
 import { useCharClassStore } from '@/stores/charClass'
 import { useArmorStore } from '@/stores/armor'
+import { useSkillsStore } from '@/stores/skills'
 import { globalEvents } from '@/misc/globalEvents'
 import { getReadableStatName, maxStatValue } from '@/misc/statsList'
+import { TSkill } from '@/misc/skills'
 
 const statsStore = useStatsStore()
 const charClassStore = useCharClassStore()
 const armorStore = useArmorStore()
+const skillsStore = useSkillsStore()
 
 onMounted(() => {
 	window.addEventListener(globalEvents.LoadValuesToCharlist, loadValuesToCharlist)
@@ -47,7 +50,9 @@ function getStatModifier(statValue: number): string | null {
 	return (Math.sign(modifier) > 0 ? '+' : '-') + Math.abs(modifier)
 }
 
-//TODO Вывести поле для отметки владения навыком внимательности
+const perceptionSkillComponent = computed<number>(() => {
+	return skillsStore.skillsProficiencies[TSkill.perception] ? 2 : 0
+})
 </script>
 
 <template lang="pug">
@@ -69,7 +74,7 @@ function getStatModifier(statValue: number): string | null {
 
 		.valueBlock(v-if="getStatModifier(statsStore.stats.wis) !== null")
 			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
-			span.value {{ 10 + Number(getStatModifier(statsStore.stats.wis)) }}
+			span.value {{ 10 + Number(getStatModifier(statsStore.stats.wis)) + perceptionSkillComponent }}
 
 		.valueBlock(v-if="getStatModifier(statsStore.stats.con) !== null")
 			span(:title="`Для каждого последующего уровня нужно бросать d${charClassStore.charHitDice} и к значению прибавлять ${Number(getStatModifier(statsStore.stats.con))}`") Количество хитов:
