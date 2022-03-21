@@ -1,12 +1,13 @@
+import { maxStatValue } from '@/misc/statsList'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useStatsStore } from '@/stores/stats'
-import { maxStatValue } from '@/misc/statsList'
+import { useStatsStore } from '@/stores/statsStore'
 
 describe('store tests', () => {
 	beforeEach(() => {
 		setActivePinia(createPinia())
 	})
+
 
 	it('changing stat value 0', () => {
 		const valueIndex = 0
@@ -21,6 +22,7 @@ describe('store tests', () => {
 		expect(store.dataToStatsLinks[valueIndex]).toBeNull()
 	})
 
+
 	it('changing stat value 4', () => {
 		const valueIndex = 4
 		const store = useStatsStore()
@@ -34,6 +36,7 @@ describe('store tests', () => {
 		expect(store.dataToStatsLinks[valueIndex]).toBeNull()
 	})
 
+
 	it('store numeric value to position 0', () => {
 		const store = useStatsStore()
 		expect(store.generatedValues).toEqual([0, 0, 0, 0, 0, 0])
@@ -43,6 +46,7 @@ describe('store tests', () => {
 
 		expect(() => { store.setGeneratedValue(0, maxStatValue + 1) }).toThrowError()
 	})
+
 
 	it('set charlist stats values', () => {
 		const store = useStatsStore()

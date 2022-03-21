@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
 import { armorList } from '@/misc/armorList'
-import { useStatsStore } from '@/stores/stats'
-import { useArmorStore } from '@/stores/armor'
 import type { TArmor, TArmorType, TArmorDescription } from '@/misc/armorList'
+
+import { ref, computed, watch } from 'vue'
+
+import { useStatsStore } from '@/stores/statsStore'
+import { useArmorStore } from '@/stores/armorStore'
 
 type TOptionValue = TArmor | '-'
 type TDetails = TArmorDescription | null

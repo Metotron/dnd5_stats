@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, computed } from 'vue'
-import { useStatsStore } from '@/stores/stats'
-import { useCharClassStore } from '@/stores/charClass'
-import { useArmorStore } from '@/stores/armor'
-import { useSkillsStore } from '@/stores/skills'
 import { globalEvents } from '@/misc/globalEvents'
 import { getReadableStatName, maxStatValue } from '@/misc/statsList'
 import { TSkill } from '@/misc/skills'
+
+import { onMounted, onBeforeUnmount, computed } from 'vue'
+
+import { useStatsStore } from '@/stores/statsStore'
+import { useCharClassStore } from '@/stores/charClassStore'
+import { useArmorStore } from '@/stores/armorStore'
+import { useSkillsStore } from '@/stores/skillsStore'
 
 const statsStore = useStatsStore()
 const charClassStore = useCharClassStore()

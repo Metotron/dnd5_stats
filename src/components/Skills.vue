@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { useSkillsStore } from '@/stores/skills'
-import { useStatsStore } from '@/stores/stats'
 import { TSkill, skillsList } from '@/misc/skills'
 import { statsShorts } from '@/misc/statsList'
+
+import { useSkillsStore } from '@/stores/skillsStore'
+import { useStatsStore } from '@/stores/statsStore'
 
 const skillsStore = useSkillsStore()
 const statsStore = useStatsStore()

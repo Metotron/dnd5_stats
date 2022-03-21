@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { statsList, maxStatValue, getReadableStatName } from '@/misc/statsList'
 import { globalEvents } from '@/misc/globalEvents'
 import type { TStats } from '@/misc/statsList'
 
-import { useStatsStore } from '@/stores/stats'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+
+import { useStatsStore } from '@/stores/statsStore'
 
 type TOptionValue = TStats | '-'  // Тип значения опшена в селекте
 

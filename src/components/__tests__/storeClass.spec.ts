@@ -1,11 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useCharClassStore } from '@/stores/charClass'
+import { useCharClassStore } from '@/stores/charClassStore'
 
 describe('store tests', () => {
 	beforeEach(() => {
 		setActivePinia(createPinia())
 	})
+
 
 	it('setting character class to monk', () => {
 		const store = useCharClassStore()

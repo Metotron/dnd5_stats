@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import { getRandomValues } from '@/misc/randomValues'
-import { useStatsStore } from '@/stores/stats'
 import { globalEvents, fireEvent } from '@/misc/globalEvents'
 
+import { ref, onMounted } from 'vue'
 import ValueLink from '@/components/ValueLink.vue'
+
+import { useStatsStore } from '@/stores/statsStore'
 
 // Сгенерированные значения характеристик
 const randomValues = ref<number[]>([])
