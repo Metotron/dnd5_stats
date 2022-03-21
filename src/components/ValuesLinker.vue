@@ -43,8 +43,7 @@ function autoLink() {
 
 <template lang="pug">
 .pageBlock.charStats
-	.blockTitle
-		slot
+	.blockTitle 🎲 Числовые значения
 	.blockBody
 		.buttons.asymmetric
 			input.fullWidth(type="button" value="🔧 Сгенерировать" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3–18)" @click="generateRandomValues")

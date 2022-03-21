@@ -93,8 +93,7 @@ const selectTitle = computed<string>(() => {
 
 <template lang="pug">
 .pageBlock.armor
-	.blockTitle
-		slot
+	.blockTitle 🛡️ Надетая броня
 	.blockBody
 		select(v-model="selectedArmor" :title="selectTitle")
 			option -

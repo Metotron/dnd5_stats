@@ -15,8 +15,7 @@ watch(selectedCharClass, newValue => {
 
 <template lang="pug">
 .pageBlock.charClass
-	.blockTitle
-		slot
+	.blockTitle 🧍 Класс персонажа
 	.blockBody
 		select(v-model="selectedCharClass")
 			option(v-for="(dataValue, className) in charClasses" :key="className" :value="className") {{ dataValue.name }}

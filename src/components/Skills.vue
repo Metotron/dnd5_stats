@@ -18,20 +18,25 @@ function setProficiencyState(skill: TSkill, event: Event) {
 	skillsStore.setSkillProficiency(skill, (event.target as HTMLInputElement).checked)
 }
 
-// Модификатор характеристики, на коротой основан навык
+// Модификатор характеристики, на которой основан навык
 function getStatModifier(skillName: TSkill): number {
 	const statName = skillsList[skillName].statType
 	const statValue = statsStore.stats[statName]
 	const modifier = statValue > 0 ? Math.ceil((statValue - 11) / 2) : 0
 	return modifier + (skillsStore.skillsProficiencies[skillName] ? 2 : 0)
 }
+
+// Количество отмеченных характеристик
+function proficienciedSkillsCount(): number {
+	return Object.values(skillsStore.skillsProficiencies).reduce((count, prof) => count += +(prof == true), 0)
+}
 </script>
 
 
 <template lang="pug">
 .pageBlock.skills
-	.blockTitle
-		slot
+	.blockTitle 🧠 Навыки
+		span.selectedCount(v-if="proficienciedSkillsCount()") (Выбрано: {{ proficienciedSkillsCount() }})
 	.blockBody
 		.skill(v-for="(skillDescription, skill) in skillsList")
 			label
@@ -48,7 +53,24 @@ function getStatModifier(skillName: TSkill): number {
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: repeat(9, auto);
 	grid-auto-flow: column;
-	gap: calc(var(--blockPadding) / 2) var(--blockPadding);
+	column-gap: calc(var(--blockPadding) * 2);
+
+	@media (max-width: 1280px) and (min-width: 995px), (max-width: 560px) {
+		grid-template-columns: 100%;
+		grid-auto-flow: row;
+	}
+}
+
+.blockTitle {
+	display: flex;
+	align-items: center;
+
+	.selectedCount {
+		display: inline-block;
+		margin-left: 4px;
+		color: #777;
+		font-size: 0.8rem;
+	}
 }
 
 .skill {
@@ -78,5 +100,4 @@ function getStatModifier(skillName: TSkill): number {
 		color: var(--accentColor);
 	}
 }
-//TODO Сделать адаптив
 </style>

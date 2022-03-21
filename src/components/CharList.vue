@@ -55,13 +55,12 @@ function getStatModifier(statValue: number): string | null {
 const perceptionSkillComponent = computed<number>(() => {
 	return skillsStore.skillsProficiencies[TSkill.perception] ? 2 : 0
 })
-//TODO Отобразить наличие помехи для скрытность от доспехов
+//TODO Отобразить наличие для скрытности помехи от доспехов
 </script>
 
 <template lang="pug">
 .pageBlock.charList
-	.blockTitle
-		slot
+	.blockTitle 📎 Характеристики персонажа
 	.blockBody
 		.valueBlock
 			.stats
@@ -130,7 +129,7 @@ const perceptionSkillComponent = computed<number>(() => {
 		grid-auto-flow: column;
 		gap: var(--blockPadding) calc(var(--blockPadding) * 2);
 
-		@media (max-width: 700px) {
+		@media (max-width: 700px) and (min-width: 601px), (max-width: 400px) {
 			grid-template-columns: 100%;
 			grid-auto-flow: row;
 		}
