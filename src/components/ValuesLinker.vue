@@ -38,6 +38,8 @@ function autoLink() {
 	// Слушают компоненты ValueLink и каждый ставит привязку согласно своему valueIndex
 	fireEvent(globalEvents.AutoLinkStats)
 }
+
+//TODO Сделать автопривязку, когда осталась последняя характеристика (только если предыдущая была установлена не в '-')
 </script>
 
 

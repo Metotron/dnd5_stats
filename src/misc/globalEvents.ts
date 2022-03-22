@@ -13,3 +13,5 @@ function fireEvent(eventName: globalEvents): void {
 }
 
 export { globalEvents, fireEvent }
+
+//TODO Реализовать работу хоткеев на кнопках
