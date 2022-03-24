@@ -1,7 +1,7 @@
 enum globalEvents {
-	ResetStatsStore = 'ResetStatsStore',
-	LoadValuesToCharlist = 'LoadValuesToCharlist',
-	AutoLinkStats = 'AutoLinkStats'
+	ResetStatsStore = 'ResetStatsStore',  // Сброс привязок характеристик
+	LoadValuesToCharlist = 'LoadValuesToCharlist',  // Отправка привязанных значений в чарлист
+	AutoLinkStats = 'AutoLinkStats'  // Автоматическая расстановка привязок характеристик
 }
 
 /**
