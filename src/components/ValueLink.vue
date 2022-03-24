@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { statsList, maxStatValue, getReadableStatName } from '@/misc/statsList'
-import { globalEvents } from '@/misc/globalEvents'
+import { globalEvents, subscribeOnEvent } from '@/misc/globalEvents'
 import type { TStats } from '@/misc/statsList'
 
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
@@ -63,14 +63,17 @@ watch(value, (newValue, oldValue)  => {
 
 // Характеристика, с которой будет связано значение value
 const selectedStatToLink = ref<TOptionValue>('-')
+let unsubscribeFromResetEvent: Function
+let unsubscribeFromAutolinksEvent: Function
 onMounted(() => {
 	statsStore.setGeneratedValue(props.valueIndex, value.value)
-	window.addEventListener(globalEvents.ResetStatsStore, resetSelectToDefault)
-	window.addEventListener(globalEvents.AutoLinkStats, autoLinkStats)
+
+	unsubscribeFromResetEvent = subscribeOnEvent(globalEvents.ResetStatsStore, resetSelectToDefault)
+	unsubscribeFromAutolinksEvent = subscribeOnEvent(globalEvents.AutoLinkStats, autoLinkStats)
 })
 onBeforeUnmount(() => {
-	window.removeEventListener(globalEvents.ResetStatsStore, resetSelectToDefault)
-	window.removeEventListener(globalEvents.AutoLinkStats, autoLinkStats)
+	unsubscribeFromResetEvent()
+	unsubscribeFromAutolinksEvent()
 })
 // Сохраняем выбранное значение селекта в стор
 watch(selectedStatToLink, newValue => {

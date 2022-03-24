@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { globalEvents } from '@/misc/globalEvents'
+import { globalEvents, subscribeOnEvent } from '@/misc/globalEvents'
 import { getReadableStatName, maxStatValue } from '@/misc/statsList'
 import { TSkill } from '@/misc/skills'
 
@@ -15,11 +15,12 @@ const charClassStore = useCharClassStore()
 const armorStore = useArmorStore()
 const skillsStore = useSkillsStore()
 
+let unsubscribeFromLoadValuesEvent: Function
 onMounted(() => {
-	window.addEventListener(globalEvents.LoadValuesToCharlist, loadValuesToCharlist)
+	unsubscribeFromLoadValuesEvent = subscribeOnEvent(globalEvents.LoadValuesToCharlist, loadValuesToCharlist)
 })
 onBeforeUnmount(() => {
-	window.removeEventListener(globalEvents.LoadValuesToCharlist, loadValuesToCharlist)
+	unsubscribeFromLoadValuesEvent()
 })
 
 // Загрузка имеющихся значений характеристик
