@@ -33,12 +33,14 @@ function diceRoller(): number {
  * @return {number[]} Копия массива без одного минимального значения
  */
 function discardOneMinimum(values: number[]): number[] {
-	const valuesLocalCopy = [...values]
-	const minValue = Math.min(...valuesLocalCopy)
-	const minValueIndex = valuesLocalCopy.findIndex(V => V == minValue)
-	valuesLocalCopy.splice(minValueIndex, 1)
+	if (values.length < 2)
+		return []
 
-	return valuesLocalCopy
+	const minValueIndex = values.reduce((minIdx, value, idx) => value < values[minIdx] ? idx : minIdx, 0)
+	const arrayCopy = [...values]
+	arrayCopy.splice(minValueIndex, 1)
+
+	return arrayCopy
 }
 
 export { getRandomValues, discardOneMinimum }
