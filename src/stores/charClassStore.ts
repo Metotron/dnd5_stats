@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia'
-import { charClasses } from '@/misc/charClasses'
-import type { CharClassID } from '@/misc/charClasses'
+import { type CharClassID, charClasses } from '../misc/charClasses'
 
-export const useCharClassStore = defineStore({
-	id: 'charClass',
-	state: (): { charClass: CharClassID } => ({
+interface TStore {
+	charClass: CharClassID
+}
+
+export const useCharClassStore = defineStore('charClass', {
+	state(): TStore { return {
 		charClass: 'fighter'
-	}),
+	}},
 
 	actions: {
 		/**
@@ -19,6 +21,7 @@ export const useCharClassStore = defineStore({
 	},
 
 	getters: {
+		/** Получение значения кости хитов для персонажа */
 		charHitDice: state => charClasses[state.charClass].hitDice
 	}
 })

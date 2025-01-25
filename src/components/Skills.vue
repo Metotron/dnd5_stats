@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { TSkill, skillsList } from '@/misc/skills'
-import { statsShorts } from '@/misc/statsList'
+import { TSkillEnum, skillsList } from '../misc/skills'
+import { statsShorts } from '../misc/statsList'
 
-import { useSkillsStore } from '@/stores/skillsStore'
-import { useStatsStore } from '@/stores/statsStore'
+import { useSkillsStore } from '../stores/skillsStore'
+import { useStatsStore } from '../stores/statsStore'
 
 const skillsStore = useSkillsStore()
 const statsStore = useStatsStore()
 
 // Наличие владения навыком
-function getProficiencyState(skill: TSkill): boolean {
-	return skillsStore.skillsProficiencies[skill]
+function getProficiencyState(skill: TSkillEnum): boolean {
+	return skillsStore.proficiencies[skill]
 }
 
 // Сохранение в сторе состояния владения характеристикой
-function setProficiencyState(skill: TSkill, event: Event) {
-	skillsStore.setSkillProficiency(skill, (event.target as HTMLInputElement).checked)
+function setProficiencyState(skill: TSkillEnum, event: Event) {
+	skillsStore.setProficiency(skill, (event.target as HTMLInputElement).checked)
 }
 
 // Модификатор характеристики, на которой основан навык
-function getStatModifier(skillName: TSkill): number {
+function getStatModifier(skillName: TSkillEnum): number {
 	const statName = skillsList[skillName].statType
 	const statValue = statsStore.stats[statName]
 	const modifier = statValue > 0 ? Math.ceil((statValue - 11) / 2) : 0
-	return modifier + (skillsStore.skillsProficiencies[skillName] ? 2 : 0)
+	return modifier + (skillsStore.proficiencies[skillName] ? 2 : 0)
 }
 
 // Количество отмеченных характеристик
 function proficienciedSkillsCount(): number {
-	return Object.values(skillsStore.skillsProficiencies).reduce((count, prof) => count += +(prof == true), 0)
+	return Object.values(skillsStore.proficiencies).reduce((count, prof) => count += Number(prof), 0)
 }
 </script>
 

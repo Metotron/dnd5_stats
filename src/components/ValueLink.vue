@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { statsList, maxStatValue, getReadableStatName } from '@/misc/statsList'
-import { globalEvents, subscribeOnEvent } from '@/misc/globalEvents'
-import type { TStats } from '@/misc/statsList'
+import { statsList, maxStatValue } from '../misc/statsList'
+import { globalEvents, subscribeOnEvent } from '../misc/globalEvents'
+import type { TStats } from '../misc/statsList'
 
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
-import { useStatsStore } from '@/stores/statsStore'
+import { useStatsStore } from '../stores/statsStore'
 
 type TOptionValue = TStats | '-'  // Тип значения опшена в селекте
 
@@ -38,9 +38,8 @@ const statsStore = useStatsStore()
 
 const statsSelectorNames: Array<TStats> = []
 let statName: TStats
-for (statName in statsList) {
+for (statName in statsList)
 	statsSelectorNames.push(statName)
-}
 
 // Внутреннее числовое значение, может изменяться вручную
 const value = ref(0)
@@ -121,7 +120,7 @@ function isCharInUse(charName: TOptionValue): boolean {
 			:value="statName"
 			:key="(statName)"
 			:disabled="isCharInUse(statName)"
-		) {{ getReadableStatName(statName) }}
+		) {{ statsList[statName] }}
 </template>
 
 

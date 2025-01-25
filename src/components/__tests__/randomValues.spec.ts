@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { getRandomValues, discardOneMinimum } from '@/misc/randomValues'
+import { getRandomDiceValues, discardOneMinimum } from '../../misc/randomDiceValues'
 
 describe('random dice values generator', () => {
 	const numbersGenerator = vi.fn()
@@ -20,6 +20,6 @@ describe('random dice values generator', () => {
 
 
 	it('correct combination of 6 values', () => {
-		expect(getRandomValues(numbersGenerator)).toEqual([8, 9, 10, 1, 3, 14])
+		expect(getRandomDiceValues(numbersGenerator)).toEqual([8, 9, 10, 1, 3, 14])
 	})
 })

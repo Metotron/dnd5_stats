@@ -1,75 +1,41 @@
 <script setup lang="ts">
-import { armorList } from '@/misc/armorList'
-import type { TArmor, TArmorType, TArmorDescription } from '@/misc/armorList'
+import { ArmorClassName, armorList, shield } from '../misc/armorList'
+import type { TArmorEnum, TArmorDescription, TArmorClassEnum } from '../misc/armorList'
 
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 
-import { useStatsStore } from '@/stores/statsStore'
-import { useArmorStore } from '@/stores/armorStore'
-
-type TOptionValue = TArmor | '-'
-type TDetails = TArmorDescription | null
+import { useStatsStore } from '../stores/statsStore'
+import { useArmorStore } from '../stores/armorStore'
 
 const statsStore = useStatsStore()
 const armorStore = useArmorStore()
 
-const selectedArmor = ref<TOptionValue>('-')
-const armorDetails = computed<TDetails>(() => {
-	if (selectedArmor.value == '-') {
+const selectedArmor = ref<TArmorEnum | '-'>('-')
+const armorDetails = computed<TArmorDescription | null>(() => {
+	if (selectedArmor.value == '-')
 		return null
-	}
 
-	for (const armorGroup in armorList) {
-		const foundDetails = armorList[armorGroup as TArmorType].find(details => details.type == selectedArmor.value)
-		if (foundDetails) {
-			return foundDetails
-		}
-	}
-
-	return null
+	return armorList.find(({ id }) => id == selectedArmor.value) ?? null
 })
 
-
+//FIXME щит не задействован
+const isShieldInUse = false
+// Класс брони с учётом модификаторов ловкости и щита
 const armorClass = computed<number | null>(() => {
-	if (!armorDetails.value) {
+	if (!armorDetails.value)
 		return null
-	}
 
 	const baseAC = armorDetails.value.AC
 	let ACModifier = 0
 
 	if (armorDetails.value.useDexModifier) {
 		ACModifier = Math.ceil((statsStore.stats.dex - 11) / 2)
-		if (armorDetails.value.maximumDexModifier) {
+
+		if (armorDetails.value.maximumDexModifier)
 			ACModifier = Math.min(ACModifier, armorDetails.value.maximumDexModifier)
-		}
 	}
 
-	return baseAC + ACModifier
-})
-
-watch(armorClass, newValue => {
-	armorStore.setArmorClass(newValue)
-})
-
-watch(armorDetails, newValue => {
-	if (newValue === null) {
-		return 0
-	}
-
-	armorStore.setDisadvantage(!!newValue.stealthDisadvantage)
-})
-
-const showStrengthAlert = computed<boolean>(() => {
-	return statsStore.stats.str > 0
-	       && armorDetails.value !== null
-	       && armorDetails.value !== undefined
-		   && armorDetails.value.minimumStr !== undefined
-		   && statsStore.stats.str < armorDetails.value.minimumStr
-})
-
-watch(showStrengthAlert, newValue => {
-	armorStore.setNeedMoreStrength(newValue)
+	return baseAC + ACModifier + (isShieldInUse ? shield.AC : 0)
 })
 
 const selectTitle = computed<string>(() => {
@@ -88,6 +54,10 @@ const selectTitle = computed<string>(() => {
 
 	return result
 })
+
+function getArmorsByGroup(armorClassId: TArmorClassEnum): TArmorDescription[] {
+	return armorList.filter(({ group }) => group === armorClassId)
+}
 </script>
 
 
@@ -97,13 +67,14 @@ const selectTitle = computed<string>(() => {
 	.blockBody
 		select(v-model="selectedArmor" :title="selectTitle")
 			option -
-			optgroup(v-for="(groupArmors, groupName) in armorList" :label="groupName")
+			optgroup(v-for="(groupName, armorClassId) in ArmorClassName" :label="groupName")
 				option(
-					v-for="armorDetails in groupArmors"
-					:key="armorDetails.type"
-					:value="armorDetails.type"
+					v-for="armorDetails in getArmorsByGroup(armorClassId)"
+					:key="armorDetails.id"
+					:value="armorDetails.id"
 				) {{ armorDetails.name }}
-		.alert(v-if="showStrengthAlert && armorDetails") ❗Нужно {{ armorDetails.minimumStr }} силы
+
+		.alert(v-if="armorStore.isNeedMoreStrength && armorDetails") ❗Нужно {{ armorDetails.minimumStr }} силы
 </template>
 
 

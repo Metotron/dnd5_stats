@@ -1,8 +1,8 @@
 type TStats = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
+type TStatsNames = Record<TStats, string>
+type TStatsValues = Record<TStats, number>
 
-type TStatsList<T extends number | string> = Record<TStats, T>
-
-const statsList: TStatsList<string> = {
+const statsList: TStatsNames = {
 	str: 'Сила',
 	dex: 'Ловкость',
 	con: 'Телосложение',
@@ -11,7 +11,7 @@ const statsList: TStatsList<string> = {
 	cha: 'Харизма'
 }
 
-const statsShorts: TStatsList<string> = {
+const statsShorts: TStatsNames = {
 	str: 'сил',
 	dex: 'лов',
 	con: 'кон',
@@ -20,16 +20,8 @@ const statsShorts: TStatsList<string> = {
 	cha: 'хар'
 }
 
-// Получение читаемого названия характеристики из её кода
-function getReadableStatName(statName: TStats): string {
-	if (statName in statsList)
-		return statsList[statName]
-
-	return statName
-}
-
 // Максимальное значение характеристики (в книге игрока — 30)
 const maxStatValue = 30
 
-export { statsList, statsShorts, maxStatValue, getReadableStatName }
-export type { TStats, TStatsList }
+export { statsList, statsShorts, maxStatValue }
+export type { TStats, TStatsNames, TStatsValues }

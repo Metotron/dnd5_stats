@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { charClasses } from '@/misc/charClasses'
-import type { CharClassID } from '@/misc/charClasses'
-
 import { ref, watch } from 'vue'
+import { type CharClassID, charClasses } from '../misc/charClasses'
 
-import { useCharClassStore } from '@/stores/charClassStore'
+import { useCharClassStore } from '../stores/charClassStore'
 
 const classStore = useCharClassStore()
 const selectedCharClass = ref<CharClassID>('fighter')

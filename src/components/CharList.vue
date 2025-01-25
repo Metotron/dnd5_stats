@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { globalEvents, subscribeOnEvent } from '@/misc/globalEvents'
-import { getReadableStatName, maxStatValue } from '@/misc/statsList'
-import { TSkill } from '@/misc/skills'
+import { armorList, type TArmorClassName } from '../misc/armorList'
+import { globalEvents, subscribeOnEvent } from '../misc/globalEvents'
+import { statsList, maxStatValue } from '../misc/statsList'
+import { TSkillEnum } from '../misc/skills'
 
 import { onMounted, onBeforeUnmount, computed } from 'vue'
 
-import { useStatsStore } from '@/stores/statsStore'
-import { useCharClassStore } from '@/stores/charClassStore'
-import { useArmorStore } from '@/stores/armorStore'
-import { useSkillsStore } from '@/stores/skillsStore'
+import { useStatsStore } from '../stores/statsStore'
+import { useCharClassStore } from '../stores/charClassStore'
+import { useArmorStore } from '../stores/armorStore'
+import { useSkillsStore } from '../stores/skillsStore'
 
 const statsStore = useStatsStore()
 const charClassStore = useCharClassStore()
@@ -21,6 +22,14 @@ onMounted(() => {
 })
 onBeforeUnmount(() => {
 	unsubscribeFromLoadValuesEvent()
+})
+
+const selectedArmorClass = computed<TArmorClassName | null>(() => {
+	if (!armorStore.selectedArmor)
+		return null
+
+	const armor = armorList.find(({ id }) => id == armorStore.selectedArmor)
+	return armor ? armor.className : null
 })
 
 // Загрузка имеющихся значений характеристик
@@ -54,9 +63,9 @@ function getStatModifier(statValue: number): string | null {
 }
 
 const perceptionSkillComponent = computed<number>(() => {
-	return skillsStore.skillsProficiencies[TSkill.perception] ? 2 : 0
+	return skillsStore.proficiencies[TSkillEnum.perception] ? 2 : 0
 })
-//TODO Отобразить наличие для скрытности помехи от доспехов
+//TODO Отобразить наличие помехи для скрытности со стороны доспехов
 </script>
 
 <template lang="pug">
@@ -66,7 +75,7 @@ const perceptionSkillComponent = computed<number>(() => {
 		.valueBlock
 			.stats
 				div(v-for="(stat, statName) in statsStore.stats" :key="statName")
-					span {{ getReadableStatName(statName) }}:
+					span {{ statsList[statName] }}:
 					span.statValue
 						| {{ stat }}
 						span.value(v-if="getStatModifier(stat) !== null") (#[span(title="Применяемый модификатор") {{ getStatModifier(stat) }}])
@@ -87,9 +96,9 @@ const perceptionSkillComponent = computed<number>(() => {
 			span(title="Зависит от выбранного класса") Кость хитов:
 			span.value d{{ charClassStore.charHitDice }}
 
-		.valueBlock(v-if="armorStore.armorClass !== null && !armorStore.needMoreStrength && statsStore.stats.str")
+		.valueBlock(v-if="selectedArmorClass !== null && !armorStore.isNeedMoreStrength")
 			span Класс доспеха:
-			span.value {{ armorStore.armorClass }}
+			span.value {{ selectedArmorClass }}
 </template>
 
 <style lang="scss" scoped>

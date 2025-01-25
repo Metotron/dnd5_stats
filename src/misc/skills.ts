@@ -1,6 +1,6 @@
 import type { TStats } from "./statsList"
 
-enum TSkill {
+enum TSkillEnum {
 	athletics,
 	acrobatics,
 	sleightOfHand,
@@ -26,80 +26,80 @@ type TSkillDescription = {
 	statType: TStats
 }
 
-const skillsList: Record<TSkill, TSkillDescription> = {
-	[TSkill.athletics]: {
+const skillsList: Record<TSkillEnum, TSkillDescription> = {
+	[TSkillEnum.athletics]: {
 		name: 'Атлетика',
 		statType: 'str'
 	},
-	[TSkill.acrobatics]: {
+	[TSkillEnum.acrobatics]: {
 		name: 'Акробатика',
 		statType: 'dex'
 	},
-	[TSkill.sleightOfHand]: {
+	[TSkillEnum.sleightOfHand]: {
 		name: 'Ловкость рук',
 		statType: 'dex'
 	},
-	[TSkill.stealth]: {
+	[TSkillEnum.stealth]: {
 		name: 'Скрытность',
 		statType: 'dex'
 	},
-	[TSkill.arcana]: {
+	[TSkillEnum.arcana]: {
 		name: 'Магия',
 		statType: 'int'
 	},
-	[TSkill.history]: {
+	[TSkillEnum.history]: {
 		name: 'История',
 		statType: 'int'
 	},
-	[TSkill.investigation]: {
+	[TSkillEnum.investigation]: {
 		name: 'Анализ',
 		statType: 'int'
 	},
-	[TSkill.nature]: {
+	[TSkillEnum.nature]: {
 		name: 'Природа',
 		statType: 'int'
 	},
-	[TSkill.religion]: {
+	[TSkillEnum.religion]: {
 		name: 'Религия',
 		statType: 'int'
 	},
-	[TSkill.animalHandling]: {
+	[TSkillEnum.animalHandling]: {
 		name: 'Уход за животными',
 		statType: 'wis'
 	},
-	[TSkill.insight]: {
+	[TSkillEnum.insight]: {
 		name: 'Проницательность',
 		statType: 'wis'
 	},
-	[TSkill.medicine]: {
+	[TSkillEnum.medicine]: {
 		name: 'Медицина',
 		statType: 'wis'
 	},
-	[TSkill.perception]: {
+	[TSkillEnum.perception]: {
 		name: 'Внимательность',
 		statType: 'wis'
 	},
-	[TSkill.survival]: {
+	[TSkillEnum.survival]: {
 		name: 'Выживание',
 		statType: 'wis'
 	},
-	[TSkill.deception]: {
+	[TSkillEnum.deception]: {
 		name: 'Обман',
 		statType: 'cha'
 	},
-	[TSkill.intimidation]: {
+	[TSkillEnum.intimidation]: {
 		name: 'Запугивание',
 		statType: 'cha'
 	},
-	[TSkill.performance]: {
+	[TSkillEnum.performance]: {
 		name: 'Выступление',
 		statType: 'cha'
 	},
-	[TSkill.persuasion]: {
+	[TSkillEnum.persuasion]: {
 		name: 'Убеждение',
 		statType: 'cha'
 	}
 }
 
 export type { TSkillDescription }
-export { TSkill, skillsList }
+export { TSkillEnum, skillsList }

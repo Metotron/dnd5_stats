@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import ClassSelector from "@/components/ClassSelector.vue"
-import ValuesLinker from "@/components/ValuesLinker.vue"
-import CharList from "@/components/CharList.vue"
-import ArmorSelector from "@/components/ArmorSelector.vue"
-import Skills from "@/components/Skills.vue"
+import ClassSelector from "./components/ClassSelector.vue"
+import ValuesLinker from "./components/ValuesLinker.vue"
+import CharList from "./components/CharList.vue"
+import ArmorSelector from "./components/ArmorSelector.vue"
+import Skills from "./components/Skills.vue"
 </script>
 
 <template lang="pug">
 header
 	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e)
 .blocksArea
-	class-selector
-	armor-selector
-	values-linker
-	char-list
-	skills
+	ClassSelector
+	ArmorSelector
+	ValuesLinker
+	CharList
+	Skills
 </template>
 
 <style lang="scss" scoped>

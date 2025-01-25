@@ -1,40 +1,35 @@
-import { defineStore } from 'pinia'
+/** Характеристики надетых на персонажа доспехов */
 
-export const useArmorStore = defineStore({
-	id: 'armor',
-	state: (): {
-		armorClass: number | null,
-		hasDisadvantage: boolean,
-		needMoreStrength: boolean
-	} => ({
-		armorClass: null,
-		hasDisadvantage: false,
-		needMoreStrength: false
-	}),
+import { defineStore } from 'pinia'
+import { armorList, type TArmorEnum } from '../misc/armorList'
+import { useStatsStore } from './statsStore'
+
+interface TStore {
+	selectedArmor: TArmorEnum | null
+}
+
+export const useArmorStore = defineStore('armor', {
+	state(): TStore { return {
+		selectedArmor: null
+	}},
 
 	actions: {
-		/**
-		 * Установка класса доспеха
-		 * @param {number|null} armorClass - Класс доспеха персонажа
-		 */
-		setArmorClass(armorClass: number | null) {
-			this.armorClass = armorClass
-		},
+		setArmor(armor: TArmorEnum | null) {
+			this.selectedArmor = armor
+		}
+	},
 
-		/**
-		 * Установка наличия помехи для скрытности
-		 * @param {boolean} hasDisadvantage - Флаг наличия помехи
-		 */
-		setDisadvantage(hasDisadvantage: boolean) {
-			this.hasDisadvantage = hasDisadvantage
-		},
+	getters: {
+		/** Требуется ли персонажу больше силы, чтобы носить выбранный доспех */
+		isNeedMoreStrength: state => {
+			if (state.selectedArmor === null)
+				return false
 
-		/**
-		 * Установка флага необходимости большей силы у персонажа для ношения доспеха
-		 * @param {boolean} flag
-		 */
-		setNeedMoreStrength(flag: boolean) {
-			this.needMoreStrength = flag
+			const selectedArmor = armorList.find(({ id }) => id === state.selectedArmor)
+			if (selectedArmor?.minimumStr)
+				return useStatsStore().stats.str < selectedArmor.minimumStr
+
+			return false
 		}
 	}
 })

@@ -1,41 +1,44 @@
-import { defineStore } from 'pinia'
-import { TSkill } from '@/misc/skills'
+/** Владение навыками персонажем */
 
-export const useSkillsStore = defineStore({
-	id: 'skills',
-	state: (): {
-		skillsProficiencies: Record<TSkill, boolean>
-	} => ({
-		skillsProficiencies: {
-			[TSkill.athletics]: false,
-			[TSkill.acrobatics]: false,
-			[TSkill.sleightOfHand]: false,
-			[TSkill.stealth]: false,
-			[TSkill.arcana]: false,
-			[TSkill.history]: false,
-			[TSkill.investigation]: false,
-			[TSkill.nature]: false,
-			[TSkill.religion]: false,
-			[TSkill.animalHandling]: false,
-			[TSkill.insight]: false,
-			[TSkill.medicine]: false,
-			[TSkill.perception]: false,
-			[TSkill.survival]: false,
-			[TSkill.deception]: false,
-			[TSkill.intimidation]: false,
-			[TSkill.performance]: false,
-			[TSkill.persuasion]: false
+import { defineStore } from 'pinia'
+import { TSkillEnum } from '../misc/skills'
+
+interface TStoreType {
+	proficiencies: Record<TSkillEnum, boolean>
+}
+
+export const useSkillsStore = defineStore('skills', {
+	state(): TStoreType { return {
+		proficiencies: {
+			[TSkillEnum.athletics]: false,
+			[TSkillEnum.acrobatics]: false,
+			[TSkillEnum.sleightOfHand]: false,
+			[TSkillEnum.stealth]: false,
+			[TSkillEnum.arcana]: false,
+			[TSkillEnum.history]: false,
+			[TSkillEnum.investigation]: false,
+			[TSkillEnum.nature]: false,
+			[TSkillEnum.religion]: false,
+			[TSkillEnum.animalHandling]: false,
+			[TSkillEnum.insight]: false,
+			[TSkillEnum.medicine]: false,
+			[TSkillEnum.perception]: false,
+			[TSkillEnum.survival]: false,
+			[TSkillEnum.deception]: false,
+			[TSkillEnum.intimidation]: false,
+			[TSkillEnum.performance]: false,
+			[TSkillEnum.persuasion]: false
 		}
-	}),
+	}},
 
 	actions: {
 		/**
 		 * Установка значения владения навыком
-		 * @param {number} skill - Значение навыка из enum TSkill
-		 * @param {boolean} value - Состояние владения навыком
+		 * @param skillId - Условное обозначение навыка
+		 * @param value - Состояние владения навыком
 		 */
-		setSkillProficiency(skill: TSkill, value: boolean) {
-			this.skillsProficiencies[skill] = value
+		setProficiency(skillId: TSkillEnum, value: boolean) {
+			this.proficiencies[skillId] = value
 		}
 	}
 })

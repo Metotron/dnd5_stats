@@ -1,20 +1,23 @@
+/** Характеристики персонажа */
+
 import { defineStore } from 'pinia'
-import { maxStatValue } from '@/misc/statsList'
-import type { TStats, TStatsList } from '@/misc/statsList'
+import { maxStatValue } from '../misc/statsList'
+import type { TStats, TStatsValues } from '../misc/statsList'
 
-export const useStatsStore = defineStore({
-	id: 'stats',
-	state: (): {
-		generatedValues: number[],
-		stats: TStatsList<number>,
-		dataToStatsLinks: {
-			[index: number]: TStats | null
-		}
-	} => ({
-		// Сгенерированные значения
-		generatedValues: [0, 0, 0, 0, 0, 0],
+interface TStore {
+	generatedValues: number[],
+	stats: TStatsValues,
+	dataToStatsLinks: Record<number, TStats | null>
+}
 
-		// Значения характеристик, выбранные для использования в чарлисте
+const valuesCount = 6
+
+export const useStatsStore = defineStore('stats', {
+	state(): TStore { return {
+		/** Сгенерированные значения */
+		generatedValues: Array(valuesCount).fill(0),
+
+		/** Числовые значения характеристик персонажа */
 		stats: {
 			str: 0,
 			dex: 0,
@@ -24,7 +27,7 @@ export const useStatsStore = defineStore({
 			cha: 0
 		},
 
-		// Привязка элементов исходного массива (по индексу) к конкретной характеристике
+		/** Привязка элементов generatedValues к конкретной характеристике персонажа в stats */
 		dataToStatsLinks: {
 			0: null,
 			1: null,
@@ -33,63 +36,56 @@ export const useStatsStore = defineStore({
 			4: null,
 			5: null,
 		}
-	}),
+	}},
 
 	actions: {
-		/**
-		 * Сброс привязок в null
-		 */
+		/** Сброс привязок */
 		resetStatsLinks() {
-			for (const idx in this.dataToStatsLinks) {
+			for (const idx in this.dataToStatsLinks)
 				this.dataToStatsLinks[idx] = null
-			}
 		},
 
-		/**
-		 * Установка значений харатеристик в чарлисте
-		 * @param {string} stat - псевдоним характеристики
-		 * @param {number} value - числовое значение характеристики
+		/** Установка значений харатеристик в чарлисте
+		 * @param stat - Псевдоним характеристики
+		 * @param value - Числовое значение
 		 */
 		setStatValue(stat: TStats, value: number) {
+			if (value > maxStatValue)
+				throw `Некорректное сохраняемое значение. Характеристика должна быть в пределах от 1 до ${maxStatValue}`;
+
 			this.stats[stat] = value
 		},
 
-		/**
-		 * Установка привязки для числа в позиции с указанным индексом
-		 * @param {number} position - Индекс устанавливаемой привязки
-		 * @param {string|null} linkTo - Псевдоним характеристики
+		/** Установка привязки для элемента в массиве сгенерированных номеров
+		 * @param linkIdx - Индекс устанавливаемой привязки
+		 * @param linkTo - Псевдоним характеристики
 		 */
-		setValueLink(position: number, linkTo: TStats | null) {
-			if (position < 0 || position > 5) {
-				return 0
-			}
+		setValueLink(linkIdx: number, linkTo: TStats | null) {
+			if (linkIdx < 0 || linkIdx >= Object.keys(this.dataToStatsLinks).length)
+				throw 'Некорректное значение индекса привязки'
 
-			this.dataToStatsLinks[position] = linkTo
+			this.dataToStatsLinks[linkIdx] = linkTo
 		},
 
-		/**
-		 * Сохранение сырых значений после генерации
-		 * @param {number} index - индекс сохраняемого значения
-		 * @param {number} value - сохраняемое значение в пределах от 1 до maxStatValue (по умолчанию 20)
+		/** Сохранение сырых значений после генерации
+		 * @param elementIdx - Индекс сохраняемого значения
+		 * @param value - Сохраняемое значение
 		 */
-		setGeneratedValue(index: number, value: number) {
-			if (value < 1 || value > maxStatValue) {
-				throw 'Некорректное сохраняемое значение. Характеристика должна быть в пределах от 1 до 20';
-			}
+		setGeneratedValue(elementIdx: number, value: number) {
+			if (elementIdx < 0 || elementIdx >= valuesCount)
+				throw 'Некорректное значение индекса массива'
 
-			this.generatedValues[index] = value
+			if (value < 1 || value > maxStatValue)
+				throw `Некорректное сохраняемое значение. Характеристика должна быть в пределах от 1 до ${maxStatValue}`;
+
+			this.generatedValues[elementIdx] = value
 		}
 	},
 
 	getters: {
+		/** Всем ли характеристикам персонажа заданы значения */
 		isAllFieldsLinked: state => {
-			for (const index in state.dataToStatsLinks) {
-				if (state.dataToStatsLinks[index] === null) {
-					return false
-				}
-			}
-
-			return true
+			return !Object.values(state.dataToStatsLinks).some(link => link === null)
 		}
 	}
 })

@@ -4,19 +4,17 @@ enum globalEvents {
 	AutoLinkStats = 'AutoLinkStats'  // Автоматическая расстановка привязок характеристик
 }
 
-/**
- * Вызов события
- * @param {string} eventName - Имя вызываемого события
+/** Вызов события
+ * @param eventName - Имя вызываемого события
  */
 function fireEvent(eventName: globalEvents): void {
 	window.dispatchEvent(new Event(eventName))
 }
 
-/**
- * Подписка на событие с выполнением колбека
- * @param {string} eventName - Имя события
- * @param {Function} callback — Колбек для выполнения
- * @return {Function} Функция для отказа от подписки
+/** Подписка на событие с выполнением колбека
+ * @param eventName - Имя события
+ * @param callback — Колбек для выполнения
+ * @returns Функция для отказа от подписки
  */
 function subscribeOnEvent(eventName: globalEvents, callback: () => void): Function {
 	window.addEventListener(eventName, callback)

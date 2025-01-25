@@ -1,6 +1,8 @@
+/** Идентификаторы классов персонажа */
 type CharClassID = 'bard' | 'barbarian' | 'fighter' | 'wizard' | 'druid' | 'cleric' |
                     'warlock' | 'monk' | 'paladin' | 'rogue' | 'ranger' | 'sorcerer'
 
+/** Соответствие идентификатора класса русскому наименованию и кости хитов */
 type CharClassType = {
 	[className in CharClassID]: {
 		name: string,
