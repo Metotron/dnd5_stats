@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ArmorClassName, armorList, shield } from '../misc/armorList'
-import type { TArmorEnum, TArmorDescription, TArmorClassEnum } from '../misc/armorList'
+import { armorClassName, armorList, shield } from '../misc/armorList'
+import type { EArmor, TArmorDescription, EArmorClass } from '../misc/armorList'
 
 import { ref, computed } from 'vue'
 
@@ -10,7 +10,7 @@ import { useArmorStore } from '../stores/armorStore'
 const statsStore = useStatsStore()
 const armorStore = useArmorStore()
 
-const selectedArmor = ref<TArmorEnum | '-'>('-')
+const selectedArmor = ref<EArmor | '-'>('-')
 const armorDetails = computed<TArmorDescription | null>(() => {
 	if (selectedArmor.value == '-')
 		return null
@@ -19,44 +19,43 @@ const armorDetails = computed<TArmorDescription | null>(() => {
 })
 
 //FIXME щит не задействован
-const isShieldInUse = false
+const isShieldInUse = ref(false)
 // Класс брони с учётом модификаторов ловкости и щита
-const armorClass = computed<number | null>(() => {
+const totalAC = computed<number | null>(() => {
 	if (!armorDetails.value)
 		return null
 
-	const baseAC = armorDetails.value.AC
-	let ACModifier = 0
+	if (!armorDetails.value.useDexModifier)
+		return armorDetails.value.AC + (isShieldInUse.value ? shield.AC : 0)
 
-	if (armorDetails.value.useDexModifier) {
-		ACModifier = Math.ceil((statsStore.stats.dex - 11) / 2)
+	let ACModifier = Math.ceil((statsStore.stats.dex - 11) / 2)
+	if (armorDetails.value.maximumDexModifier)
+		ACModifier = Math.min(ACModifier, armorDetails.value.maximumDexModifier)
 
-		if (armorDetails.value.maximumDexModifier)
-			ACModifier = Math.min(ACModifier, armorDetails.value.maximumDexModifier)
-	}
-
-	return baseAC + ACModifier + (isShieldInUse ? shield.AC : 0)
+	return armorDetails.value.AC + ACModifier + (isShieldInUse.value ? shield.AC : 0)
 })
 
+// Атрибут title для <select>
 const selectTitle = computed<string>(() => {
 	if (!armorDetails.value) {
 		return ''
 	}
 
 	let result = armorDetails.value.AC.toString()
-	if (armorDetails.value.useDexModifier) {
-		result += ' + ловкость'
+	if (!armorDetails.value.useDexModifier)
+		return result
 
-		if (armorDetails.value.maximumDexModifier !== undefined) {
-			result += ` (макс. ${armorDetails.value.maximumDexModifier})`
-		}
-	}
+	result += ' + ловкость'
+
+	if (armorDetails.value.maximumDexModifier !== undefined)
+		result += ` (макс. ${armorDetails.value.maximumDexModifier})`
 
 	return result
 })
 
-function getArmorsByGroup(armorClassId: TArmorClassEnum): TArmorDescription[] {
-	return armorList.filter(({ group }) => group === armorClassId)
+/** @param armorClassId - Строковое представление EArmorClass */
+function getArmorWithClass(armorClassId: EArmorClass): TArmorDescription[] {
+	return armorList.filter(({ group }) => group === +armorClassId)
 }
 </script>
 
@@ -67,9 +66,9 @@ function getArmorsByGroup(armorClassId: TArmorClassEnum): TArmorDescription[] {
 	.blockBody
 		select(v-model="selectedArmor" :title="selectTitle")
 			option -
-			optgroup(v-for="(groupName, armorClassId) in ArmorClassName" :label="groupName")
+			optgroup(v-for="(groupName, armorClassId) in armorClassName" :label="groupName")
 				option(
-					v-for="armorDetails in getArmorsByGroup(armorClassId)"
+					v-for="armorDetails in getArmorWithClass(armorClassId)"
 					:key="armorDetails.id"
 					:value="armorDetails.id"
 				) {{ armorDetails.name }}

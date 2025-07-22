@@ -1,4 +1,4 @@
-enum TArmorEnum {
+enum EArmor {
 	'padded',
 	'leather',
 	'studdedLeather',
@@ -13,7 +13,7 @@ enum TArmorEnum {
 	'plate'
 }
 
-enum TArmorClassEnum {
+enum EArmorClass {
 	'light',
 	'medium',
 	'heavy'
@@ -21,15 +21,15 @@ enum TArmorClassEnum {
 
 type TArmorClassName = 'Лёгкий доспех' | 'Средний доспех' | 'Тяжёлый доспех'
 
-const ArmorClassName: Record<TArmorClassEnum, TArmorClassName> = {
-	[TArmorClassEnum.light]: 'Лёгкий доспех',
-	[TArmorClassEnum.medium]: 'Средний доспех',
-	[TArmorClassEnum.heavy]: 'Тяжёлый доспех'
+export const armorClassName: Record<EArmorClass, TArmorClassName> = {
+	[EArmorClass.light]: 'Лёгкий доспех',
+	[EArmorClass.medium]: 'Средний доспех',
+	[EArmorClass.heavy]: 'Тяжёлый доспех'
 }
 
 type TArmorDescription = {
-	id: TArmorEnum,              // Идентификатор доспеха
-	group: TArmorClassEnum,      // Группа брони (лёгкий, средний, тяжёлый доспех)
+	id: EArmor,              // Идентификатор доспеха
+	group: EArmorClass,      // Группа брони (лёгкий, средний, тяжёлый доспех)
 	className: TArmorClassName,  // Грууппа брони на русском
 	name: string,    // Название на русском
 	AC: number,      // Класс брони
@@ -41,11 +41,11 @@ type TArmorDescription = {
 	stealthDisadvantage?: true
 }
 
-const armorList: TArmorDescription[] = [
+export const armorList: TArmorDescription[] = [
 	{
-		id: TArmorEnum.padded,
-		group: TArmorClassEnum.light,
-		className: ArmorClassName[TArmorClassEnum.light],
+		id: EArmor.padded,
+		group: EArmorClass.light,
+		className: armorClassName[EArmorClass.light],
 		name: 'Стёганый доспех',
 		AC: 11,
 		weight: 8,
@@ -54,9 +54,9 @@ const armorList: TArmorDescription[] = [
 		stealthDisadvantage: true
 	},
 	{
-		id: TArmorEnum.leather,
-		group: TArmorClassEnum.light,
-		className: ArmorClassName[TArmorClassEnum.light],
+		id: EArmor.leather,
+		group: EArmorClass.light,
+		className: armorClassName[EArmorClass.light],
 		name: 'Кожаный доспех',
 		AC: 11,
 		weight: 10,
@@ -64,9 +64,9 @@ const armorList: TArmorDescription[] = [
 		useDexModifier: true
 	},
 	{
-		id: TArmorEnum.studdedLeather,
-		group: TArmorClassEnum.light,
-		className: ArmorClassName[TArmorClassEnum.light],
+		id: EArmor.studdedLeather,
+		group: EArmorClass.light,
+		className: armorClassName[EArmorClass.light],
 		name: 'Проклёпанная кожа',
 		AC: 12,
 		weight: 13,
@@ -74,9 +74,9 @@ const armorList: TArmorDescription[] = [
 		useDexModifier: true
 	},
 	{
-		id: TArmorEnum.hide,
-		group: TArmorClassEnum.medium,
-		className: ArmorClassName[TArmorClassEnum.medium],
+		id: EArmor.hide,
+		group: EArmorClass.medium,
+		className: armorClassName[EArmorClass.medium],
 		name: 'Шкурный доспех',
 		AC: 12,
 		weight: 12,
@@ -85,9 +85,9 @@ const armorList: TArmorDescription[] = [
 		maximumDexModifier: 2
 	},
 	{
-		id: TArmorEnum.chainShirt,
-		group: TArmorClassEnum.medium,
-		className: ArmorClassName[TArmorClassEnum.medium],
+		id: EArmor.chainShirt,
+		group: EArmorClass.medium,
+		className: armorClassName[EArmorClass.medium],
 		name: 'Кольчужная рубаха',
 		AC: 13,
 		weight: 20,
@@ -96,9 +96,9 @@ const armorList: TArmorDescription[] = [
 		maximumDexModifier: 2
 	},
 	{
-		id: TArmorEnum.scaleMail,
-		group: TArmorClassEnum.medium,
-		className: ArmorClassName[TArmorClassEnum.medium],
+		id: EArmor.scaleMail,
+		group: EArmorClass.medium,
+		className: armorClassName[EArmorClass.medium],
 		name: 'Чешуйчатый доспех',
 		AC: 14,
 		weight: 45,
@@ -108,9 +108,9 @@ const armorList: TArmorDescription[] = [
 		stealthDisadvantage: true
 	},
 	{
-		id: TArmorEnum.breastplate,
-		group: TArmorClassEnum.medium,
-		className: ArmorClassName[TArmorClassEnum.medium],
+		id: EArmor.breastplate,
+		group: EArmorClass.medium,
+		className: armorClassName[EArmorClass.medium],
 		name: 'Кираса',
 		AC: 14,
 		weight: 20,
@@ -119,9 +119,9 @@ const armorList: TArmorDescription[] = [
 		maximumDexModifier: 2
 	},
 	{
-		id: TArmorEnum.halfPlate,
-		group: TArmorClassEnum.medium,
-		className: ArmorClassName[TArmorClassEnum.medium],
+		id: EArmor.halfPlate,
+		group: EArmorClass.medium,
+		className: armorClassName[EArmorClass.medium],
 		name: 'Полулаты',
 		AC: 15,
 		weight: 40,
@@ -131,9 +131,9 @@ const armorList: TArmorDescription[] = [
 		maximumDexModifier: 2
 	},
 	{
-		id: TArmorEnum.ringMail,
-		group: TArmorClassEnum.heavy,
-		className: ArmorClassName[TArmorClassEnum.heavy],
+		id: EArmor.ringMail,
+		group: EArmorClass.heavy,
+		className: armorClassName[EArmorClass.heavy],
 		name: 'Колечный доспех',
 		AC: 14,
 		weight: 40,
@@ -141,9 +141,9 @@ const armorList: TArmorDescription[] = [
 		stealthDisadvantage: true
 	},
 	{
-		id: TArmorEnum.chainMail,
-		group: TArmorClassEnum.heavy,
-		className: ArmorClassName[TArmorClassEnum.heavy],
+		id: EArmor.chainMail,
+		group: EArmorClass.heavy,
+		className: armorClassName[EArmorClass.heavy],
 		name: 'Кольчуга',
 		AC: 16,
 		weight: 55,
@@ -152,9 +152,9 @@ const armorList: TArmorDescription[] = [
 		stealthDisadvantage: true
 	},
 	{
-		id: TArmorEnum.splint,
-		group: TArmorClassEnum.heavy,
-		className: ArmorClassName[TArmorClassEnum.heavy],
+		id: EArmor.splint,
+		group: EArmorClass.heavy,
+		className: armorClassName[EArmorClass.heavy],
 		name: 'Наборный доспех',
 		AC: 17,
 		weight: 60,
@@ -163,9 +163,9 @@ const armorList: TArmorDescription[] = [
 		stealthDisadvantage: true
 	},
 	{
-		id: TArmorEnum.plate,
-		group: TArmorClassEnum.heavy,
-		className: ArmorClassName[TArmorClassEnum.heavy],
+		id: EArmor.plate,
+		group: EArmorClass.heavy,
+		className: armorClassName[EArmorClass.heavy],
 		name: 'Латы',
 		AC: 18,
 		weight: 65,
@@ -176,11 +176,10 @@ const armorList: TArmorDescription[] = [
 ]
 
 //? Щит понадобится, у него отдельное описание
-const shield = {
+export const shield = {
 	cost: 10,
 	AC: 2,  // Это +2 к основному классу брони
 	weight: 6
 }
 
-export type { TArmorEnum, TArmorClassEnum, TArmorDescription, TArmorClassName }
-export { ArmorClassName, armorList, shield }
+export type { EArmor, EArmorClass, TArmorDescription, TArmorClassName }
