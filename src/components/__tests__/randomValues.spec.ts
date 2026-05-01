@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { getRandomDiceValues, discardOneMinimum } from '../../misc/randomDiceValues'
 
-describe('random dice values generator', () => {
+describe('Проверка работы генератора значений кубиков', () => {
 	const numbersGenerator = vi.fn()
 	numbersGenerator
 		.mockReturnValueOnce(8)
@@ -12,14 +12,14 @@ describe('random dice values generator', () => {
 		.mockReturnValue(14)
 
 
-	it('take maximum 3 of 4', () => {
+	it('Удаление одного минимального элемента из массива', () => {
 		expect(discardOneMinimum([1, 2, 3, 4])).toEqual([2, 3, 4])
 		expect(discardOneMinimum([7, 5, 2, 4])).toEqual([7, 5, 4])
 		expect(discardOneMinimum([3, 3, 3, 3])).toEqual([3, 3, 3])
 	})
 
 
-	it('correct combination of 6 values', () => {
+	it('Проверка возможности получения 6 сгенерированных значений', () => {
 		expect(getRandomDiceValues(numbersGenerator)).toEqual([8, 9, 10, 1, 3, 14])
 	})
 })

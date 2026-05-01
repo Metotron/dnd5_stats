@@ -1,6 +1,8 @@
-import type { TStats } from "./statsList"
+import type { TSkillsStore } from '../stores/skillsStore'
+import type { TStatsStore } from '../stores/statsStore'
+import type { TStat } from './statsList'
 
-enum TSkillEnum {
+export enum ESkill {
 	athletics,
 	acrobatics,
 	sleightOfHand,
@@ -21,85 +23,92 @@ enum TSkillEnum {
 	persuasion
 }
 
-type TSkillDescription = {
+export type TSkillDescription = {
 	name: string,
-	statType: TStats
+	statType: TStat
 }
 
-const skillsList: Record<TSkillEnum, TSkillDescription> = {
-	[TSkillEnum.athletics]: {
+export const fullSkillsList: Record<ESkill, TSkillDescription> = {
+	[ESkill.athletics]: {
 		name: 'Атлетика',
 		statType: 'str'
 	},
-	[TSkillEnum.acrobatics]: {
+	[ESkill.acrobatics]: {
 		name: 'Акробатика',
 		statType: 'dex'
 	},
-	[TSkillEnum.sleightOfHand]: {
+	[ESkill.sleightOfHand]: {
 		name: 'Ловкость рук',
 		statType: 'dex'
 	},
-	[TSkillEnum.stealth]: {
+	[ESkill.stealth]: {
 		name: 'Скрытность',
 		statType: 'dex'
 	},
-	[TSkillEnum.arcana]: {
+	[ESkill.arcana]: {
 		name: 'Магия',
 		statType: 'int'
 	},
-	[TSkillEnum.history]: {
+	[ESkill.history]: {
 		name: 'История',
 		statType: 'int'
 	},
-	[TSkillEnum.investigation]: {
+	[ESkill.investigation]: {
 		name: 'Анализ',
 		statType: 'int'
 	},
-	[TSkillEnum.nature]: {
+	[ESkill.nature]: {
 		name: 'Природа',
 		statType: 'int'
 	},
-	[TSkillEnum.religion]: {
+	[ESkill.religion]: {
 		name: 'Религия',
 		statType: 'int'
 	},
-	[TSkillEnum.animalHandling]: {
+	[ESkill.animalHandling]: {
 		name: 'Уход за животными',
 		statType: 'wis'
 	},
-	[TSkillEnum.insight]: {
+	[ESkill.insight]: {
 		name: 'Проницательность',
 		statType: 'wis'
 	},
-	[TSkillEnum.medicine]: {
+	[ESkill.medicine]: {
 		name: 'Медицина',
 		statType: 'wis'
 	},
-	[TSkillEnum.perception]: {
+	[ESkill.perception]: {
 		name: 'Внимательность',
 		statType: 'wis'
 	},
-	[TSkillEnum.survival]: {
+	[ESkill.survival]: {
 		name: 'Выживание',
 		statType: 'wis'
 	},
-	[TSkillEnum.deception]: {
+	[ESkill.deception]: {
 		name: 'Обман',
 		statType: 'cha'
 	},
-	[TSkillEnum.intimidation]: {
+	[ESkill.intimidation]: {
 		name: 'Запугивание',
 		statType: 'cha'
 	},
-	[TSkillEnum.performance]: {
+	[ESkill.performance]: {
 		name: 'Выступление',
 		statType: 'cha'
 	},
-	[TSkillEnum.persuasion]: {
+	[ESkill.persuasion]: {
 		name: 'Убеждение',
 		statType: 'cha'
 	}
 }
 
-export type { TSkillDescription }
-export { TSkillEnum, skillsList }
+/** Модификатор от характеристики, на которой основан навык skillName */
+export function getSkillStatModifier(skillName: ESkill, statsStore: TStatsStore, skillsStore: TSkillsStore): number {
+	const statAbbr: TStat = fullSkillsList[skillName].statType
+	const statValue = statsStore.stats[statAbbr]
+	const modifier = statValue > 0 ? Math.ceil((statValue - 11) / 2) : 0
+
+	//TODO Двойка — бонус мастерства для первого уровня. Правильнее брать её из характеристик персонажа
+	return modifier + (skillsStore.proficiencies[skillName] ? 2 : 0)
+}

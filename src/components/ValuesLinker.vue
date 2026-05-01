@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getRandomDiceValues } from '../misc/randomDiceValues'
-import { globalEvents, fireEvent } from '../misc/globalEvents'
+import { EGlobalEvents, fireEvent } from '../misc/globalEvents'
 
 import { ref, onMounted } from 'vue'
 import ValueLink from '../components/ValueLink.vue'
@@ -11,9 +11,9 @@ import { useStatsStore } from '../stores/statsStore'
 const diceValues = ref<number[]>([])
 
 const statsStore = useStatsStore()
+
 onMounted(() => {
-	// Генерация стартовых значений характеристик
-	generateDiceValues()
+	generateDiceValues()  // Генерация стартовых значений характеристик
 })
 
 /** Обновление сгенерированного списка числовых значений и сброс имеющихся привязок */
@@ -23,20 +23,20 @@ function generateDiceValues() {
 
 /** Сброс привязки характеристик к исходным числовым значениям */
 function resetStatLinks() {
-	// Это событие слушают ValueLink, чтобы сбросить состояние своих селектов
-	fireEvent(globalEvents.ResetStatsStore)
+	// Событие слушают ValueLink, чтобы сбросить состояние своих селектов
+	fireEvent(EGlobalEvents.ResetStatsStore)
 }
 
-/** Загрузить числовые данные в чарлист */
+/** Загрузка числовых данных в чарлист */
 function loadValuesToCharlist() {
 	// Событие слушается в компоненте CharList
-	fireEvent(globalEvents.LoadValuesToCharlist)
+	fireEvent(EGlobalEvents.LoadValuesToCharlist)
 }
 
 /** Автоматическая расстановка привязок */
 function autoLink() {
-	// Это событие слушают компоненты ValueLink и каждый ставит привязку согласно своему valueIndex
-	fireEvent(globalEvents.AutoLinkStats)
+	// Событие слушают компоненты ValueLink и каждый ставит привязку согласно своему valueIndex
+	fireEvent(EGlobalEvents.AutoLinkStats)
 }
 </script>
 

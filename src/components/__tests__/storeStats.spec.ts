@@ -1,42 +1,29 @@
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { maxStatValue } from '../../misc/statsList'
-import { describe, it, expect, beforeEach } from 'vitest'
-import { setActivePinia, createPinia } from 'pinia'
 import { useStatsStore } from '../../stores/statsStore'
 
-describe('store tests', () => {
-	beforeEach(() => {
-		setActivePinia(createPinia())
-	})
+describe('Тесты стора характеристик', () => {
+	beforeEach(() => setActivePinia(createPinia()))
 
-	it('changing stat link 0', () => {
-		const linkIndex = 0
-		const store = useStatsStore()
+	for (let charIdx = 0; charIdx < 6; charIdx++) {
+		it(`Привязка характеристики к ${charIdx}-й позиции, сброс характеристик`, () => {
+			const store = useStatsStore()
+			const linkIndex = charIdx
 
-		expect(store.dataToStatsLinks[linkIndex]).toBeNull()
+			expect(store.dataToStatsLinks[linkIndex]).toBeNull()
 
-		store.setValueLink(linkIndex, 'str')
-		expect(store.dataToStatsLinks[linkIndex]).toEqual('str')
+			store.setValueLink(linkIndex, 'str')
+			expect(store.dataToStatsLinks[linkIndex]).toEqual('str')
 
-		store.resetStatsLinks()
-		expect(store.dataToStatsLinks[linkIndex]).toBeNull()
-	})
+			store.resetStatsLinks()
+			expect(store.dataToStatsLinks[linkIndex]).toBeNull()
 
-	it('changing stat value 4', () => {
-		const linkIndex = 4
-		const store = useStatsStore()
-
-		expect(store.dataToStatsLinks[linkIndex]).toBeNull()
-
-		store.setValueLink(linkIndex, 'dex')
-		expect(store.dataToStatsLinks[linkIndex]).toEqual('dex')
-
-		store.resetStatsLinks()
-		expect(store.dataToStatsLinks[linkIndex]).toBeNull()
-
+		})
 		//TODO Проверить store.isAllFieldsLinked
-	})
+	}
 
-	it('store raw numeric value to position 0', () => {
+	it('Задание числового значения для одной из сгенерированных характеристик', () => {
 		const store = useStatsStore()
 
 		expect(store.generatedValues).toEqual([0, 0, 0, 0, 0, 0])
@@ -46,11 +33,16 @@ describe('store tests', () => {
 
 		store.setGeneratedValue(0, maxStatValue)
 		expect(store.generatedValues).toEqual([maxStatValue, 0, 0, 0, 0, 0])
-
-		expect(() => { store.setGeneratedValue(0, maxStatValue + 1) }).toThrowError()
 	})
 
-	it('set charlist stats values', () => {
+	it('Проверка выхода за допустимый диапазон характеристик при сохранении числовых значений', () => {
+		const store = useStatsStore()
+
+		expect(() => store.setGeneratedValue(0, maxStatValue + 1)).toThrow()
+		expect(() => store.setGeneratedValue(0, -1)).toThrow()
+	})
+
+	it('Задание характеристик персонажа', () => {
 		const store = useStatsStore()
 
 		expect(store.stats.dex).toEqual(0)
@@ -59,13 +51,14 @@ describe('store tests', () => {
 		expect(store.stats.dex).toEqual(15)
 	})
 
-	it('store value out of the bounds', () => {
+	it('Проверка выхода за допустимые значения при задании характеристик персонажа', () => {
 		const store = useStatsStore()
-		expect(() => { store.setGeneratedValue(6, 1) }).toThrowError()
 
-		expect(() => { store.setValueLink(6, 'str') }).toThrowError()
+		expect(() => store.setGeneratedValue(6, 1)).toThrow()  // Индекса 6 не существует
+		expect(() => store.setValueLink(6, 'str')).toThrow()
 
-		expect(() => { store.setStatValue('str', maxStatValue + 1) }).toThrowError()
+		expect(() => store.setStatValue('str', maxStatValue + 1)).toThrow()
+		expect(() => store.setStatValue('str', -1)).toThrow()
+
 	})
-
 })

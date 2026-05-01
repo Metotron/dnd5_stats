@@ -1,20 +1,20 @@
 /** Характеристики надетых на персонажа доспехов */
 
 import { defineStore } from 'pinia'
-import { armorList, type TArmorEnum } from '../misc/armorList'
+import { fullArmorsList, type EArmor } from '../misc/armorList'
 import { useStatsStore } from './statsStore'
 
-interface TStore {
-	selectedArmor: TArmorEnum | null
+export interface TArmorStore {
+	selectedArmor: EArmor | null
 }
 
 export const useArmorStore = defineStore('armor', {
-	state(): TStore { return {
+	state(): TArmorStore { return {
 		selectedArmor: null
 	}},
 
 	actions: {
-		setArmor(armor: TArmorEnum | null) {
+		setArmor(armor: EArmor | null) {
 			this.selectedArmor = armor
 		}
 	},
@@ -25,7 +25,7 @@ export const useArmorStore = defineStore('armor', {
 			if (state.selectedArmor === null)
 				return false
 
-			const selectedArmor = armorList.find(({ id }) => id === state.selectedArmor)
+			const selectedArmor = fullArmorsList.find(({ id }) => id === state.selectedArmor)
 			if (selectedArmor?.minimumStr)
 				return useStatsStore().stats.str < selectedArmor.minimumStr
 

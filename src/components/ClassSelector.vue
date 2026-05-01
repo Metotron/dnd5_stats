@@ -5,7 +5,8 @@ import { type CharClassID, charClasses } from '../misc/charClasses'
 import { useCharClassStore } from '../stores/charClassStore'
 
 const classStore = useCharClassStore()
-const selectedCharClass = ref<CharClassID>('fighter')
+
+const selectedCharClass = ref<CharClassID>('fighter')  //TODO Попробовать сделать привязку к стору через computed
 watch(selectedCharClass, newValue => {
 	classStore.setCharClass(newValue)
 })
@@ -16,7 +17,7 @@ watch(selectedCharClass, newValue => {
 	.blockTitle 🧍 Класс персонажа
 	.blockBody
 		select(v-model="selectedCharClass")
-			option(v-for="(dataValue, className) in charClasses" :key="className" :value="className") {{ dataValue.name }}
+			option(v-for="(charParams, className) in charClasses" :key="className" :value="className") {{ charParams.name }}
 		span.arrow →
 		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ classStore.charHitDice }}
 </template>

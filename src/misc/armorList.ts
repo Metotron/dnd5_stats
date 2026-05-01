@@ -1,36 +1,30 @@
-enum EArmor {
-	'padded',
-	'leather',
-	'studdedLeather',
-	'hide',
-	'chainShirt',
-	'scaleMail',
-	'breastplate',
-	'halfPlate',
-	'ringMail',
-	'chainMail',
-	'splint',
-	'plate'
+export enum EArmor {
+	padded,
+	leather,
+	studdedLeather,
+	hide,
+	chainShirt,
+	scaleMail,
+	breastplate,
+	halfPlate,
+	ringMail,
+	chainMail,
+	splint,
+	plate
 }
 
-enum EArmorClass {
-	'light',
-	'medium',
-	'heavy'
+export enum EArmorClass {
+	light,
+	medium,
+	heavy
 }
 
-type TArmorClassName = 'Лёгкий доспех' | 'Средний доспех' | 'Тяжёлый доспех'
+export type TArmorClassName = 'Лёгкий доспех' | 'Средний доспех' | 'Тяжёлый доспех'
 
-export const armorClassName: Record<EArmorClass, TArmorClassName> = {
-	[EArmorClass.light]: 'Лёгкий доспех',
-	[EArmorClass.medium]: 'Средний доспех',
-	[EArmorClass.heavy]: 'Тяжёлый доспех'
-}
-
-type TArmorDescription = {
+export type TArmorDescription = {
 	id: EArmor,              // Идентификатор доспеха
 	group: EArmorClass,      // Группа брони (лёгкий, средний, тяжёлый доспех)
-	className: TArmorClassName,  // Грууппа брони на русском
+	className: EArmorClass,  // Грууппа брони на русском
 	name: string,    // Название на русском
 	AC: number,      // Класс брони
 	weight: number,  // Масса в фунтах
@@ -41,11 +35,11 @@ type TArmorDescription = {
 	stealthDisadvantage?: true
 }
 
-export const armorList: TArmorDescription[] = [
+export const fullArmorsList: TArmorDescription[] = [
 	{
 		id: EArmor.padded,
 		group: EArmorClass.light,
-		className: armorClassName[EArmorClass.light],
+		className: EArmorClass.light,
 		name: 'Стёганый доспех',
 		AC: 11,
 		weight: 8,
@@ -56,7 +50,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.leather,
 		group: EArmorClass.light,
-		className: armorClassName[EArmorClass.light],
+		className: EArmorClass.light,
 		name: 'Кожаный доспех',
 		AC: 11,
 		weight: 10,
@@ -66,7 +60,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.studdedLeather,
 		group: EArmorClass.light,
-		className: armorClassName[EArmorClass.light],
+		className: EArmorClass.light,
 		name: 'Проклёпанная кожа',
 		AC: 12,
 		weight: 13,
@@ -76,7 +70,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.hide,
 		group: EArmorClass.medium,
-		className: armorClassName[EArmorClass.medium],
+		className: EArmorClass.medium,
 		name: 'Шкурный доспех',
 		AC: 12,
 		weight: 12,
@@ -87,7 +81,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.chainShirt,
 		group: EArmorClass.medium,
-		className: armorClassName[EArmorClass.medium],
+		className: EArmorClass.medium,
 		name: 'Кольчужная рубаха',
 		AC: 13,
 		weight: 20,
@@ -98,7 +92,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.scaleMail,
 		group: EArmorClass.medium,
-		className: armorClassName[EArmorClass.medium],
+		className: EArmorClass.medium,
 		name: 'Чешуйчатый доспех',
 		AC: 14,
 		weight: 45,
@@ -110,7 +104,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.breastplate,
 		group: EArmorClass.medium,
-		className: armorClassName[EArmorClass.medium],
+		className: EArmorClass.medium,
 		name: 'Кираса',
 		AC: 14,
 		weight: 20,
@@ -121,7 +115,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.halfPlate,
 		group: EArmorClass.medium,
-		className: armorClassName[EArmorClass.medium],
+		className: EArmorClass.medium,
 		name: 'Полулаты',
 		AC: 15,
 		weight: 40,
@@ -133,7 +127,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.ringMail,
 		group: EArmorClass.heavy,
-		className: armorClassName[EArmorClass.heavy],
+		className: EArmorClass.heavy,
 		name: 'Колечный доспех',
 		AC: 14,
 		weight: 40,
@@ -143,7 +137,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.chainMail,
 		group: EArmorClass.heavy,
-		className: armorClassName[EArmorClass.heavy],
+		className: EArmorClass.heavy,
 		name: 'Кольчуга',
 		AC: 16,
 		weight: 55,
@@ -154,7 +148,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.splint,
 		group: EArmorClass.heavy,
-		className: armorClassName[EArmorClass.heavy],
+		className: EArmorClass.heavy,
 		name: 'Наборный доспех',
 		AC: 17,
 		weight: 60,
@@ -165,7 +159,7 @@ export const armorList: TArmorDescription[] = [
 	{
 		id: EArmor.plate,
 		group: EArmorClass.heavy,
-		className: armorClassName[EArmorClass.heavy],
+		className: EArmorClass.heavy,
 		name: 'Латы',
 		AC: 18,
 		weight: 65,
@@ -182,4 +176,21 @@ export const shield = {
 	weight: 6
 }
 
-export type { EArmor, EArmorClass, TArmorDescription, TArmorClassName }
+/** Получение названия класса брони по enum-параметру */
+export function getArmorClassName(armorClass?: EArmorClass): TArmorClassName | undefined {
+	if (armorClass === undefined)
+		return undefined
+
+	const names: Record<EArmorClass, TArmorClassName> = {
+		[EArmorClass.light]: 'Лёгкий доспех',
+		[EArmorClass.medium]: 'Средний доспех',
+		[EArmorClass.heavy]: 'Тяжёлый доспех'
+	}
+
+	return names[armorClass]
+}
+
+/** Получение списка доспехов указанного класса брони */
+export function getArmorsOfClass(armorClass: EArmorClass): TArmorDescription[] {
+	return fullArmorsList.filter(({ group }) => group === armorClass)
+}

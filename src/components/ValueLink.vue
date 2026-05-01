@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { statsList, maxStatValue } from '../misc/statsList'
-import { globalEvents, subscribeOnEvent } from '../misc/globalEvents'
-import type { TStats } from '../misc/statsList'
+import { EGlobalEvents, subscribeOnEvent } from '../misc/globalEvents'
+import type { TStat } from '../misc/statsList'
 
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
 import { useStatsStore } from '../stores/statsStore'
 
-type TOptionValue = TStats | '-'  // Тип значения опшена в селекте
+type TOptionValue = TStat | '-'  // Значение опшена в селекте
 
-const autoLinksValues: Record<number, TStats> = {
+const autoLinksValues: Record<number, TStat> = {
 	0: 'str',
 	1: 'dex',
 	2: 'con',
@@ -36,72 +36,55 @@ const props = defineProps({
 
 const statsStore = useStatsStore()
 
-const statsSelectorNames: Array<TStats> = []
-let statName: TStats
+const statsSelectorNames: Array<TStat> = []
+let statName: TStat
 for (statName in statsList)
 	statsSelectorNames.push(statName)
 
 // Внутреннее числовое значение, может изменяться вручную
-const value = ref(0)
-value.value = props.value
+const value = ref(props.value)
 // Обновление внутреннего значение при изменении props
-watch(() => props.value,  newValue => {
-	value.value = newValue
-})
+watch(() => props.value, newValue => { value.value = newValue })
 
 // Ограничение значения сверху и снизу
 watch(value, (newValue, oldValue)  => {
-	if (!newValue || newValue < 1 || newValue > maxStatValue) {
+	if (!newValue || newValue < 1 || newValue > maxStatValue)
 		value.value = oldValue
-	}
-	else {
-		// Функция могла бы выкинуть исключение, но условие выше его предотвращает
+	else
+		// setGeneratedValue могла бы выкинуть исключение, но условие выше его предотвращает
 		statsStore.setGeneratedValue(props.valueIndex, value.value)
-	}
 })
 
-// Характеристика, с которой будет связано значение value
-const selectedStatToLink = ref<TOptionValue>('-')
-let unsubscribeFromResetEvent: Function
-let unsubscribeFromAutolinksEvent: Function
+const abortController = new AbortController()
+onBeforeUnmount(abortController.abort)
+
+/** Характеристика, с которой будет связано значение value */
+const selectedStatToLink = ref<TOptionValue>('-')  //TODO Лучше сделать computed с двунаправленной привязкой к стору
 onMounted(() => {
 	statsStore.setGeneratedValue(props.valueIndex, value.value)
 
-	unsubscribeFromResetEvent = subscribeOnEvent(globalEvents.ResetStatsStore, resetSelectToDefault)
-	unsubscribeFromAutolinksEvent = subscribeOnEvent(globalEvents.AutoLinkStats, autoLinkStats)
+	subscribeOnEvent(EGlobalEvents.ResetStatsStore, () => selectedStatToLink.value = '-', abortController)
+	subscribeOnEvent(EGlobalEvents.AutoLinkStats, autoLinkStats, abortController)
 })
-onBeforeUnmount(() => {
-	unsubscribeFromResetEvent()
-	unsubscribeFromAutolinksEvent()
-})
+
 // Сохраняем выбранное значение селекта в стор
-watch(selectedStatToLink, newValue => {
-	statsStore.setValueLink(props.valueIndex, newValue === '-' ? null : newValue)
+watch(selectedStatToLink, linkTo => {
+	statsStore.setValueLink(props.valueIndex, linkTo === '-' ? null : linkTo)
 })
 
-
-// Сброс состояния селекта к исходному значению
-function resetSelectToDefault() {
-	selectedStatToLink.value = '-'
-	statsStore.setValueLink(props.valueIndex, null)
-}
-
-// Авторасстановка привязок
+/** Авторасстановка привязок */
 function autoLinkStats() {
 	selectedStatToLink.value = autoLinksValues[props.valueIndex]
 }
 
-// Определение, что характеристика уже распределена
+/** Определение, что характеристика уже распределена */
 function isCharInUse(charName: TOptionValue): boolean {
-	if (charName === '-') {
+	if (charName === '-')
 		return false
-	}
 
-	for (const N in statsStore.dataToStatsLinks) {
-		if (statsStore.dataToStatsLinks[N] === charName) {
+	for (const N in statsStore.dataToStatsLinks)
+		if (statsStore.dataToStatsLinks[N] === charName)
 			return true
-		}
-	}
 
 	return false
 }

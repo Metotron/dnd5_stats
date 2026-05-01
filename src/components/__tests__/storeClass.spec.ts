@@ -1,17 +1,13 @@
-/** Это просто пробы написания тестов, они не все имеют смысл */
-
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useCharClassStore } from '../../stores/charClassStore'
 
-describe('store tests', () => {
-	beforeEach(() => {
-		setActivePinia(createPinia())
-	})
+describe('Тесты стора классов', () => {
+	beforeEach(() => setActivePinia(createPinia()))
 
-
-	it('setting character class to monk', () => {
+	it('Выбор персонажу класса «монах»', () => {
 		const store = useCharClassStore()
+
 		// По умолчанию установлен класс fighter
 		expect(store.charClass).toEqual('fighter')
 

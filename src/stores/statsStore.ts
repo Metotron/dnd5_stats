@@ -2,18 +2,18 @@
 
 import { defineStore } from 'pinia'
 import { maxStatValue } from '../misc/statsList'
-import type { TStats, TStatsValues } from '../misc/statsList'
+import type { TStat, TStatsValues } from '../misc/statsList'
 
-interface TStore {
+export interface TStatsStore {
 	generatedValues: number[],
 	stats: TStatsValues,
-	dataToStatsLinks: Record<number, TStats | null>
+	dataToStatsLinks: Record<number, TStat | null>
 }
 
 const valuesCount = 6
 
 export const useStatsStore = defineStore('stats', {
-	state(): TStore { return {
+	state(): TStatsStore { return {
 		/** Сгенерированные значения */
 		generatedValues: Array(valuesCount).fill(0),
 
@@ -47,20 +47,20 @@ export const useStatsStore = defineStore('stats', {
 
 		/** Установка значений харатеристик в чарлисте
 		 * @param stat - Псевдоним характеристики
-		 * @param value - Числовое значение
+		 * @param value - Устанавливаемое значение
 		 */
-		setStatValue(stat: TStats, value: number) {
-			if (value > maxStatValue)
+		setStatValue(stat: TStat, value: number) {
+			if (value < 1 || value > maxStatValue)
 				throw `Некорректное сохраняемое значение. Характеристика должна быть в пределах от 1 до ${maxStatValue}`;
 
 			this.stats[stat] = value
 		},
 
 		/** Установка привязки для элемента в массиве сгенерированных номеров
-		 * @param linkIdx - Индекс устанавливаемой привязки
+		 * @param linkIdx - Индекс устанавливаемой привязки (0 - 5)
 		 * @param linkTo - Псевдоним характеристики
 		 */
-		setValueLink(linkIdx: number, linkTo: TStats | null) {
+		setValueLink(linkIdx: number, linkTo: TStat | null) {
 			if (linkIdx < 0 || linkIdx >= Object.keys(this.dataToStatsLinks).length)
 				throw 'Некорректное значение индекса привязки'
 
@@ -68,7 +68,7 @@ export const useStatsStore = defineStore('stats', {
 		},
 
 		/** Сохранение сырых значений после генерации
-		 * @param elementIdx - Индекс сохраняемого значения
+		 * @param elementIdx - Индекс сохраняемого значения (0 - 5)
 		 * @param value - Сохраняемое значение
 		 */
 		setGeneratedValue(elementIdx: number, value: number) {

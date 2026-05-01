@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { armorList, type TArmorClassName } from '../misc/armorList'
-import { globalEvents, subscribeOnEvent } from '../misc/globalEvents'
-import { statsList, maxStatValue } from '../misc/statsList'
-import { TSkillEnum } from '../misc/skills'
+import { fullArmorsList, getArmorClassName, type TArmorClassName } from '../misc/armorList'
+import { EGlobalEvents, subscribeOnEvent } from '../misc/globalEvents'
+import { maxStatValue, statsList } from '../misc/statsList'
 
-import { onMounted, onBeforeUnmount, computed } from 'vue'
 
-import { useStatsStore } from '../stores/statsStore'
-import { useCharClassStore } from '../stores/charClassStore'
+import { computed, onBeforeUnmount, onMounted } from 'vue'
+
+import { ESkill } from '../misc/skills'
 import { useArmorStore } from '../stores/armorStore'
+import { useCharClassStore } from '../stores/charClassStore'
 import { useSkillsStore } from '../stores/skillsStore'
+import { useStatsStore } from '../stores/statsStore'
 
 const statsStore = useStatsStore()
 const charClassStore = useCharClassStore()
 const armorStore = useArmorStore()
 const skillsStore = useSkillsStore()
 
-let unsubscribeFromLoadValuesEvent: Function
+const abortController = new AbortController()
+onBeforeUnmount(abortController.abort)
+
 onMounted(() => {
-	unsubscribeFromLoadValuesEvent = subscribeOnEvent(globalEvents.LoadValuesToCharlist, loadValuesToCharlist)
-})
-onBeforeUnmount(() => {
-	unsubscribeFromLoadValuesEvent()
+	subscribeOnEvent(EGlobalEvents.LoadValuesToCharlist, loadValuesToCharlist, abortController)
 })
 
-const selectedArmorClass = computed<TArmorClassName | null>(() => {
+const selectedArmorClass = computed<TArmorClassName | undefined>(() => {
 	if (!armorStore.selectedArmor)
-		return null
+		return undefined
 
-	const armor = armorList.find(({ id }) => id == armorStore.selectedArmor)
-	return armor ? armor.className : null
+	const armor = fullArmorsList.find(a => a.id == armorStore.selectedArmor)
+	return getArmorClassName(armor?.className)
 })
 
 // Загрузка имеющихся значений характеристик
@@ -38,32 +38,33 @@ function loadValuesToCharlist() {
 	const statsLinks = statsStore.dataToStatsLinks
 
 	for (const idx in statsLinks) {
-		if (statsLinks[idx] === null) {
+		if (statsLinks[idx] === null)
 			continue
-		}
 
-		statsStore.setStatValue(statsLinks[idx]!, stats[idx])
+		statsStore.setStatValue(statsLinks[idx], stats[idx])
 	}
 }
 
-// Расчёт модификатора характеристики
-function getStatModifier(statValue: number): string | null {
-	// Проверка на выход за допустимый диапазон
-	if (statValue < 1 || statValue > maxStatValue) {
+/** Расчёт модификатора характеристики */
+function getStatModifier(statValue: number): number | null {
+	if (statValue < 1 || statValue > maxStatValue)
 		return null
-	}
 
-	const modifier = Math.ceil((statValue - 11) / 2)
+	return Math.ceil((statValue - 11) / 2)
+}
 
-	if (modifier == 0) {
-		return '0'
-	}
+/** Модификатор текстом (с отображением плюса спереди, если модификатор больше нуля) */
+function textModifier(statValue: number): string | null {
+	const modifier = getStatModifier(statValue)
+	if (modifier === null)
+		return null
 
-	return (Math.sign(modifier) > 0 ? '+' : '-') + Math.abs(modifier)
+	return modifier < 0 ? modifier.toString() : '+' + modifier
 }
 
 const perceptionSkillComponent = computed<number>(() => {
-	return skillsStore.proficiencies[TSkillEnum.perception] ? 2 : 0
+	//TODO Двойка — бонус мастерства для первого уровня. Правильнее брать её из характеристик персонажа (аналогично и в skill.ts)
+	return skillsStore.proficiencies[ESkill.perception] ? 2 : 0
 })
 //TODO Отобразить наличие помехи для скрытности со стороны доспехов
 </script>
@@ -78,25 +79,25 @@ const perceptionSkillComponent = computed<number>(() => {
 					span {{ statsList[statName] }}:
 					span.statValue
 						| {{ stat }}
-						span.value(v-if="getStatModifier(stat) !== null") (#[span(title="Применяемый модификатор") {{ getStatModifier(stat) }}])
+						span.value(v-if="getStatModifier(stat) !== null") (#[span(title="Применяемый модификатор") {{ textModifier(stat) }}])
 
 		.valueBlock(v-if="getStatModifier(statsStore.stats.dex) !== null")
 			span Инициатива:
-			span.value {{ 10 + Number(getStatModifier(statsStore.stats.dex)) }}
+			span.value {{ 10 + getStatModifier(statsStore.stats.dex)! }}
 
 		.valueBlock(v-if="getStatModifier(statsStore.stats.wis) !== null")
 			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
-			span.value {{ 10 + Number(getStatModifier(statsStore.stats.wis)) + perceptionSkillComponent }}
+			span.value {{ 10 + getStatModifier(statsStore.stats.wis)! + perceptionSkillComponent }}
 
 		.valueBlock(v-if="getStatModifier(statsStore.stats.con) !== null")
-			span(:title="`Для каждого последующего уровня нужно бросать d${charClassStore.charHitDice} и к значению прибавлять ${Number(getStatModifier(statsStore.stats.con))}`") Количество хитов:
-			span.value {{ charClassStore.charHitDice + Number(getStatModifier(statsStore.stats.con)) }}
+			span(:title="`Для каждого последующего уровня нужно бросать d${charClassStore.charHitDice} и к значению прибавлять ${getStatModifier(statsStore.stats.con)}`") Количество хитов:
+			span.value {{ charClassStore.charHitDice + getStatModifier(statsStore.stats.con)! }}
 
 		.valueBlock
 			span(title="Зависит от выбранного класса") Кость хитов:
 			span.value d{{ charClassStore.charHitDice }}
 
-		.valueBlock(v-if="selectedArmorClass !== null && !armorStore.isNeedMoreStrength")
+		.valueBlock(v-if="selectedArmorClass !== undefined && !armorStore.isNeedMoreStrength")
 			span Класс доспеха:
 			span.value {{ selectedArmorClass }}
 </template>
@@ -127,19 +128,16 @@ const perceptionSkillComponent = computed<number>(() => {
 			margin-left: 0.4em;
 		}
 
-		.statValue {
-			color: #999;
-		}
+		.statValue { color: #999; }
 	}
 
 	.stats {
 		display: grid;
-		grid-template-columns: 1.3fr 1fr;
-		grid-template-rows: repeat(3, auto);
+		grid-template: repeat(3, auto) / 1.3fr 1fr;
 		grid-auto-flow: column;
 		gap: var(--blockPadding) calc(var(--blockPadding) * 2);
 
-		@media (max-width: 700px) and (min-width: 601px), (max-width: 400px) {
+		@media (600px < width <= 700px), (width <= 400px) {
 			grid-template-columns: 100%;
 			grid-auto-flow: row;
 		}

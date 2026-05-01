@@ -1,8 +1,7 @@
-/**
- * Генерация шести значений для дальнейшего распределения по характеристикам
+/** Генерация шести значений для дальнейшего распределения по характеристикам
  * @param generator - Генератор значения. Если не передавать, будет использована diceRoller()
  */
-function getRandomDiceValues(generator: () => number = diceRoller): number[] {
+export function getRandomDiceValues(generator: () => number = diceRoller): number[] {
 	return Array(6).fill(0).map(() => generator())
 }
 
@@ -15,12 +14,10 @@ function diceRoller(): number {
 }
 
 /** Отбрасывание одного минимального значения */
-function discardOneMinimum(values: number[]): number[] {
+export function discardOneMinimum(values: number[]): number[] {
 	const minValue = Math.min(...values)
 	const minValueIdx = values.findIndex(V => V == minValue)
 	values.splice(minValueIdx, 1)
 
 	return values
 }
-
-export { getRandomDiceValues, discardOneMinimum }

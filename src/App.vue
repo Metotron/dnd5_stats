@@ -41,11 +41,11 @@ h1 {
 	margin-top: 1em;
 	align-items: start;
 
-	@media (max-width: 1280px) {
+	@media (width <= 1280px) {
 		--column3Width: 280px;
 	}
 
-	@media (max-width: 994px) {
+	@media (width <= 994px) {
 		width: calc(var(--column1Width) + var(--column2Width) + var(--blockPadding) * 2);
 		grid-template-columns: --var(column1Width) --var(column2Width);
 		grid-template-areas:
@@ -55,11 +55,11 @@ h1 {
 			"skills skills";
 	}
 
-	@media (max-width: 700px) {
+	@media (width <= 700px) {
 		--column2Width: 280px;
 	}
 
-	@media (max-width: 600px) {
+	@media (width <= 600px) {
 		width: 100%;
 		grid-template-columns: 100%;
 		grid-template-areas: "class" "stats" "charlist" "skills";

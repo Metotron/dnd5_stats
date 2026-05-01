@@ -1,8 +1,8 @@
-type TStats = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
-type TStatsNames = Record<TStats, string>
-type TStatsValues = Record<TStats, number>
+export type TStat = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
+export type TStatsNames = Record<TStat, string>
+export type TStatsValues = Record<TStat, number>  // Числовое значение проверяется в setStatValue() в сторе
 
-const statsList: TStatsNames = {
+export const statsList: TStatsNames = {
 	str: 'Сила',
 	dex: 'Ловкость',
 	con: 'Телосложение',
@@ -11,7 +11,7 @@ const statsList: TStatsNames = {
 	cha: 'Харизма'
 }
 
-const statsShorts: TStatsNames = {
+export const statsShorts: TStatsNames = {
 	str: 'сил',
 	dex: 'лов',
 	con: 'кон',
@@ -21,7 +21,4 @@ const statsShorts: TStatsNames = {
 }
 
 // Максимальное значение характеристики (в книге игрока — 30)
-const maxStatValue = 30
-
-export { statsList, statsShorts, maxStatValue }
-export type { TStats, TStatsNames, TStatsValues }
+export const maxStatValue = 30

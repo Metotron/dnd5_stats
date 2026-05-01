@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { armorClassName, armorList, shield } from '../misc/armorList'
-import type { EArmor, TArmorDescription, EArmorClass } from '../misc/armorList'
+import { fullArmorsList, getArmorClassName, getArmorsOfClass, shield } from '../misc/armorList'
+import { type EArmor, type TArmorDescription, EArmorClass } from '../misc/armorList'
 
 import { ref, computed } from 'vue'
 
@@ -15,7 +15,7 @@ const armorDetails = computed<TArmorDescription | null>(() => {
 	if (selectedArmor.value == '-')
 		return null
 
-	return armorList.find(({ id }) => id == selectedArmor.value) ?? null
+	return fullArmorsList.find(({ id }) => id == selectedArmor.value) ?? null
 })
 
 //FIXME щит не задействован
@@ -36,7 +36,7 @@ const totalAC = computed<number | null>(() => {
 })
 
 // Атрибут title для <select>
-const selectTitle = computed<string>(() => {
+const titleForSelectTag = computed<string>(() => {
 	if (!armorDetails.value) {
 		return ''
 	}
@@ -52,11 +52,6 @@ const selectTitle = computed<string>(() => {
 
 	return result
 })
-
-/** @param armorClassId - Строковое представление EArmorClass */
-function getArmorWithClass(armorClassId: EArmorClass): TArmorDescription[] {
-	return armorList.filter(({ group }) => group === +armorClassId)
-}
 </script>
 
 
@@ -64,11 +59,11 @@ function getArmorWithClass(armorClassId: EArmorClass): TArmorDescription[] {
 .pageBlock.armor
 	.blockTitle 🛡️ Надетая броня
 	.blockBody
-		select(v-model="selectedArmor" :title="selectTitle")
+		select(v-model="selectedArmor" :title="titleForSelectTag")
 			option -
-			optgroup(v-for="(groupName, armorClassId) in armorClassName" :label="groupName")
+			optgroup(v-for="armorClass in EArmorClass" :label="getArmorClassName(armorClass)")
 				option(
-					v-for="armorDetails in getArmorWithClass(armorClassId)"
+					v-for="armorDetails in getArmorsOfClass(armorClass)"
 					:key="armorDetails.id"
 					:value="armorDetails.id"
 				) {{ armorDetails.name }}
