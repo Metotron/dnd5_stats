@@ -12,6 +12,7 @@ watch(selectedCharClass, newValue => {
 })
 </script>
 
+
 <template lang="pug">
 .pageBlock.charClass
 	.blockTitle 🧍 Класс персонажа

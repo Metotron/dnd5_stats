@@ -56,7 +56,7 @@ watch(value, (newValue, oldValue)  => {
 })
 
 const abortController = new AbortController()
-onBeforeUnmount(abortController.abort)
+onBeforeUnmount(() => abortController.abort())
 
 /** Характеристика, с которой будет связано значение value */
 const selectedStatToLink = ref<TOptionValue>('-')  //TODO Лучше сделать computed с двунаправленной привязкой к стору

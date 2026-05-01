@@ -22,3 +22,12 @@ export const statsShorts: TStatsNames = {
 
 // Максимальное значение характеристики (в книге игрока — 30)
 export const maxStatValue = 30
+
+
+/** Расчёт модификатора характеристики */
+export function getStatModifier(statValue: number): number | undefined {
+	if (statValue < 1 || statValue > maxStatValue)
+		return undefined
+
+	return Math.ceil((statValue - 11) / 2)
+}

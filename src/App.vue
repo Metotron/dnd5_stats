@@ -6,6 +6,7 @@ import ArmorSelector from "./components/ArmorSelector.vue"
 import Skills from "./components/Skills.vue"
 </script>
 
+
 <template lang="pug">
 header
 	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e)
@@ -90,7 +91,14 @@ h1 {
 </style>
 
 <style>
+:root {
+	--borderColor: #ccc;
+	--blockPadding: 8px;
+	--accentColor: #e07014;
+}
+
 * { box-sizing: border-box; }
+
 html, body {
 	margin: 0;
 	padding: var(--blockPadding);
@@ -102,11 +110,5 @@ html, body {
 
 input, select {
 	min-height: 26px;
-}
-
-:root {
-	--borderColor: #ccc;
-	--blockPadding: 8px;
-	--accentColor: #e07014;
 }
 </style>

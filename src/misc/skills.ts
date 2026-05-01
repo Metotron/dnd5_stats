@@ -105,10 +105,15 @@ export const fullSkillsList: Record<ESkill, TSkillDescription> = {
 
 /** Модификатор от характеристики, на которой основан навык skillName */
 export function getSkillStatModifier(skillName: ESkill, statsStore: TStatsStore, skillsStore: TSkillsStore): number {
-	const statAbbr: TStat = fullSkillsList[skillName].statType
+	const statAbbr: TStat = fullSkillsList[eskillAsNumber(skillName)].statType
 	const statValue = statsStore.stats[statAbbr]
 	const modifier = statValue > 0 ? Math.ceil((statValue - 11) / 2) : 0
 
 	//TODO Двойка — бонус мастерства для первого уровня. Правильнее брать её из характеристик персонажа
 	return modifier + (skillsStore.proficiencies[skillName] ? 2 : 0)
+}
+
+/** К enum можно обратиться по строке и получить число, но оно тоже будет строкой, поэтому его нужно преобразовать */
+export function eskillAsNumber(skill: ESkill): ESkill {
+	return typeof skill == 'number' ? skill : Number(ESkill[skill]) as ESkill
 }

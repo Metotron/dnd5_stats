@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ESkill, fullSkillsList, getSkillStatModifier } from '../misc/skills'
+import { ESkill, eskillAsNumber, fullSkillsList, getSkillStatModifier } from '../misc/skills'
 import { statsShorts } from '../misc/statsList'
 
 import { useSkillsStore } from '../stores/skillsStore'
@@ -33,8 +33,8 @@ function proficienciedSkillsCount(): number {
 		.skill(v-for="skill in ESkill" :key="skill")
 			label
 				input(type="checkbox" :checked="getProficiencyState(skill)" @change="setProficiencyState(skill, $event)")
-				span.name {{ fullSkillsList[skill].name }}
-				span.stat ({{ statsShorts[fullSkillsList[skill].statType] }})
+				span.name {{ fullSkillsList[eskillAsNumber(skill)].name }}
+				span.stat ({{ statsShorts[fullSkillsList[eskillAsNumber(skill)].statType] }})
 			span.value {{ 10 + getSkillStatModifier(skill, statsStore, skillsStore) }}
 </template>
 

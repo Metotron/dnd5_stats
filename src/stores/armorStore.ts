@@ -1,28 +1,34 @@
 /** Характеристики надетых на персонажа доспехов */
 
 import { defineStore } from 'pinia'
-import { fullArmorsList, type EArmor } from '../misc/armorList'
+import { EShield, fullArmorsList, type EArmor } from '../misc/armorList'
 import { useStatsStore } from './statsStore'
 
 export interface TArmorStore {
-	selectedArmor: EArmor | null
+	selectedArmor: EArmor | undefined
+	shield: EShield | undefined
 }
 
 export const useArmorStore = defineStore('armor', {
 	state(): TArmorStore { return {
-		selectedArmor: null
+		selectedArmor: undefined,
+		shield: undefined
 	}},
 
 	actions: {
-		setArmor(armor: EArmor | null) {
+		setArmor(armor: EArmor | undefined) {
 			this.selectedArmor = armor
+		},
+
+		setShieldState(shield: EShield | undefined) {
+			this.shield = shield
 		}
 	},
 
 	getters: {
 		/** Требуется ли персонажу больше силы, чтобы носить выбранный доспех */
-		isNeedMoreStrength: state => {
-			if (state.selectedArmor === null)
+		needMoreStrength: state => {
+			if (state.selectedArmor === undefined)
 				return false
 
 			const selectedArmor = fullArmorsList.find(({ id }) => id === state.selectedArmor)

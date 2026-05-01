@@ -1,54 +1,47 @@
 <script setup lang="ts">
-import { fullArmorsList, getArmorClassName, getArmorsOfClass, shield } from '../misc/armorList'
-import { type EArmor, type TArmorDescription, EArmorClass } from '../misc/armorList'
+import { armorClasses, EShield, fullArmorsList, getArmorsOfClass, type EArmor, type TArmorDescription } from '../misc/armorList'
+import { computed, ref, watch } from 'vue'
 
-import { ref, computed } from 'vue'
-
-import { useStatsStore } from '../stores/statsStore'
 import { useArmorStore } from '../stores/armorStore'
 
-const statsStore = useStatsStore()
 const armorStore = useArmorStore()
 
-const selectedArmor = ref<EArmor | '-'>('-')
-const armorDetails = computed<TArmorDescription | null>(() => {
+const selectedArmor = ref<EArmor | '-'>('-')  //TODO Сделать привязку к стору через computed
+watch(selectedArmor, armor => {
+	armorStore.setArmor(armor == '-' ? undefined : armor)
+})
+const selectedArmorDetails = computed<TArmorDescription | undefined>(() => {
 	if (selectedArmor.value == '-')
-		return null
+		return undefined
 
-	return fullArmorsList.find(({ id }) => id == selectedArmor.value) ?? null
+	return fullArmorsList.find(({ id }) => id == selectedArmor.value)
 })
 
-//FIXME щит не задействован
-const isShieldInUse = ref(false)
-// Класс брони с учётом модификаторов ловкости и щита
-const totalAC = computed<number | null>(() => {
-	if (!armorDetails.value)
-		return null
-
-	if (!armorDetails.value.useDexModifier)
-		return armorDetails.value.AC + (isShieldInUse.value ? shield.AC : 0)
-
-	let ACModifier = Math.ceil((statsStore.stats.dex - 11) / 2)
-	if (armorDetails.value.maximumDexModifier)
-		ACModifier = Math.min(ACModifier, armorDetails.value.maximumDexModifier)
-
-	return armorDetails.value.AC + ACModifier + (isShieldInUse.value ? shield.AC : 0)
+// Переключение использования щита
+const isShieldInUse = computed<boolean>({
+	get() { return armorStore.shield !== undefined },
+	set(value) { armorStore.setShieldState(value ? EShield.standard : undefined ) }
 })
+
+/** Взять/убрать щит */
+function switchShield() {
+	isShieldInUse.value = !isShieldInUse.value
+}
 
 // Атрибут title для <select>
 const titleForSelectTag = computed<string>(() => {
-	if (!armorDetails.value) {
+	if (!selectedArmorDetails.value) {
 		return ''
 	}
 
-	let result = armorDetails.value.AC.toString()
-	if (!armorDetails.value.useDexModifier)
+	let result = selectedArmorDetails.value.AC.toString()
+	if (!selectedArmorDetails.value.useDexModifier)
 		return result
 
 	result += ' + ловкость'
 
-	if (armorDetails.value.maximumDexModifier !== undefined)
-		result += ` (макс. ${armorDetails.value.maximumDexModifier})`
+	if (selectedArmorDetails.value.maximumDexModifier !== undefined)
+		result += ` (макс. ${selectedArmorDetails.value.maximumDexModifier})`
 
 	return result
 })
@@ -57,18 +50,20 @@ const titleForSelectTag = computed<string>(() => {
 
 <template lang="pug">
 .pageBlock.armor
-	.blockTitle 🛡️ Надетая броня
+	.blockTitle 👚 Защита
 	.blockBody
 		select(v-model="selectedArmor" :title="titleForSelectTag")
 			option -
-			optgroup(v-for="armorClass in EArmorClass" :label="getArmorClassName(armorClass)")
+			optgroup(v-for="armorClass in armorClasses" :label="armorClass.name")
 				option(
-					v-for="armorDetails in getArmorsOfClass(armorClass)"
+					v-for="armorDetails in getArmorsOfClass(armorClass.classType)"
 					:key="armorDetails.id"
 					:value="armorDetails.id"
 				) {{ armorDetails.name }}
 
-		.alert(v-if="armorStore.isNeedMoreStrength && armorDetails") ❗Нужно {{ armorDetails.minimumStr }} силы
+		span(@click="switchShield") 🛡️ {{ isShieldInUse }}
+
+		.alert(v-if="armorStore.needMoreStrength && selectedArmorDetails" :title="`Требуется ${selectedArmorDetails.minimumStr} силы`") ❗Скорость уменьшена на 10 футов
 </template>
 
 

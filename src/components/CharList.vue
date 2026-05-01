@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { fullArmorsList, getArmorClassName, type TArmorClassName } from '../misc/armorList'
+import { fullArmorsList, getArmorClassName, shields, type TArmorDescription, type TShield } from '../misc/armorList'
 import { EGlobalEvents, subscribeOnEvent } from '../misc/globalEvents'
-import { maxStatValue, statsList } from '../misc/statsList'
+import { getStatModifier, statsList } from '../misc/statsList'
 
 
 import { computed, onBeforeUnmount, onMounted } from 'vue'
@@ -18,18 +18,34 @@ const armorStore = useArmorStore()
 const skillsStore = useSkillsStore()
 
 const abortController = new AbortController()
-onBeforeUnmount(abortController.abort)
+onBeforeUnmount(() => abortController.abort())
 
 onMounted(() => {
 	subscribeOnEvent(EGlobalEvents.LoadValuesToCharlist, loadValuesToCharlist, abortController)
 })
 
-const selectedArmorClass = computed<TArmorClassName | undefined>(() => {
-	if (!armorStore.selectedArmor)
+/** Выбранный доспех */
+const selectedArmor = computed<TArmorDescription | undefined>(() => {
+	return fullArmorsList.find(a => a.id === armorStore.selectedArmor)
+})
+/** Выбранный щит */
+const selectedShield = computed<TShield | undefined>(() => {
+	return shields.find(s => s.id === armorStore.shield)
+})
+
+// Класс брони с учётом модификаторов ловкости и щита
+const totalAC = computed<number | undefined>(() => {
+	if (!selectedArmor.value)
 		return undefined
 
-	const armor = fullArmorsList.find(a => a.id == armorStore.selectedArmor)
-	return getArmorClassName(armor?.className)
+	if (!selectedArmor.value.useDexModifier)
+		return selectedArmor.value.AC + (selectedShield.value?.AC ?? 0)
+
+	let ACModifier = Number(getStatModifier(statsStore.stats.dex) ?? 0)
+	if (selectedArmor.value.maximumDexModifier)
+		ACModifier = Math.min(ACModifier, selectedArmor.value.maximumDexModifier)
+
+	return selectedArmor.value.AC + ACModifier + (selectedShield.value?.AC ?? 0)
 })
 
 // Загрузка имеющихся значений характеристик
@@ -45,19 +61,11 @@ function loadValuesToCharlist() {
 	}
 }
 
-/** Расчёт модификатора характеристики */
-function getStatModifier(statValue: number): number | null {
-	if (statValue < 1 || statValue > maxStatValue)
-		return null
-
-	return Math.ceil((statValue - 11) / 2)
-}
-
 /** Модификатор текстом (с отображением плюса спереди, если модификатор больше нуля) */
-function textModifier(statValue: number): string | null {
+function textModifier(statValue: number): string | undefined {
 	const modifier = getStatModifier(statValue)
-	if (modifier === null)
-		return null
+	if (modifier === undefined)
+		return undefined
 
 	return modifier < 0 ? modifier.toString() : '+' + modifier
 }
@@ -69,6 +77,7 @@ const perceptionSkillComponent = computed<number>(() => {
 //TODO Отобразить наличие помехи для скрытности со стороны доспехов
 </script>
 
+
 <template lang="pug">
 .pageBlock.charList
 	.blockTitle 📎 Характеристики персонажа
@@ -79,28 +88,32 @@ const perceptionSkillComponent = computed<number>(() => {
 					span {{ statsList[statName] }}:
 					span.statValue
 						| {{ stat }}
-						span.value(v-if="getStatModifier(stat) !== null") (#[span(title="Применяемый модификатор") {{ textModifier(stat) }}])
+						span.value(v-if="getStatModifier(stat) !== undefined") (#[span(title="Применяемый модификатор") {{ textModifier(stat) }}])
 
-		.valueBlock(v-if="getStatModifier(statsStore.stats.dex) !== null")
+		.valueBlock(v-if="getStatModifier(statsStore.stats.dex) !== undefined")
 			span Инициатива:
-			span.value {{ 10 + getStatModifier(statsStore.stats.dex)! }}
+			span.value {{ 10 + Number(getStatModifier(statsStore.stats.dex)) }}
 
-		.valueBlock(v-if="getStatModifier(statsStore.stats.wis) !== null")
+		.valueBlock(v-if="getStatModifier(statsStore.stats.wis) !== undefined")
 			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
-			span.value {{ 10 + getStatModifier(statsStore.stats.wis)! + perceptionSkillComponent }}
+			span.value {{ 10 + Number(getStatModifier(statsStore.stats.wis)) + perceptionSkillComponent }}
 
-		.valueBlock(v-if="getStatModifier(statsStore.stats.con) !== null")
+		.valueBlock(v-if="getStatModifier(statsStore.stats.con) !== undefined")
 			span(:title="`Для каждого последующего уровня нужно бросать d${charClassStore.charHitDice} и к значению прибавлять ${getStatModifier(statsStore.stats.con)}`") Количество хитов:
-			span.value {{ charClassStore.charHitDice + getStatModifier(statsStore.stats.con)! }}
+			span.value {{ charClassStore.charHitDice + Number(getStatModifier(statsStore.stats.con)) }}
 
 		.valueBlock
 			span(title="Зависит от выбранного класса") Кость хитов:
 			span.value d{{ charClassStore.charHitDice }}
 
-		.valueBlock(v-if="selectedArmorClass !== undefined && !armorStore.isNeedMoreStrength")
+		.valueBlock(v-if="selectedArmor")
 			span Класс доспеха:
-			span.value {{ selectedArmorClass }}
+			span.value {{ getArmorClassName(selectedArmor.group) }} (КД: {{ totalAC }})
+		.valueBlock(v-else title="Рассчитывается из ловкости")
+			span Класс доспеха:
+			span.value Без доспеха (КД: {{ 10 + Number(getStatModifier(statsStore.stats.dex) ?? 0) }})
 </template>
+
 
 <style lang="scss" scoped>
 .pageBlock.charList {
