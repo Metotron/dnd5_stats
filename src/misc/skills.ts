@@ -1,5 +1,6 @@
-import type { TSkillsStore } from '../stores/skillsStore'
-import type { TStatsStore } from '../stores/statsStore'
+import { useCharacterStore } from '../stores/characterStore'
+import type { ISkillsStore } from '../stores/skillsStore'
+import type { IStatsStore } from '../stores/statsStore'
 import type { TStat } from './statsList'
 
 export enum ESkill {
@@ -104,13 +105,15 @@ export const fullSkillsList: Record<ESkill, TSkillDescription> = {
 }
 
 /** Модификатор от характеристики, на которой основан навык skillName */
-export function getSkillStatModifier(skillName: ESkill, statsStore: TStatsStore, skillsStore: TSkillsStore): number {
+export function getSkillStatModifier(skillName: ESkill, statsStore: IStatsStore, skillsStore: ISkillsStore): number {
+	const character = useCharacterStore()
+
 	const statAbbr: TStat = fullSkillsList[eskillAsNumber(skillName)].statType
 	const statValue = statsStore.stats[statAbbr]
 	const modifier = statValue > 0 ? Math.ceil((statValue - 11) / 2) : 0
 
-	//TODO Двойка — бонус мастерства для первого уровня. Правильнее брать её из характеристик персонажа
-	return modifier + (skillsStore.proficiencies[skillName] ? 2 : 0)
+	const bonus = skillsStore.proficiencies[skillName] ? character.proficiencyBonus : 0
+	return modifier + bonus
 }
 
 /** К enum можно обратиться по строке и получить число, но оно тоже будет строкой, поэтому его нужно преобразовать */

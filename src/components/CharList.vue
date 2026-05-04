@@ -8,14 +8,14 @@ import { computed, onBeforeUnmount, onMounted } from 'vue'
 
 import { ESkill } from '../misc/skills'
 import { useArmorStore } from '../stores/armorStore'
-import { useCharClassStore } from '../stores/charClassStore'
 import { useSkillsStore } from '../stores/skillsStore'
 import { useStatsStore } from '../stores/statsStore'
+import { useCharacterStore } from '../stores/characterStore'
 
-const statsStore = useStatsStore()
-const charClassStore = useCharClassStore()
-const armorStore = useArmorStore()
+const statsStore  = useStatsStore()
+const armorStore  = useArmorStore()
 const skillsStore = useSkillsStore()
+const character   = useCharacterStore()
 
 const abortController = new AbortController()
 onBeforeUnmount(() => abortController.abort())
@@ -71,8 +71,7 @@ function textModifier(statValue: number): string | undefined {
 }
 
 const perceptionSkillComponent = computed<number>(() => {
-	//TODO Двойка — бонус мастерства для первого уровня. Правильнее брать её из характеристик персонажа (аналогично и в skill.ts)
-	return skillsStore.proficiencies[ESkill.perception] ? 2 : 0
+	return skillsStore.proficiencies[ESkill.perception] ? character.proficiencyBonus : 0
 })
 //TODO Отобразить наличие помехи для скрытности со стороны доспехов
 </script>
@@ -99,12 +98,12 @@ const perceptionSkillComponent = computed<number>(() => {
 			span.value {{ 10 + Number(getStatModifier(statsStore.stats.wis)) + perceptionSkillComponent }}
 
 		.valueBlock(v-if="getStatModifier(statsStore.stats.con) !== undefined")
-			span(:title="`Для каждого последующего уровня нужно бросать d${charClassStore.charHitDice} и к значению прибавлять ${getStatModifier(statsStore.stats.con)}`") Количество хитов:
-			span.value {{ charClassStore.charHitDice + Number(getStatModifier(statsStore.stats.con)) }}
+			span(:title="`Для каждого последующего уровня нужно бросать d${character.hitDice} и к значению прибавлять ${getStatModifier(statsStore.stats.con)}`") Количество хитов:
+			span.value {{ character.hitDice + Number(getStatModifier(statsStore.stats.con)) }}
 
 		.valueBlock
 			span(title="Зависит от выбранного класса") Кость хитов:
-			span.value d{{ charClassStore.charHitDice }}
+			span.value d{{ character.hitDice }}
 
 		.valueBlock(v-if="selectedArmor")
 			span Класс доспеха:

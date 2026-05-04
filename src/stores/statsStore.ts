@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import { maxStatValue } from '../misc/statsList'
 import type { TStat, TStatsValues } from '../misc/statsList'
 
-export interface TStatsStore {
+export interface IStatsStore {
 	generatedValues: number[],
 	stats: TStatsValues,
 	dataToStatsLinks: Record<number, TStat | null>
@@ -13,7 +13,7 @@ export interface TStatsStore {
 const valuesCount = 6
 
 export const useStatsStore = defineStore('stats', {
-	state(): TStatsStore { return {
+	state(): IStatsStore { return {
 		/** Сгенерированные значения */
 		generatedValues: Array(valuesCount).fill(0),
 

@@ -4,13 +4,13 @@ import { defineStore } from 'pinia'
 import { EShield, fullArmorsList, type EArmor } from '../misc/armorList'
 import { useStatsStore } from './statsStore'
 
-export interface TArmorStore {
+export interface IArmorStore {
 	selectedArmor: EArmor | undefined
 	shield: EShield | undefined
 }
 
 export const useArmorStore = defineStore('armor', {
-	state(): TArmorStore { return {
+	state(): IArmorStore { return {
 		selectedArmor: undefined,
 		shield: undefined
 	}},

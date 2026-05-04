@@ -1,16 +1,15 @@
 /** Идентификаторы классов персонажа */
-type CharClassID = 'bard' | 'barbarian' | 'fighter' | 'wizard' | 'druid' | 'cleric' |
+export  type CharClass = 'bard' | 'barbarian' | 'fighter' | 'wizard' | 'druid' | 'cleric' |
                     'warlock' | 'monk' | 'paladin' | 'rogue' | 'ranger' | 'sorcerer'
 
 /** Соответствие идентификатора класса русскому наименованию и кости хитов */
-type CharClassType = {
-	[className in CharClassID]: {
+export  type CharClassType = {
+	[className in CharClass]: {
 		name: string,
 		hitDice: 6 | 8 | 10 | 12
 	}
 }
 
-export type { CharClassID, CharClassType }
 export const charClasses: CharClassType = {
 	bard: {
 		name: 'Бард',

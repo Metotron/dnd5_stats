@@ -20,7 +20,7 @@ describe('Тесты стора характеристик', () => {
 			expect(store.dataToStatsLinks[linkIndex]).toBeNull()
 
 		})
-		//TODO Проверить store.isAllFieldsLinked
+		//TODO test: Протестировать store.isAllFieldsLinked
 	}
 
 	it('Задание числового значения для одной из сгенерированных характеристик', () => {

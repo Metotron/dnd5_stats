@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { armorClasses, EShield, fullArmorsList, getArmorsOfClass, type EArmor, type TArmorDescription } from '../misc/armorList'
-import { computed, ref, watch } from 'vue'
 
 import { useArmorStore } from '../stores/armorStore'
 
 const armorStore = useArmorStore()
 
-const selectedArmor = ref<EArmor | '-'>('-')  //TODO Сделать привязку к стору через computed
-watch(selectedArmor, armor => {
-	armorStore.setArmor(armor == '-' ? undefined : armor)
+
+const selectedArmor = computed<EArmor | '-'>({
+	get() { return armorStore.selectedArmor == undefined ? '-' : armorStore.selectedArmor },
+	set(armor) { armorStore.setArmor(armor == '-' ? undefined : armor) }
 })
+
 const selectedArmorDetails = computed<TArmorDescription | undefined>(() => {
 	if (selectedArmor.value == '-')
 		return undefined

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { type CharClassID, charClasses } from '../misc/charClasses'
+import { computed } from 'vue'
+import { type CharClass, charClasses } from '../misc/charClasses'
 
-import { useCharClassStore } from '../stores/charClassStore'
+import { useCharacterStore } from '../stores/characterStore'
 
-const classStore = useCharClassStore()
+const character = useCharacterStore()
 
-const selectedCharClass = ref<CharClassID>('fighter')  //TODO Попробовать сделать привязку к стору через computed
-watch(selectedCharClass, newValue => {
-	classStore.setCharClass(newValue)
+const selectedCharClass = computed<CharClass>({
+	get() { return character.charClass },
+	set(className) { character.setCharClass(className) }
 })
 </script>
 
@@ -20,7 +20,7 @@ watch(selectedCharClass, newValue => {
 		select(v-model="selectedCharClass")
 			option(v-for="(charParams, className) in charClasses" :key="className" :value="className") {{ charParams.name }}
 		span.arrow →
-		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ classStore.charHitDice }}
+		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ character.hitDice }}
 </template>
 
 
