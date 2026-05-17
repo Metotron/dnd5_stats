@@ -38,6 +38,12 @@ export const useSkillsStore = defineStore('skills', {
 		 */
 		setProficiency(skillId: ESkill, value: boolean) {
 			this.proficiencies[skillId] = value
+		},
+
+		/** Сброс владения навыками */
+		resetProficiencies() {
+			for (const prof in this.proficiencies)
+				this.proficiencies[prof as unknown as ESkill] = false
 		}
 	}
 })

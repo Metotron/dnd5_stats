@@ -27,12 +27,12 @@ function proficienciedSkillsCount(): number {
 <template lang="pug">
 .pageBlock.skills
 	.blockTitle 🧠 Навыки
-		span.selectedCount(v-if="proficienciedSkillsCount()") (Выбрано: {{ proficienciedSkillsCount() }})
+		span.selectedCount(v-if="proficienciedSkillsCount()" title="Сбросить" @click="skillsStore.resetProficiencies()") (Выбрано: {{ proficienciedSkillsCount() }})
 	.blockBody
 		.skill(v-for="skillDescr in fullSkillsList" :key="skillDescr.name" :data-skill="skillDescr.statType")
 			label
 				input(type="checkbox" :checked="getProficiencyState(skillDescr.skill)" @change="setProficiencyState(skillDescr.skill, $event)")
-				span.name {{ skillDescr.name }}
+				span.name(:class="{ selected: skillsStore.proficiencies[skillDescr.skill] }") {{ skillDescr.name }}
 				span.stat ({{ skillDescr.statType }})
 			span.value {{ 10 + getSkillStatModifier(skillDescr.skill, statsStore, skillsStore) }}
 </template>
@@ -60,6 +60,7 @@ function proficienciedSkillsCount(): number {
 		margin-left: 4px;
 		color: #777;
 		font-size: .8rem;
+		cursor: pointer;
 	}
 }
 
@@ -86,10 +87,15 @@ function proficienciedSkillsCount(): number {
 		margin-right: var(--blockPadding);
 	}
 
+	.name.selected {
+		color: var(--accentColor);
+	}
+
 	.value {
 		margin-left: auto;
 		color: var(--accentColor);
 	}
+
 
 	&:where([data-skill="dex"], [data-skill="wis"])  {
 		background-color: #f2f2f2;
