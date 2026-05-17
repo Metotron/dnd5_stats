@@ -8,7 +8,7 @@ const armorStore = useArmorStore()
 
 
 const selectedArmor = computed<EArmor | '-'>({
-	get() { return armorStore.selectedArmor == undefined ? '-' : armorStore.selectedArmor },
+	get() { return armorStore.selectedArmor ?? '-' },
 	set(armor) { armorStore.setArmor(armor == '-' ? undefined : armor) }
 })
 

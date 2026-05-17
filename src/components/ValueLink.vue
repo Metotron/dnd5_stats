@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { statsList, maxStatValue } from '../misc/statsList'
 import { EGlobalEvents, subscribeOnEvent } from '../misc/globalEvents'
 import type { TStat } from '../misc/statsList'
+import { maxStatValue, statsList } from '../misc/statsList'
 
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { useStatsStore } from '../stores/statsStore'
 
@@ -59,23 +59,17 @@ const abortController = new AbortController()
 onBeforeUnmount(() => abortController.abort())
 
 /** Характеристика, с которой будет связано значение value */
-const selectedStatToLink = ref<TOptionValue>('-')  //TODO Лучше сделать computed с двунаправленной привязкой к стору
+const selectedStatToLink = computed<TOptionValue | '-'>({
+	get() { return statsStore.dataToStatsLinks[props.valueIndex] ?? '-' },
+	set(optionValue) { statsStore.setValueLink(props.valueIndex, optionValue == '-' ? null : optionValue ) }
+})
 onMounted(() => {
 	statsStore.setGeneratedValue(props.valueIndex, value.value)
 
 	subscribeOnEvent(EGlobalEvents.ResetStatsStore, () => selectedStatToLink.value = '-', abortController)
-	subscribeOnEvent(EGlobalEvents.AutoLinkStats, autoLinkStats, abortController)
+	// Авторасстановка привязок
+	subscribeOnEvent(EGlobalEvents.AutoLinkStats, () => selectedStatToLink.value = autoLinksValues[props.valueIndex], abortController)
 })
-
-// Сохраняем выбранное значение селекта в стор
-watch(selectedStatToLink, linkTo => {
-	statsStore.setValueLink(props.valueIndex, linkTo === '-' ? null : linkTo)
-})
-
-/** Авторасстановка привязок */
-function autoLinkStats() {
-	selectedStatToLink.value = autoLinksValues[props.valueIndex]
-}
 
 /** Определение, что характеристика уже распределена */
 function isCharInUse(charName: TOptionValue): boolean {
