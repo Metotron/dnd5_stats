@@ -29,7 +29,7 @@ function proficienciedSkillsCount(): number {
 	.blockTitle 🧠 Навыки
 		span.selectedCount(v-if="proficienciedSkillsCount()") (Выбрано: {{ proficienciedSkillsCount() }})
 	.blockBody
-		.skill(v-for="skillDescr in fullSkillsList" :key="skillDescr.name")
+		.skill(v-for="skillDescr in fullSkillsList" :key="skillDescr.name" :data-skill="skillDescr.statType")
 			label
 				input(type="checkbox" :checked="getProficiencyState(skillDescr.skill)" @change="setProficiencyState(skillDescr.skill, $event)")
 				span.name {{ skillDescr.name }}
@@ -66,6 +66,7 @@ function proficienciedSkillsCount(): number {
 .skill {
 	display: flex;
 	align-items: center;
+	padding-inline: calc(var(--blockPadding) / 2) var(--blockPadding);
 
 	[type=checkbox] { margin-right: calc(var(--blockPadding) / 2); }
 
@@ -88,6 +89,10 @@ function proficienciedSkillsCount(): number {
 	.value {
 		margin-left: auto;
 		color: var(--accentColor);
+	}
+
+	&:where([data-skill="dex"], [data-skill="wis"])  {
+		background-color: #f2f2f2;
 	}
 }
 </style>
