@@ -25,90 +25,109 @@ export enum ESkill {
 }
 
 export type TSkillDescription = {
-	name: string,
+	skill: ESkill
+	name: string
 	statType: TStat
 }
 
-export const fullSkillsList: Record<ESkill, TSkillDescription> = {
-	[ESkill.athletics]: {
+export const fullSkillsList: TSkillDescription[] = [
+	{
+		skill: ESkill.athletics,
 		name: 'Атлетика',
 		statType: 'str'
 	},
-	[ESkill.acrobatics]: {
+	{
+		skill: ESkill.acrobatics,
 		name: 'Акробатика',
 		statType: 'dex'
 	},
-	[ESkill.sleightOfHand]: {
+	{
+		skill: ESkill.sleightOfHand,
 		name: 'Ловкость рук',
 		statType: 'dex'
 	},
-	[ESkill.stealth]: {
+	{
+		skill: ESkill.stealth,
 		name: 'Скрытность',
 		statType: 'dex'
 	},
-	[ESkill.arcana]: {
+	{
+		skill: ESkill.arcana,
 		name: 'Магия',
 		statType: 'int'
 	},
-	[ESkill.history]: {
+	{
+		skill: ESkill.history,
 		name: 'История',
 		statType: 'int'
 	},
-	[ESkill.investigation]: {
+	{
+		skill: ESkill.investigation,
 		name: 'Анализ',
 		statType: 'int'
 	},
-	[ESkill.nature]: {
+	{
+		skill: ESkill.nature,
 		name: 'Природа',
 		statType: 'int'
 	},
-	[ESkill.religion]: {
+	{
+		skill: ESkill.religion,
 		name: 'Религия',
 		statType: 'int'
 	},
-	[ESkill.animalHandling]: {
+	{
+		skill: ESkill.animalHandling,
 		name: 'Уход за животными',
 		statType: 'wis'
 	},
-	[ESkill.insight]: {
+	{
+		skill: ESkill.insight,
 		name: 'Проницательность',
 		statType: 'wis'
 	},
-	[ESkill.medicine]: {
+	{
+		skill: ESkill.medicine,
 		name: 'Медицина',
 		statType: 'wis'
 	},
-	[ESkill.perception]: {
+	{
+		skill: ESkill.perception,
 		name: 'Внимательность',
 		statType: 'wis'
 	},
-	[ESkill.survival]: {
+	{
+		skill: ESkill.survival,
 		name: 'Выживание',
 		statType: 'wis'
 	},
-	[ESkill.deception]: {
+	{
+		skill: ESkill.deception,
 		name: 'Обман',
 		statType: 'cha'
 	},
-	[ESkill.intimidation]: {
+	{
+		skill: ESkill.intimidation,
 		name: 'Запугивание',
 		statType: 'cha'
 	},
-	[ESkill.performance]: {
+	{
+		skill: ESkill.performance,
 		name: 'Выступление',
 		statType: 'cha'
 	},
-	[ESkill.persuasion]: {
+	{
+		skill: ESkill.persuasion,
 		name: 'Убеждение',
 		statType: 'cha'
 	}
-}
+]
 
 /** Модификатор от характеристики, на которой основан навык skillName */
 export function getSkillStatModifier(skillName: ESkill, statsStore: IStatsStore, skillsStore: ISkillsStore): number {
 	const character = useCharacterStore()
 
-	const statAbbr: TStat = fullSkillsList[eskillAsNumber(skillName)].statType
+	const statAbbr: TStat = fullSkillsList.find(s => s.skill == skillName)!.statType
 	const statValue = statsStore.stats[statAbbr]
 	const modifier = statValue > 0 ? Math.ceil((statValue - 11) / 2) : 0
 

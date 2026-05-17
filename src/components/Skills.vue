@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ESkill, eskillAsNumber, fullSkillsList, getSkillStatModifier } from '../misc/skills'
-import { statsShorts } from '../misc/statsList'
+import { ESkill, fullSkillsList, getSkillStatModifier } from '../misc/skills'
 
 import { useSkillsStore } from '../stores/skillsStore'
 import { useStatsStore } from '../stores/statsStore'
@@ -30,12 +29,12 @@ function proficienciedSkillsCount(): number {
 	.blockTitle 🧠 Навыки
 		span.selectedCount(v-if="proficienciedSkillsCount()") (Выбрано: {{ proficienciedSkillsCount() }})
 	.blockBody
-		.skill(v-for="skill in ESkill" :key="skill")
+		.skill(v-for="skillDescr in fullSkillsList" :key="skillDescr.name")
 			label
-				input(type="checkbox" :checked="getProficiencyState(skill)" @change="setProficiencyState(skill, $event)")
-				span.name {{ fullSkillsList[eskillAsNumber(skill)].name }}
-				span.stat ({{ statsShorts[fullSkillsList[eskillAsNumber(skill)].statType] }})
-			span.value {{ 10 + getSkillStatModifier(skill, statsStore, skillsStore) }}
+				input(type="checkbox" :checked="getProficiencyState(skillDescr.skill)" @change="setProficiencyState(skillDescr.skill, $event)")
+				span.name {{ skillDescr.name }}
+				span.stat ({{ skillDescr.statType }})
+			span.value {{ 10 + getSkillStatModifier(skillDescr.skill, statsStore, skillsStore) }}
 </template>
 
 
