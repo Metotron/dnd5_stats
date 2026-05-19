@@ -1,8 +1,8 @@
 /** Характеристики персонажа */
 
 import { defineStore } from 'pinia'
-import { maxStatValue } from '../misc/statsList'
-import type { TStat, TStatsValues } from '../misc/statsList'
+import { maxStatValue } from '../baseLists/stats'
+import type { TStat, TStatsValues } from '../baseLists/stats'
 
 export interface IStatsStore {
 	generatedValues: number[],

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { fullArmorsList, getArmorClassName, shields, type TArmorDescription, type TShield } from '../misc/armorList'
+import { fullArmorsList, getArmorClassName, shields, type TArmorDescription, type TShield } from '../baseLists/armors'
 import { EGlobalEvents, subscribeOnEvent } from '../misc/globalEvents'
-import { getStatModifier, statsList } from '../misc/statsList'
+import { getStatModifier, statsList } from '../baseLists/stats'
 
 
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 
-import { ESkill } from '../misc/skills'
+import { ESkill } from '../baseLists/skills'
 import { useArmorStore } from '../stores/armorStore'
 import { useSkillsStore } from '../stores/skillsStore'
 import { useStatsStore } from '../stores/statsStore'

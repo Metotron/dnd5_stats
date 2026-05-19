@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { armorClasses, EShield, fullArmorsList, getArmorsOfClass, type EArmor, type TArmorDescription } from '../misc/armorList'
+import { armorClasses, EShield, fullArmorsList, getArmorsOfClass, type EArmor, type TArmorDescription } from '../baseLists/armors'
 
 import { useArmorStore } from '../stores/armorStore'
 

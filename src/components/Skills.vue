@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ESkill, fullSkillsList, getSkillStatModifier } from '../misc/skills'
+import { ESkill, fullSkillsList, getSkillStatModifier } from '../baseLists/skills'
 
 import { useSkillsStore } from '../stores/skillsStore'
 import { useStatsStore } from '../stores/statsStore'

@@ -1,7 +1,7 @@
 /** Характеристики надетых на персонажа доспехов */
 
 import { defineStore } from 'pinia'
-import { EShield, fullArmorsList, type EArmor } from '../misc/armorList'
+import { EShield, fullArmorsList, type EArmor } from '../baseLists/armors'
 import { useStatsStore } from './statsStore'
 
 export interface IArmorStore {

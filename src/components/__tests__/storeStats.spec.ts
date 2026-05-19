@@ -1,6 +1,6 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { maxStatValue } from '../../misc/statsList'
+import { maxStatValue } from '../../baseLists/stats'
 import { useStatsStore } from '../../stores/statsStore'
 
 describe('Тесты стора характеристик', () => {
@@ -18,9 +18,11 @@ describe('Тесты стора характеристик', () => {
 
 			store.resetStatsLinks()
 			expect(store.dataToStatsLinks[linkIndex]).toBeNull()
-
 		})
-		//TODO test: Протестировать store.isAllFieldsLinked
+
+		it(`Выставление флага isAllFieldsLinked при заполнении всех шести полей`, () => {
+			//TODO test: Протестировать store.isAllFieldsLinked
+		})
 	}
 
 	it('Задание числового значения для одной из сгенерированных характеристик', () => {

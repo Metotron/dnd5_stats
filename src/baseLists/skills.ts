@@ -1,7 +1,7 @@
 import { useCharacterStore } from '../stores/characterStore'
 import type { ISkillsStore } from '../stores/skillsStore'
 import type { IStatsStore } from '../stores/statsStore'
-import type { TStat } from './statsList'
+import type { TStat } from './stats'
 
 export enum ESkill {
 	athletics,

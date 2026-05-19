@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { EGlobalEvents, subscribeOnEvent } from '../misc/globalEvents'
-import type { TStat } from '../misc/statsList'
-import { maxStatValue, statsList } from '../misc/statsList'
+import type { TStat } from '../baseLists/stats'
+import { maxStatValue, statsList } from '../baseLists/stats'
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 

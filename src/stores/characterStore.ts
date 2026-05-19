@@ -5,7 +5,7 @@ import { charClasses, type CharClass } from '../misc/charClasses'
 
 export interface ICharacter {
 	name: string            // Имя
-	race: unknown           // Раса  //TODO сделать расы
+	race: unknown           // Раса  //TODO сделать расы со всеми их характеристиками
 	charClass: CharClass    // Класс
 	level: number           // Уровень
 	inspiration: boolean    // Наличие вдохновения
