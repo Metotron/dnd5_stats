@@ -1,21 +1,22 @@
 /** Характеристики персонажа */
 
 import { defineStore } from 'pinia'
-import { charClasses, type CharClass } from '../misc/charClasses'
+import { ECharClass, getClassDescription } from '../baseLists/classes'
+import { ERace } from '../baseLists/races'
 
 export interface ICharacter {
-	name: string            // Имя
-	race: unknown           // Раса  //TODO сделать расы со всеми их характеристиками
-	charClass: CharClass    // Класс
-	level: number           // Уровень
-	inspiration: boolean    // Наличие вдохновения
+	name: string           // Имя
+	race: ERace            // Раса
+	charClass: ECharClass  // Класс
+	level: number          // Уровень
+	inspiration: boolean   // Наличие вдохновения
 }
 
 export const useCharacterStore = defineStore('characted', {
 	state(): ICharacter { return {
 		name: '',
-		race: 'Расы ещё не добавлены',
-		charClass: 'fighter',
+		race: ERace['human.standard'],
+		charClass: ECharClass['fighter'],
 		level: 1,
 		inspiration: false
 	}},
@@ -25,13 +26,13 @@ export const useCharacterStore = defineStore('characted', {
 		setName(name: string) { this.name = name },
 
 		/** Установка расы */
-		changeRace(race: unknown) {
+		changeRace(race: ERace) {
 			this.race = race
 		},
 
 		/** Установка класса (мультикласс не поддерживается) */
-		setCharClass(className: CharClass) {
-			this.charClass = className
+		setCharClass(charClass: ECharClass) {
+			this.charClass = charClass
 		},
 
 		/** Увеличение уровня */
@@ -58,6 +59,6 @@ export const useCharacterStore = defineStore('characted', {
 		proficiencyBonus: state => Math.floor((state.level - 1) / 4) + 2,
 
 		/** Кость хитов (зависит от класса) */
-		hitDice: state => charClasses[state.charClass].hitDice
+		hitDice: state => getClassDescription(state.charClass).hitDice
 	}
 })
