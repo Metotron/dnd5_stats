@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { type CharClass, charClasses } from '../misc/charClasses'
 
 import { useCharacterStore } from '../stores/characterStore'
+import { charClassesList, ECharClass } from '../baseLists/classes'
 
 const character = useCharacterStore()
 
-const selectedCharClass = computed<CharClass>({
+const selectedCharClass = computed<ECharClass>({
 	get() { return character.charClass },
 	set(className) { character.setCharClass(className) }
 })
@@ -18,7 +18,7 @@ const selectedCharClass = computed<CharClass>({
 	.blockTitle 🧍 Класс персонажа
 	.blockBody
 		select(v-model="selectedCharClass")
-			option(v-for="(charParams, className) in charClasses" :key="className" :value="className") {{ charParams.name }}
+			option(v-for="cls in charClassesList" :key="cls.name" :value="cls.charClass") {{ cls.name }}
 		span.arrow →
 		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ character.hitDice }}
 </template>
