@@ -1,12 +1,11 @@
 /** Характеристики персонажа */
-//TODO Назвать Character и перенести в свой композабл. Всё о персонаже хранить тут
+//TODO объединить с characterStore и вынести в отдельный файл
 
 import { defineStore } from 'pinia'
 import { maxStatValue } from '../baseLists/stats'
 import type { TStat, TStatsValues } from '../baseLists/stats'
 
 export interface IStatsStore {
-	inspiration: boolean,  // Вдохновение мастера
 	generatedValues: number[],
 	stats: TStatsValues,
 	dataToStatsLinks: Record<number, TStat | null>
@@ -16,8 +15,6 @@ const valuesCount = 6
 
 export const useStatsStore = defineStore('stats', {
 	state(): IStatsStore { return {
-		inspiration: false,
-
 		/** Сгенерированные значения */
 		generatedValues: Array(valuesCount).fill(0),
 
