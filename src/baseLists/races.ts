@@ -3,6 +3,7 @@ import { EArmorClass } from './armors'
 import { ESkill } from './skills'
 import type { TStat } from './stats'
 import { ETool } from './tools'
+import { EWeapon, type EWeaponClass } from './weapons'
 
 export enum EBaseRace {
 	dwarf,
@@ -37,11 +38,10 @@ export type TBaseRaceDescription = {
 	statsModifiers?: Partial<Record<TStat, number>>[]  // Модификаторы характеристик
 	speed: TSpeed                    // Футов в секунду
 	size: TSize                      // Размер существа
-	darkvision: boolean              //TODO Добавить подсказку с описанием тёмного зраения на 60 футов при выводе на страницу
+	darkvision: boolean              //TODO Добавить подсказку с описанием тёмного зрения на 60 футов при выводе на страницу
 	languages: string[]
 	features?: string[]
-	weaponProfiencies?: string[]     //TODO Подставить идентификаторы категорий оружия
-	weaponCatProfiencies?: string[]  //FIXME Соединить с weaponProfiencies
+	weaponProfiencies?: (EWeapon | EWeaponClass)[]
 	armorProfiecies?: EArmorClass[]  // Владение классами доспехов
 	toolProfiencies?: ETool[]        // Владение инструментами
 	skills?: ESkill[]
@@ -58,7 +58,7 @@ const baseRaces: Record<EBaseRace, TBaseRaceDescription> = {
 			'Если вы совершаете проверку Интеллекта (История), связанную с происхождением работы по камню, вы считаетесь владеющим навыком История и добавляете к проверке удвоенный бонус мастерства вместо обычного',
 		],
 		languages: ['Общий', 'Дварфский'],
-		weaponCatProfiencies: ['Боевой топор', 'Ручной топор', 'Лёгкий молот', 'Боевой молот'], //xxx потом заменить на enum
+		weaponProfiencies: [EWeapon.battleaxe, EWeapon.handaxe, EWeapon.lighthammer, EWeapon.warhammer],
 		toolProfiencies: [ETool.brewer, ETool.smith, ETool.masons],
 	}),
 	[EBaseRace.elf]: createDescription(30, true, {
@@ -131,7 +131,7 @@ fullRacesList.push(createRace(EBaseRace.dwarf, ERace['dwarf.hill'], {
 fullRacesList.push(createRace(EBaseRace.elf, ERace['elf.high'], {
 	name: 'Высокий эльф',
 	statsModifiers: [{ int: 1 }],
-	weaponCatProfiencies: ['Короткий меч', 'Длинный меч', 'Короткий лук', 'Длинный лук'],
+	weaponProfiencies: [EWeapon.shortsword, EWeapon.longsword, EWeapon.shortbow, EWeapon.longbow],
 	languages: ['Один дополнительный язык на выбор'],
 	features: ['Вы знаете один заговор из списка заклинаний волшебника. Его базовая характеристика — интеллект'],
 }))
@@ -139,7 +139,7 @@ fullRacesList.push(createRace(EBaseRace.elf, ERace['elf.wood'], {
 	name: 'Лесной эльф',
 	statsModifiers: [{ wis: 1 }],
 	speed: 35,
-	weaponCatProfiencies: ['Короткий меч', 'Длинный меч', 'Короткий лук', 'Длинный лук'],
+	weaponProfiencies: [EWeapon.shortsword, EWeapon.longsword, EWeapon.shortbow, EWeapon.longbow],
 	features: [
 		'[Маскировка в дикой местности.] Вы можете предпринять попытку спрятаться, даже если вы слабо заслонены листвой, сильным дождём, снегопадом, туманом или другими природными явлениями'
 	],
@@ -147,7 +147,7 @@ fullRacesList.push(createRace(EBaseRace.elf, ERace['elf.wood'], {
 fullRacesList.push(createRace(EBaseRace.elf, ERace['elf.dark'], {
 	name: 'Тёмный эльф',
 	statsModifiers: [{ cha: 1 }],
-	weaponCatProfiencies: ['Рапира', 'Короткий меч', 'Ручной арбалет'],
+	weaponProfiencies: [EWeapon.rapier, EWeapon.shortsword, EWeapon.handcrossbow],
 	features: [
 		'Ваше тёмное зрение имеет радиус 120 футов',
 		'[Чувствительность к солнцу.] Вы совершаете с помехой броски атаки и проверки Мудрости (Внимательность), основанные на зрении, если вы, цель вашей атаки или изучаемый предмет расположены на прямом солнечном свете',
@@ -236,7 +236,6 @@ function makeEmptyDescription(speed: TSpeed = 25, darkvision = false): TBaseRace
 		darkvision,
 		statsModifiers: [],
 		features: [],
-		weaponCatProfiencies: [],
 		weaponProfiencies: [],
 		toolProfiencies: [],
 		languages: [],

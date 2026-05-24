@@ -53,7 +53,7 @@ export enum EWeapon {
 	trident,       // Трезубец
 	flail,         // Цеп
 
-	handcrowwbow,  // Ручной арбалет
+	handcrossbow,  // Ручной арбалет
 	heavycrossbow, // Тяжёлый арбалет
 	longbow,       // Длинный лук
 	blowgun,       // Духовая трубка
@@ -509,10 +509,10 @@ export const fullWeaponsList: TWeapon[] = [
 		weight: 2,
 		props: []
 	},
-	
+
 	// Воинское дальнобойное
 	{
-		id: EWeapon.handcrowwbow,
+		id: EWeapon.handcrossbow,
 		group: EWeaponClass['martial.ranged'],
 		name: 'Ручной арбалет',
 		cost: 75,
