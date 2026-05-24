@@ -57,8 +57,5 @@ export const useCharacterStore = defineStore('characted', {
 	getters: {
 		/** Актуальный бонус мастерства */
 		proficiencyBonus: state => Math.floor((state.level - 1) / 4) + 2,
-
-		/** Кость хитов (зависит от класса) */
-		hitDice: state => getClassDescription(state.charClass).hitDice
 	}
 })

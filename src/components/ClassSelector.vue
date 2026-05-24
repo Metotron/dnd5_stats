@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
+import { useCharacter } from '../composables/useCharacter'
+import { ECharClass, fullCharClassesList } from '../baseLists/classes';
 
-import { useCharacterStore } from '../stores/characterStore'
-import { charClassesList, ECharClass } from '../baseLists/classes'
+const { newCharacter, storeCharacter } = useCharacter()
 
-const character = useCharacterStore()
+const character = newCharacter()
+storeCharacter(character)
+const selectedCharClass = ref(ECharClass.fighter)
 
-const selectedCharClass = computed<ECharClass>({
-	get() { return character.charClass },
-	set(className) { character.setCharClass(className) }
-})
+watch(selectedCharClass, charClass => character.setClass(charClass))
 </script>
 
 
@@ -18,9 +18,9 @@ const selectedCharClass = computed<ECharClass>({
 	.blockTitle 🧍 Класс персонажа
 	.blockBody
 		select(v-model="selectedCharClass")
-			option(v-for="cls in charClassesList" :key="cls.name" :value="cls.charClass") {{ cls.name }}
+			option(v-for="cls in fullCharClassesList" :key="cls.name" :value="cls.charClass") {{ cls.name }}
 		span.arrow →
-		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ character.hitDice }}
+		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ character.charClass.hitDice }}
 </template>
 
 

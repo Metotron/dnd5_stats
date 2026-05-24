@@ -46,7 +46,7 @@ export const useStatsStore = defineStore('stats', {
 				this.dataToStatsLinks[idx] = null
 		},
 
-		/** Установка значений харатеристик в чарлисте
+		/** Установка значений характеристик в чарлисте
 		 * @param stat - Псевдоним характеристики
 		 * @param value - Устанавливаемое значение
 		 */

@@ -32,7 +32,7 @@ export enum ERace {
 type TSpeed = 25 | 30 | 35
 type TSize = 'small' | 'medium'
 
-type TBaseRaceDescription = {
+export type TBaseRaceDescription = {
 	name: string
 	statsModifiers?: Partial<Record<TStat, number>>[]  // Модификаторы характеристик
 	speed: TSpeed                    // Футов в секунду

@@ -19,18 +19,11 @@ export enum EArmorClass {
 	heavy
 }
 
-export type TArmorClassName = 'Лёгкий доспех' | 'Средний доспех' | 'Тяжёлый доспех'
-type TArmorClassDescription = Record<number, {
-	classType: EArmorClass,
-	name: TArmorClassName
-}>
-
-export const armorClasses: TArmorClassDescription = {
-	0: { classType: EArmorClass.light,  name: 'Лёгкий доспех' },
-	1: { classType: EArmorClass.medium, name: 'Средний доспех' },
-	2: { classType: EArmorClass.heavy,  name: 'Тяжёлый доспех' }
+export const armorClassName: Record<EArmorClass, string> = {
+	[EArmorClass.light]: 'Лёгкий доспех',
+	[EArmorClass.medium]: 'Средний доспех',
+	[EArmorClass.heavy]: 'Тяжёлый доспех'
 }
-
 
 export type TArmorDescription = {
 	id: EArmor,                  // Идентификатор доспеха
@@ -198,7 +191,7 @@ export enum EShield {
 export type TShield = {
 	id: EShield
 	name: string   // Наименование
-	cost: number  // Цена
+	cost: number   // Цена
 	AC: number     // Прибавка к классу брони
 	weight: number // Масса в фунтах
 }
@@ -210,11 +203,6 @@ export const shields: TShield[] = [{
 	AC: 2,
 	weight: 6
 }]
-
-/** Получение названия класса брони по enum-параметру */
-export function getArmorClassName(armorClass?: EArmorClass): TArmorClassName | undefined {
-	return Object.values(armorClasses).find(cls => cls.classType === armorClass)?.name
-}
 
 /** Получение списка доспехов указанного класса брони */
 export function getArmorsOfClass(armorClass: EArmorClass): TArmorDescription[] {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { fullArmorsList, getArmorClassName, shields, type TArmorDescription, type TShield } from '../baseLists/armors'
+import { armorClassName, fullArmorsList, shields, type TArmorDescription, type TShield } from '../baseLists/armors'
 import { EGlobalEvents, subscribeOnEvent } from '../misc/globalEvents'
 import { getStatModifier, statsList } from '../baseLists/stats'
 
@@ -107,7 +107,7 @@ const perceptionSkillComponent = computed<number>(() => {
 
 		.valueBlock(v-if="selectedArmor")
 			span Класс доспеха:
-			span.value {{ getArmorClassName(selectedArmor.group) }} (КД: {{ totalAC }})
+			span.value {{ armorClassName[selectedArmor.group] }} (КД: {{ totalAC }})
 		.valueBlock(v-else title="Рассчитывается из ловкости")
 			span Класс доспеха:
 			span.value Без доспеха (КД: {{ 10 + Number(getStatModifier(statsStore.stats.dex) ?? 0) }})
