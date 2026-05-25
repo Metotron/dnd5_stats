@@ -4,6 +4,7 @@ export enum ETool {
 	brewer,   // Инструменты пивовара
 	smith,    // Инструменты кузнеца
 	masons,   // Инструменты каменщика
+	tinkers,  // Инструменты жестянщика
 
 	//TODO Продолжить список
 	vehicles, // Транспорт
@@ -45,6 +46,10 @@ export const fullToolsList: Record<ETool, TTool> = {
 	[ETool.vehicles]: {
 		category: 'Транспорт',
 		name: 'Транспорт'
+	},
+	[ETool.tinkers]: {
+		category: 'Инструменты ремесленника',
+		name: 'Инструменты жестянщика'
 	}
 }
 
