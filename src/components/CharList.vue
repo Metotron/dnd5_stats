@@ -1,78 +1,40 @@
 <script setup lang="ts">
-import { armorClassName, fullArmorsList, shields, type TArmorDescription, type TShield } from '../baseLists/armors'
-import { EGlobalEvents, subscribeOnEvent } from '../misc/globalEvents'
-import { getStatModifier, statsList } from '../baseLists/stats'
+import { computed } from 'vue'
 
+import { getArmorClassNameByEnum } from '@/baseLists/armors'
+import { ESkill } from '@/baseLists/skills'
+import { getStatModifier, statsList } from '@/baseLists/stats'
 
-import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { useCharacter } from '@/composables/useCharacter'
 
-import { ESkill } from '../baseLists/skills'
-import { useArmorStore } from '../stores/armorStore'
-import { useSkillsStore } from '../stores/skillsStore'
-import { useStatsStore } from '../stores/statsStore'
-import { useCharacterStore } from '../stores/characterStore'
-
-const statsStore  = useStatsStore()
-const armorStore  = useArmorStore()
-const skillsStore = useSkillsStore()
-const character   = useCharacterStore()
-
-const abortController = new AbortController()
-onBeforeUnmount(() => abortController.abort())
-
-onMounted(() => {
-	subscribeOnEvent(EGlobalEvents.LoadValuesToCharlist, loadValuesToCharlist, abortController)
-})
-
-/** Выбранный доспех */
-const selectedArmor = computed<TArmorDescription | undefined>(() => {
-	return fullArmorsList.find(a => a.id === armorStore.selectedArmor)
-})
-/** Выбранный щит */
-const selectedShield = computed<TShield | undefined>(() => {
-	return shields.find(s => s.id === armorStore.shield)
-})
+const { newCharacter } = useCharacter()
+//FIXME Правильно достать персонажа из массива
+const character = newCharacter()
 
 // Класс брони с учётом модификаторов ловкости и щита
 const totalAC = computed<number | undefined>(() => {
-	if (!selectedArmor.value)
+	if (!character.armor.value)
 		return undefined
 
-	if (!selectedArmor.value.useDexModifier)
-		return selectedArmor.value.AC + (selectedShield.value?.AC ?? 0)
+	if (!character.armor.value.useDexModifier)
+		return character.armor.value.AC + (character.shield.value?.AC ?? 0)
 
-	let ACModifier = Number(getStatModifier(statsStore.stats.dex) ?? 0)
-	if (selectedArmor.value.maximumDexModifier)
-		ACModifier = Math.min(ACModifier, selectedArmor.value.maximumDexModifier)
+	let ACModifier = getStatModifier(character.stats.dex)
+	if (character.armor.value.maximumDexModifier)
+		ACModifier = Math.min(ACModifier, character.armor.value.maximumDexModifier)
 
-	return selectedArmor.value.AC + ACModifier + (selectedShield.value?.AC ?? 0)
+	return character.armor.value.AC + ACModifier + (character.shield.value?.AC ?? 0)
 })
-
-// Загрузка имеющихся значений характеристик
-function loadValuesToCharlist() {
-	const stats = statsStore.generatedValues
-	const statsLinks = statsStore.dataToStatsLinks
-
-	for (const idx in statsLinks) {
-		if (statsLinks[idx] === null)
-			continue
-
-		statsStore.setStatValue(statsLinks[idx], stats[idx])
-	}
-}
+const
+	hitCount = computed(() => character.hitDice.value + getStatModifier(character.stats.con)),
+	armorClass = computed(() => getArmorClassNameByEnum(character.armor.value?.group))
 
 /** Модификатор текстом (с отображением плюса спереди, если модификатор больше нуля) */
 function textModifier(statValue: number): string | undefined {
 	const modifier = getStatModifier(statValue)
-	if (modifier === undefined)
-		return undefined
-
 	return modifier < 0 ? modifier.toString() : '+' + modifier
 }
 
-const perceptionSkillComponent = computed<number>(() => {
-	return skillsStore.proficiencies[ESkill.perception] ? character.proficiencyBonus : 0
-})
 //TODO Отобразить наличие помехи для скрытности со стороны доспехов
 </script>
 
@@ -83,76 +45,73 @@ const perceptionSkillComponent = computed<number>(() => {
 	.blockBody
 		.valueBlock
 			.stats
-				div(v-for="(stat, statName) in statsStore.stats" :key="statName")
+				div(v-for="(stat, statName) in character.stats" :key="statName")
 					span {{ statsList[statName] }}:
 					span.statValue
 						| {{ stat }}
-						span.value(v-if="getStatModifier(stat) !== undefined") (#[span(title="Применяемый модификатор") {{ textModifier(stat) }}])
+						span.value (#[span(title="Применяемый модификатор") {{ textModifier(stat) }}])
 
-		.valueBlock(v-if="getStatModifier(statsStore.stats.dex) !== undefined")
+		.valueBlock
 			span Инициатива:
-			span.value {{ 10 + Number(getStatModifier(statsStore.stats.dex)) }}
+			span.value {{ 10 + Number(getStatModifier(character.stats.dex)) }}
 
-		.valueBlock(v-if="getStatModifier(statsStore.stats.wis) !== undefined")
+		.valueBlock
 			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
-			span.value {{ 10 + Number(getStatModifier(statsStore.stats.wis)) + perceptionSkillComponent }}
+			span.value {{ character.getProficiencyValue(ESkill.perception) }}
 
-		.valueBlock(v-if="getStatModifier(statsStore.stats.con) !== undefined")
-			span(:title="`Для каждого последующего уровня нужно бросать d${character.hitDice} и к значению прибавлять ${getStatModifier(statsStore.stats.con)}`") Количество хитов:
-			span.value {{ character.hitDice + Number(getStatModifier(statsStore.stats.con)) }}
+		.valueBlock
+			span(:title="`Для каждого последующего уровня нужно бросать d${character.hitDice} и к значению прибавлять ${getStatModifier(character.stats.con)}`") Количество хитов:
+			span.value {{ hitCount }}
 
 		.valueBlock
 			span(title="Зависит от выбранного класса") Кость хитов:
 			span.value d{{ character.hitDice }}
 
-		.valueBlock(v-if="selectedArmor")
+		.valueBlock(:title="character.armor ? '' : 'Рассчитывается из ловкости'")
 			span Класс доспеха:
-			span.value {{ armorClassName[selectedArmor.group] }} (КД: {{ totalAC }})
-		.valueBlock(v-else title="Рассчитывается из ловкости")
-			span Класс доспеха:
-			span.value Без доспеха (КД: {{ 10 + Number(getStatModifier(statsStore.stats.dex) ?? 0) }})
+			span.value(v-if="character.armor") {{ armorClass }} (КД: {{ totalAC }})
+			span.value(v-else) Без доспеха (КД: {{ 10 + getStatModifier(character.stats.dex) }})
 </template>
 
 
 <style lang="scss" scoped>
 .pageBlock.charList {
 	align-self: start;
+}
 
-	.blockBody {
-		padding-left: 0;
-		padding-right: 0;
+.blockBody {
+	padding-inline: 0;
+}
+
+.valueBlock {
+	border-bottom: 1px solid var(--borderColor);
+	padding: var(--blockPadding);
+	font-size: 16px;
+
+	&:first-child { padding-top: 0; }
+	&:last-child {
+		padding-bottom: 0;
+		border-bottom: none;
 	}
 
-	.valueBlock {
-		border-bottom: 1px solid var(--borderColor);
-		padding: var(--blockPadding);
-		font-size: 16px;
+	.statValue, .value {
+		display: inline-block;
+		color: var(--accentColor);
+		margin-left: .4em;
+	}
+}
 
-		&:first-child { padding-top: 0; }
-		&:last-child {
-			padding-bottom: 0;
-			border-bottom: none;
-		}
+.stats {
+	display: grid;
+	grid-template: repeat(3, auto) / 1.3fr 1fr;
+	grid-auto-flow: column;
+	gap: var(--blockPadding) calc(var(--blockPadding) * 2);
 
-		.statValue, .value {
-			display: inline-block;
-			color: var(--accentColor);
-			margin-left: 0.4em;
-		}
-
-		.statValue { color: #999; }
+	@media (600px < width <= 700px), (width <= 400px) {
+		grid-template-columns: 100%;
+		grid-auto-flow: row;
 	}
 
-	.stats {
-		display: grid;
-		grid-template: repeat(3, auto) / 1.3fr 1fr;
-		grid-auto-flow: column;
-		gap: var(--blockPadding) calc(var(--blockPadding) * 2);
-
-		@media (600px < width <= 700px), (width <= 400px) {
-			grid-template-columns: 100%;
-			grid-auto-flow: row;
-		}
-	}
+	.statValue { color: #999; }
 }
 </style>

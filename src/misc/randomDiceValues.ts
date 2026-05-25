@@ -1,14 +1,16 @@
+export type TDiceValues = [number, number, number, number, number, number]
+
 /** Генерация шести значений для дальнейшего распределения по характеристикам
  * @param generator - Генератор значения. Если не передавать, будет использована diceRoller()
  */
-export function getRandomDiceValues(generator: () => number = diceRoller): number[] {
-	return Array(6).fill(0).map(() => generator())
+export function getRandomDiceValues(generator: () => number = diceRoller): TDiceValues {
+	return [0, 0, 0, 0, 0, 0].map(() => generator()) as TDiceValues
 }
 
 /** Генерация одного случайного значения, являющегося суммой трёх лучших значений кубиков из четырёх брошенных */
 function diceRoller(): number {
 	// Заполняем 4 случайных значения, чтобы затем убрать минимальное
-	const values = Array(4).fill(0).map(() => Math.floor(Math.random() * 6 + 1))
+	const values = [0, 0, 0, 0].map(() => Math.floor(Math.random() * 6 + 1))
 
 	return discardOneMinimum(values).reduce((s, v) => s + v)
 }

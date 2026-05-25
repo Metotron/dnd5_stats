@@ -34,7 +34,7 @@ export const fullCharClassesList: TCharClass[] = [
 	{ charClass: ECharClass.rogue,     name: 'Плут',      hitDice: 8 },
 	{ charClass: ECharClass.ranger,    name: 'Следопыт',  hitDice: 10 },
 	{ charClass: ECharClass.sorcerer,  name: 'Чародей',   hitDice: 6 },
-]
+] as const
 
 export function getClassValue(charClass: ECharClass): TCharClass {
 	return fullCharClassesList.find(ccl => ccl.charClass == charClass)!

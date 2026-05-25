@@ -10,20 +10,26 @@ export enum EArmor {
 	ringMail,
 	chainMail,
 	splint,
-	plate
+	plate,
 }
 
 export enum EArmorClass {
 	light,
 	medium,
-	heavy
+	heavy,
 }
 
-export const armorClassName: Record<EArmorClass, string> = {
-	[EArmorClass.light]: 'Лёгкий доспех',
-	[EArmorClass.medium]: 'Средний доспех',
-	[EArmorClass.heavy]: 'Тяжёлый доспех'
-}
+export const armorClassList: { armorClass: EArmorClass, name: string }[] = [{
+		armorClass: EArmorClass.light,
+		name: 'Лёгкий доспех',
+	}, {
+		armorClass: EArmorClass.medium,
+		name: 'Средний доспех'
+	}, {
+		armorClass: EArmorClass.heavy,
+		name: 'Тяжёлый доспех'
+	},
+]
 
 export type TArmorDescription = {
 	id: EArmor,                  // Идентификатор доспеха
@@ -51,8 +57,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	cost: 5,
 	useDexModifier: true,
 	stealthDisadvantage: true
-},
-{
+}, {
 	id: EArmor.leather,
 	group: EArmorClass.light,
 	putOnTime: 1,
@@ -62,8 +67,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 10,
 	cost: 10,
 	useDexModifier: true
-},
-{
+}, {
 	id: EArmor.studdedLeather,
 	group: EArmorClass.light,
 	putOnTime: 1,
@@ -73,8 +77,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 13,
 	cost: 45,
 	useDexModifier: true
-},
-{
+}, {
 	id: EArmor.hide,
 	group: EArmorClass.medium,
 	putOnTime: 5,
@@ -85,8 +88,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	cost: 10,
 	useDexModifier: true,
 	maximumDexModifier: 2
-},
-{
+}, {
 	id: EArmor.chainShirt,
 	group: EArmorClass.medium,
 	putOnTime: 5,
@@ -97,8 +99,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	cost: 50,
 	useDexModifier: true,
 	maximumDexModifier: 2
-},
-{
+}, {
 	id: EArmor.scaleMail,
 	group: EArmorClass.medium,
 	putOnTime: 5,
@@ -110,8 +111,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	useDexModifier: true,
 	maximumDexModifier: 2,
 	stealthDisadvantage: true
-},
-{
+}, {
 	id: EArmor.breastplate,
 	group: EArmorClass.medium,
 	putOnTime: 5,
@@ -122,8 +122,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	cost: 400,
 	useDexModifier: true,
 	maximumDexModifier: 2
-},
-{
+}, {
 	id: EArmor.halfPlate,
 	group: EArmorClass.medium,
 	putOnTime: 5,
@@ -135,8 +134,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	useDexModifier: true,
 	stealthDisadvantage: true,
 	maximumDexModifier: 2
-},
-{
+}, {
 	id: EArmor.ringMail,
 	group: EArmorClass.heavy,
 	putOnTime: 10,
@@ -146,8 +144,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 40,
 	cost: 30,
 	stealthDisadvantage: true
-},
-{
+}, {
 	id: EArmor.chainMail,
 	group: EArmorClass.heavy,
 	putOnTime: 10,
@@ -158,8 +155,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	cost: 75,
 	minimumStr: 13,
 	stealthDisadvantage: true
-},
-{
+}, {
 	id: EArmor.splint,
 	group: EArmorClass.heavy,
 	putOnTime: 10,
@@ -170,8 +166,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	cost: 200,
 	minimumStr: 15,
 	stealthDisadvantage: true
-},
-{
+}, {
 	id: EArmor.plate,
 	group: EArmorClass.heavy,
 	putOnTime: 10,
@@ -182,12 +177,13 @@ export const fullArmorsList: TArmorDescription[] = [{
 	cost: 1500,
 	minimumStr: 15,
 	stealthDisadvantage: true
-}]
+}] as const
 
 
 export enum EShield {
-	standard
+	standard,      // Обычный щит с +2 к КД
 }
+
 export type TShield = {
 	id: EShield
 	name: string   // Наименование
@@ -195,14 +191,21 @@ export type TShield = {
 	AC: number     // Прибавка к классу брони
 	weight: number // Масса в фунтах
 }
+
 // Щиты
-export const shields: TShield[] = [{
+export const fullShieldsList: TShield[] = [{
 	id: EShield.standard,
 	name: 'Обычный щит',
 	cost: 10,
 	AC: 2,
 	weight: 6
-}]
+}] as const
+
+/** Получение названия типа брони по enum */
+export function getArmorClassNameByEnum(classEnum: EArmorClass | undefined): string {
+	if (classEnum === undefined) return ''
+	return armorClassList.find(cl => cl.armorClass === classEnum)!.name
+}
 
 /** Получение списка доспехов указанного класса брони */
 export function getArmorsOfClass(armorClass: EArmorClass): TArmorDescription[] {

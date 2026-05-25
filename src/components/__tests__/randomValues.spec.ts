@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { getRandomDiceValues, discardOneMinimum } from '../../misc/randomDiceValues'
+import { getRandomDiceValues, discardOneMinimum } from '@/../misc/randomDiceValues'
 
 describe('Проверка работы генератора значений кубиков', () => {
 	const numbersGenerator = vi.fn()

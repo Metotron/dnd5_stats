@@ -1,25 +1,17 @@
 <script setup lang="ts">
-import { ESkill, fullSkillsList, getSkillStatModifier } from '../baseLists/skills'
+import { computed } from 'vue'
+import { type ESkill, fullSkillsList } from '@/baseLists/skills'
 
-import { useSkillsStore } from '../stores/skillsStore'
-import { useStatsStore } from '../stores/statsStore'
+import { getSkillModifier, useCharacter } from '@/composables/useCharacter'
 
-const skillsStore = useSkillsStore()
-const statsStore = useStatsStore()
+const { newCharacter } = useCharacter()
+//FIXME Правильно достать персонажа
+const character = newCharacter()
 
-/** Наличие владения навыком */
-function getProficiencyState(skill: ESkill): boolean {
-	return skillsStore.proficiencies[skill]
-}
+const checkedSkillsCount = computed(() => character.proficienciesCount)
 
-/** Сохранение в сторе состояния владения характеристикой */
-function setProficiencyState(skill: ESkill, event: Event) {
-	skillsStore.setProficiency(skill, (event.target as HTMLInputElement).checked)
-}
-
-/** Количество отмеченных характеристик */
-function proficienciedSkillsCount(): number {
-	return Object.values(skillsStore.proficiencies).reduce((count, prof) => count += Number(prof), 0)
+function changeProficiencyState(skill: ESkill, ev: Event) {
+	character.setProficiency(skill, (<HTMLInputElement>ev.target).checked)
 }
 </script>
 
@@ -27,16 +19,15 @@ function proficienciedSkillsCount(): number {
 <template lang="pug">
 .pageBlock.skills
 	.blockTitle 🧠 Навыки
-		span.selectedCount(v-if="proficienciedSkillsCount()" title="Сбросить" @click="skillsStore.resetProficiencies()") (Выбрано: {{ proficienciedSkillsCount() }})
+		span.selectedCount(v-if="checkedSkillsCount" title="Сбросить" @click="character.resetProficiencies()") (Выбрано: {{ checkedSkillsCount }})
 	.blockBody
 		.skill(v-for="skillDescr in fullSkillsList" :key="skillDescr.name" :data-skill="skillDescr.statType")
 			label
-				input(type="checkbox" :checked="getProficiencyState(skillDescr.skill)" @change="setProficiencyState(skillDescr.skill, $event)")
-				span.name(:class="{ selected: skillsStore.proficiencies[skillDescr.skill] }") {{ skillDescr.name }}
+				input(type="checkbox" :checked="character.hasProficiency(skillDescr.skill)" @change="changeProficiencyState(skillDescr.skill, $event)")
+				span.name(:class="{ selected: character.hasProficiency(skillDescr.skill) }") {{ skillDescr.name }}
 				span.stat ({{ skillDescr.statType }})
-			span.value {{ 10 + getSkillStatModifier(skillDescr.skill, statsStore, skillsStore) }}
+			span.value {{ 10 + getSkillModifier(skillDescr.skill, character) }}
 </template>
-
 
 <style lang="scss" scoped>
 .blockBody {

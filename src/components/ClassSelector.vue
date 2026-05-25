@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { useCharacter } from '../composables/useCharacter'
-import { ECharClass, fullCharClassesList } from '../baseLists/classes';
+import { useCharacter } from '@/composables/useCharacter'
+import { ECharClass, fullCharClassesList } from '@/baseLists/classes';
 
 const { newCharacter, storeCharacter } = useCharacter()
 
@@ -9,7 +9,7 @@ const character = newCharacter()
 storeCharacter(character)
 const selectedCharClass = ref(ECharClass.fighter)
 
-watch(selectedCharClass, charClass => character.setClass(charClass))
+watch(selectedCharClass, charClass => character.charClass.value = charClass)
 </script>
 
 
@@ -20,7 +20,7 @@ watch(selectedCharClass, charClass => character.setClass(charClass))
 		select(v-model="selectedCharClass")
 			option(v-for="cls in fullCharClassesList" :key="cls.name" :value="cls.charClass") {{ cls.name }}
 		span.arrow →
-		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ character.charClass.hitDice }}
+		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ character.hitDice }}
 </template>
 
 
@@ -42,6 +42,6 @@ select { width: 100%; }
 
 .hitDice {
 	color: var(--accentColor);
-	font-size: 0.85rem;
+	font-size: .85rem;
 }
 </style>

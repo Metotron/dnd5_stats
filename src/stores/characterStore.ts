@@ -1,8 +1,8 @@
 /** Характеристики персонажа */
 
 import { defineStore } from 'pinia'
-import { ECharClass, getClassDescription } from '../baseLists/classes'
-import { ERace } from '../baseLists/races'
+import { ECharClass, getClassDescription } from '@/baseLists/classes'
+import { ERace } from '@/baseLists/races'
 
 export interface ICharacter {
 	name: string           // Имя

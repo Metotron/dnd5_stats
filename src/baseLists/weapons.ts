@@ -580,8 +580,8 @@ export const fullWeaponsList: TWeapon[] = [
 			generateProp(EProp.thrown, 5, 15),
 			generateProp(EProp.special),
 		]
-	},
-]
+	}
+] as const
 
 function generateProp(prop: EProp.versatile, damage: number): Extract<TProp, { prop: EProp.versatile }>
 function generateProp(prop: EProp.thrown | EProp.ammunition, normal: number, max: number): Extract<TProp, { prop: EProp.thrown }>

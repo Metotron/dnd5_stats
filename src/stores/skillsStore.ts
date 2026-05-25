@@ -1,7 +1,7 @@
 /** Владение навыками персонажем */
 
 import { defineStore } from 'pinia'
-import { ESkill } from '../baseLists/skills'
+import { ESkill } from '@/baseLists/skills'
 
 export interface ISkillsStore {
 	proficiencies: Record<ESkill, boolean>

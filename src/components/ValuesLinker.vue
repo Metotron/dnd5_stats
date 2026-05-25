@@ -1,42 +1,58 @@
 <script setup lang="ts">
-import { getRandomDiceValues } from '../misc/randomDiceValues'
-import { EGlobalEvents, fireEvent } from '../misc/globalEvents'
+import { onMounted, ref, watch } from 'vue'
 
-import { ref, onMounted } from 'vue'
-import ValueLink from '../components/ValueLink.vue'
+import { statsArray, type TStat } from '@/baseLists/stats'
+import ValueLink from '@/components/ValueLink.vue'
+import { getRandomDiceValues, type TDiceValues } from '@/misc/randomDiceValues'
 
-import { useStatsStore } from '../stores/statsStore'
+import { useCharacter } from '@/composables/useCharacter'
+//FIXME Правильно достать персонажа
+const { newCharacter } = useCharacter()
 
-// Сгенерированные значения характеристик
-const diceValues = ref<number[]>([])
+const character = newCharacter()
 
-const statsStore = useStatsStore()
+// Сгенерированные значения (сумма трёх лучших кубиков из четырёх)
+const diceValues = ref<TDiceValues>([0, 0, 0, 0, 0, 0])
+
+type TLnk = TStat | undefined
+const u = undefined
+/** К чему привязаны значения diceValues. Значения в тех же индексах */
+const linkedToStat = ref<[TLnk, TLnk, TLnk, TLnk, TLnk, TLnk]>([u, u, u, u, u, u])
+
+watch(linkedToStat, () => {
+	// Обнуление привязок → характеристики должны стать десятками
+	for (const stat of statsArray)
+		character.setStat(stat, 10)
+
+	// Если в linkedToStat есть привязки (не undefined), то в них кладётся то, что находится в соответствующем индексе diceValues
+	for (const idx in linkedToStat.value)
+		if (linkedToStat.value[idx] !== undefined)
+			character.setStat(linkedToStat.value[idx], diceValues.value[idx])
+})
+
+function resetLinks() {
+	linkedToStat.value = [u, u, u, u, u, u]
+}
 
 onMounted(() => {
+	//TODO Сделать возможность выбора между генерацией и закупкой
 	generateDiceValues()  // Генерация стартовых значений характеристик
 })
 
 /** Обновление сгенерированного списка числовых значений и сброс имеющихся привязок */
 function generateDiceValues() {
 	diceValues.value = getRandomDiceValues()
-}
-
-/** Сброс привязки характеристик к исходным числовым значениям */
-function resetStatLinks() {
-	// Событие слушают ValueLink, чтобы сбросить состояние своих селектов
-	fireEvent(EGlobalEvents.ResetStatsStore)
-}
-
-/** Загрузка числовых данных в чарлист */
-function loadValuesToCharlist() {
-	// Событие слушается в компоненте CharList
-	fireEvent(EGlobalEvents.LoadValuesToCharlist)
+	resetLinks()
 }
 
 /** Автоматическая расстановка привязок */
 function autoLink() {
-	// Событие слушают компоненты ValueLink и каждый ставит привязку согласно своему valueIndex
-	fireEvent(EGlobalEvents.AutoLinkStats)
+	linkedToStat.value[0] = 'str'
+	linkedToStat.value[1] = 'dex'
+	linkedToStat.value[2] = 'con'
+	linkedToStat.value[3] = 'int'
+	linkedToStat.value[4] = 'wis'
+	linkedToStat.value[5] = 'cha'
 }
 </script>
 
@@ -46,18 +62,19 @@ function autoLink() {
 	.blockTitle 🎲 Числовые значения
 	.blockBody
 		.buttons.asymmetric
-			input.fullWidth(type="button" value="🔧 Сгенерировать" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3-18)" @click="generateDiceValues")
+			input.fullWidth(type="button" value="🔧 Перебросить" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3-18)" @click="generateDiceValues")
 			input.short(type="button" value="⤵️" title="Автопривязка" @click="autoLink")
 		.valuesToStats
 			ValueLink(
 				v-for="(value, idx) in diceValues"
-				:value="value"
-				:value-index="idx"
+				:value
+				:linked="linkedToStat"
+				v-model:dicevalue.number="diceValues[idx]"
+				v-model="linkedToStat[idx]"
 				:key="idx"
 			)
 		.buttons
-			input(type="button" value="📝 Применить" @click="loadValuesToCharlist" :disabled="!statsStore.isAllFieldsLinked")
-			input(type="button" value="♻️ Сбросить" @click="resetStatLinks")
+			input(type="button" value="♻️ Сбросить" @click="resetLinks()")
 </template>
 
 

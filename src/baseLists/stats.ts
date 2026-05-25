@@ -1,5 +1,5 @@
 export type TStat = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
-export type TStatsValues = Record<TStat, number>  // Числовое значение проверяется в setStatValue() в сторе
+export const statsArray: TStat[] = ['str', 'dex', 'con', 'int', 'wis', 'cha']
 
 type TStatDescription = {
 	name: string
@@ -18,10 +18,14 @@ export const statsList: Record<TStat, TStatDescription> = {
 // Максимальное значение характеристики (в книге игрока — 30)
 export const maxStatValue = 30
 
-/** Расчёт модификатора характеристики */
-export function getStatModifier(statValue: number): number | undefined {
-	if (statValue < 1 || statValue > maxStatValue)
-		return undefined
+export function isStatValueInRange(statValue: number | undefined): boolean {
+	return statValue !== undefined && statValue > 1 && statValue <= maxStatValue
+}
 
-	return Math.ceil((statValue - 11) / 2)
+/** Расчёт модификатора характеристики */
+export function getStatModifier(statValue: number): number {
+	if (isStatValueInRange(statValue))
+		return Math.floor((statValue - 1) / 2)
+	
+	throw new Error('Неправильное значение характеристик персонажа')
 }

@@ -1,4 +1,4 @@
-import { merge } from '../misc/commonUtils'
+import { merge } from '@/misc/commonUtils'
 import { EArmorClass } from './armors'
 import { ESkill } from './skills'
 import type { TStat } from './stats'
@@ -56,9 +56,9 @@ export type TBaseRaceDescription = {
 	darkvision: boolean              //TODO Добавить подсказку с описанием тёмного зрения на 60 футов при выводе на страницу
 	languages: string[]
 	features?: string[]
-	weaponProfiencies?: (EWeapon | EWeaponClass)[]
+	weaponProficiencies?: (EWeapon | EWeaponClass)[]
 	armorProfiecies?: EArmorClass[]  // Владение классами доспехов
-	toolProfiencies?: ETool[]        // Владение инструментами
+	toolProficiencies?: ETool[]        // Владение инструментами
 	skills?: ESkill[]
 }
 
@@ -73,8 +73,8 @@ const baseRaces: Record<EBaseRace, TBaseRaceDescription> = {
 			'При проверке Интеллекта (История), связанной с происхождением работы по камню, вы считаетесь владеющим навыком {История}, добавляете к проверке удвоенный бонус мастерства',
 		],
 		languages: ['Общий', 'Дварфский'],
-		weaponProfiencies: [EWeapon.battleaxe, EWeapon.handaxe, EWeapon.lighthammer, EWeapon.warhammer],
-		toolProfiencies: [ETool.brewer, ETool.smith, ETool.masons],
+		weaponProficiencies: [EWeapon.battleaxe, EWeapon.handaxe, EWeapon.lighthammer, EWeapon.warhammer],
+		toolProficiencies: [ETool.brewer, ETool.smith, ETool.masons],
 	}),
 	[EBaseRace.elf]: createDescription(30, true, {
 		name: 'Эльф',
@@ -102,9 +102,8 @@ const baseRaces: Record<EBaseRace, TBaseRaceDescription> = {
 		name: 'Человек',
 		languages: ['Общий', 'Один язык на выбор'],
 	}),
-	[EBaseRace.dragonborn]: createDescription({
+	[EBaseRace.dragonborn]: createDescription(30, {
 		name: 'Драконорожденный',
-		speed: 30,
 		statsModifiers: [{ str: 2 }, { cha: 1 }],
 		languages: ['Общий', 'Драконий'],
 		features: ['[Оружие дыхания.] Можете действием выдохнуть разрушительную энергию']
@@ -161,169 +160,170 @@ export const fullRacesList: TRace[] = [
 	createRace(EBaseRace.halfelf, ERace['halfelf.standard'], {}),
 	createRace(EBaseRace.halforc, ERace['halforc.standard'], {}),
 	createRace(EBaseRace.tiefling, ERace['tiefling.standard'], {}),
-]
-
-// Дварфы
-fullRacesList.push(createRace(EBaseRace.dwarf, ERace['dwarf.mountain'], {
-	name: 'Горный дварф',
-	statsModifiers: [{ str: 2 }],
-	armorProfiecies: [EArmorClass.light, EArmorClass.medium],
-}))
-fullRacesList.push(createRace(EBaseRace.dwarf, ERace['dwarf.hill'], {
-	name: 'Горный дварф',
-	statsModifiers: [{ wis: 1 }],
-	features: ['[Дварфская выдержка.] Максимум хитов увеличивается на 1 за каждый уровень включая первый'],
-}))
 
 
-// Эльфы
-fullRacesList.push(createRace(EBaseRace.elf, ERace['elf.high'], {
-	name: 'Высокий эльф',
-	statsModifiers: [{ int: 1 }],
-	weaponProfiencies: [EWeapon.shortsword, EWeapon.longsword, EWeapon.shortbow, EWeapon.longbow],
-	languages: ['Один дополнительный язык на выбор'],
-	features: ['Знаете один заговор из списка заклинаний волшебника. Его базовая характеристика — Интеллект'],
-}))
-fullRacesList.push(createRace(EBaseRace.elf, ERace['elf.wood'], {
-	name: 'Лесной эльф',
-	statsModifiers: [{ wis: 1 }],
-	speed: 35,
-	weaponProfiencies: [EWeapon.shortsword, EWeapon.longsword, EWeapon.shortbow, EWeapon.longbow],
-	features: [
-		'[Маскировка в дикой местности.] Можете предпринять попытку спрятаться, даже если вы слабо заслонены листвой, сильным дождём, снегопадом, туманом или другими природными явлениями'
-	],
-}))
-fullRacesList.push(createRace(EBaseRace.elf, ERace['elf.dark'], {
-	name: 'Тёмный эльф',
-	statsModifiers: [{ cha: 1 }],
-	weaponProfiencies: [EWeapon.rapier, EWeapon.shortsword, EWeapon.handcrossbow],
-	features: [
-		'Тёмное зрение имеет радиус 120 футов',
-		'[Чувствительность к солнцу.] Помеха при броске атаки и проверке Мудрости (Внимательность), основанной на зрении, если вы, цель вашей атаки или изучаемый предмет расположены на прямом солнечном свете',
-		'Знаете заклинание {пляшущие огоньки}',
-	],
-}))
+	// Дварфы
+	createRace(EBaseRace.dwarf, ERace['dwarf.mountain'], {
+		name: 'Горный дварф',
+		statsModifiers: [{ str: 2 }],
+		armorProfiecies: [EArmorClass.light, EArmorClass.medium],
+	}),
+	createRace(EBaseRace.dwarf, ERace['dwarf.hill'], {
+		name: 'Горный дварф',
+		statsModifiers: [{ wis: 1 }],
+		features: ['[Дварфская выдержка.] Максимум хитов увеличивается на 1 за каждый уровень включая первый'],
+	}),
 
 
-// Полурослики
-fullRacesList.push(createRace(EBaseRace.halfling, ERace['halfling.lightfoot'],{
-	name: 'Легконогий полурослик',
-	statsModifiers: [{ cha: 1 }],
-	features: ['[Естественная скрытность.] Можете предпринять попытку скрыться даже если заслонены только существом, превосходящими вас в размере как минимум на одну категорию'],
-}))
-fullRacesList.push(createRace(EBaseRace.halfling, ERace['halfling.stout'], {
-	name: 'Коренастый полурослик',
-	statsModifiers: [{ con: 1 }],
-	features: ['[Устойчивость коренастых.] Преимущество при спасброске от яда. Сопротивление к урону ядом'],
-}))
+	// Эльфы
+	createRace(EBaseRace.elf, ERace['elf.high'], {
+		name: 'Высокий эльф',
+		statsModifiers: [{ int: 1 }],
+		weaponProficiencies: [EWeapon.shortsword, EWeapon.longsword, EWeapon.shortbow, EWeapon.longbow],
+		languages: ['Один дополнительный язык на выбор'],
+		features: ['Знаете один заговор из списка заклинаний волшебника. Его базовая характеристика — Интеллект'],
+	}),
+	createRace(EBaseRace.elf, ERace['elf.wood'], {
+		name: 'Лесной эльф',
+		statsModifiers: [{ wis: 1 }],
+		speed: 35,
+		weaponProficiencies: [EWeapon.shortsword, EWeapon.longsword, EWeapon.shortbow, EWeapon.longbow],
+		features: [
+			'[Маскировка в дикой местности.] Можете предпринять попытку спрятаться, даже если вы слабо заслонены листвой, сильным дождём, снегопадом, туманом или другими природными явлениями'
+		],
+	}),
+	createRace(EBaseRace.elf, ERace['elf.dark'], {
+		name: 'Тёмный эльф',
+		statsModifiers: [{ cha: 1 }],
+		weaponProficiencies: [EWeapon.rapier, EWeapon.shortsword, EWeapon.handcrossbow],
+		features: [
+			'Тёмное зрение имеет радиус 120 футов',
+			'[Чувствительность к солнцу.] Помеха при броске атаки и проверке Мудрости (Внимательность), основанной на зрении, если вы, цель вашей атаки или изучаемый предмет расположены на прямом солнечном свете',
+			'Знаете заклинание {пляшущие огоньки}',
+		],
+	}),
 
 
-// Люди
-fullRacesList.push(createRace(EBaseRace.human, ERace['human.standard'], {
-	name: 'Человек',
-	features: ['Значения всех характеристик увеличиваются на 1'],
-}))
-fullRacesList.push(createRace(EBaseRace.human, ERace['human.variant'],{
-	name: 'Человек (альт.)',
-	features: [
-		'Значения двух любых характеристик увеличиваются на 1',
-		'Владение одним навыком на выбор',
-		'Одна черта на выбор',
-	],
-}))
+	// Полурослики
+	createRace(EBaseRace.halfling, ERace['halfling.lightfoot'],{
+		name: 'Легконогий полурослик',
+		statsModifiers: [{ cha: 1 }],
+		features: ['[Естественная скрытность.] Можете предпринять попытку скрыться даже если заслонены только существом, превосходящими вас в размере как минимум на одну категорию'],
+	}),
+	createRace(EBaseRace.halfling, ERace['halfling.stout'], {
+		name: 'Коренастый полурослик',
+		statsModifiers: [{ con: 1 }],
+		features: ['[Устойчивость коренастых.] Преимущество при спасброске от яда. Сопротивление к урону ядом'],
+	}),
 
 
-// Драконорожденные
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.white'], {
-	name: 'Драконорожденный (белый дракон)',
-	features: [
-		'[Оружие дыхания.] Холод: 15-фт. конус (спас. Тел.)',
-		'Сопротивление к урону холодом',
-	]
-}))
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.bronze'], {
-	name: 'Драконорожденный (бронзовый дракон)',
-	features: [
-		'[Оружие дыхания.] Электричество: линия 5 на 30 фт. (спас. Лов.)',
-		'Сопротивление к урону электричеством',
-	]
-}))
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.green'], {
-	name: 'Драконорожденный (зелёный дракон)',
-	features: [
-		'[Оружие дыхания.] Яд: 15-фт. конус (спас. Тел.)',
-		'Сопротивление к урону ядом',
-	]
-}))
+	// Люди
+	createRace(EBaseRace.human, ERace['human.standard'], {
+		name: 'Человек',
+		features: ['Значения всех характеристик увеличиваются на 1'],
+	}),
+	createRace(EBaseRace.human, ERace['human.variant'],{
+		name: 'Человек (альт.)',
+		features: [
+			'Значения двух любых характеристик увеличиваются на 1',
+			'Владение одним навыком на выбор',
+			'Одна черта на выбор',
+		],
+	}),
 
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.gold'], {
-	name: 'Драконорожденный (золотой дракон)',
-	features: [
-		'[Оружие дыхания.] Огонь: 15-фт. конус (спас. Лов.)',
-		'Сопротивление к урону огнём',
-	]
-}))
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.red'], {
-	name: 'Драконорожденный ( дракон)',
-	features: [
-		'[Оружие дыхания.] Огонь: 15-фт. конус (спас. Лов.)',
-		'Сопротивление к урону огнём',
-	]
-}))
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.brass'], {
-	name: 'Драконорожденный (латунный дракон)',
-	features: [
-		'[Оружие дыхания.] Огонь: линия 5 на 30 фт. (спас. Лов.)',
-		'Сопротивление к урону огнём',
-	]
-}))
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.copper'], {
-	name: 'Драконорожденный (медный дракон)',
-	features: [
-		'[Оружие дыхания.] Кислота: линия 5 на 30 фт. (спас. Лов.)',
-		'Сопротивление к урону кислотой',
-	]
-}))
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.silver'], {
-	name: 'Драконорожденный (серебряный дракон)',
-	features: [
-		'[Оружие дыхания.] Холод: 15-фт. конус (спас. Тел.)',
-		'Сопротивление к урону холодом',
-	]
-}))
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.blue'], {
-	name: 'Драконорожденный (синий дракон)',
-	features: [
-		'[Оружие дыхания.] Электричество: линия 5 на 30 фт. (спас. Лов.)',
-		'Сопротивление к урону электричеством',
-	]
-}))
-fullRacesList.push(createRace(EBaseRace.dragonborn, ERace['dragonborn.black'], {
-	name: 'Драконорожденный (чёрный дракон)',
-	features: [
-		'[Оружие дыхания.] Кислота: линия 5 на 30 фт. (спас. Лов.)',
-		'Сопротивление к урону кислотой',
-	]
-}))
 
-// Гномы
-fullRacesList.push(createRace(EBaseRace.gnome, ERace['gnome.forest'], {
-	name: 'Лесной гном',
-	statsModifiers: [{ dex: 1 }],
-	features: [
-		'[Природная иллюзия.] Знаете заклинание {малая иллюзия}. Его базовая характеристика — Интеллект',
-		'С помощью звуков и жестов вы можете передавать простые понятия Маленьким или ещё меньшим зверям',
-	]
-}))
-fullRacesList.push(createRace(EBaseRace.gnome, ERace['gnome.rock'], {
-	name: 'Скальный гном',
-	statsModifiers: [{ con: 1 }],
-	toolProfiencies: [ETool.tinkers],
-	features: [
-		'При совершении проверки Интеллекта (История) применительно к магическому, алхимическому или технологическому объекту, вы можете добавить к проверке удвоенный бонус мастерства вместо обычного',
-		'С помощью инструментов жестянщика, потратив час времени и материалы на сумму 10 зм, можно создать Крошечное механическое устройство (КД 5, 1 хит) из списка: [Заводная игрушка, Зажигалка, Музыкальная шкатулка]. Оно перестаёт работать через 24 часа (если не потратить час на поддержание его работы). Вы можете действием разобрать его, тогда можно получить обратно использованные материалы. Одновременно можно иметь не более трёх таких устройств'
-	]
-}))
+	// Драконорожденные
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.white'], {
+		name: 'Драконорожденный (белый дракон)',
+		features: [
+			'[Оружие дыхания.] Холод: 15-фт. конус (спас. Тел.)',
+			'Сопротивление к урону холодом',
+		]
+	}),
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.bronze'], {
+		name: 'Драконорожденный (бронзовый дракон)',
+		features: [
+			'[Оружие дыхания.] Электричество: линия 5 на 30 фт. (спас. Лов.)',
+			'Сопротивление к урону электричеством',
+		]
+	}),
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.green'], {
+		name: 'Драконорожденный (зелёный дракон)',
+		features: [
+			'[Оружие дыхания.] Яд: 15-фт. конус (спас. Тел.)',
+			'Сопротивление к урону ядом',
+		]
+	}),
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.gold'], {
+		name: 'Драконорожденный (золотой дракон)',
+		features: [
+			'[Оружие дыхания.] Огонь: 15-фт. конус (спас. Лов.)',
+			'Сопротивление к урону огнём',
+		]
+	}),
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.red'], {
+		name: 'Драконорожденный ( дракон)',
+		features: [
+			'[Оружие дыхания.] Огонь: 15-фт. конус (спас. Лов.)',
+			'Сопротивление к урону огнём',
+		]
+	}),
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.brass'], {
+		name: 'Драконорожденный (латунный дракон)',
+		features: [
+			'[Оружие дыхания.] Огонь: линия 5 на 30 фт. (спас. Лов.)',
+			'Сопротивление к урону огнём',
+		]
+	}),
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.copper'], {
+		name: 'Драконорожденный (медный дракон)',
+		features: [
+			'[Оружие дыхания.] Кислота: линия 5 на 30 фт. (спас. Лов.)',
+			'Сопротивление к урону кислотой',
+		]
+	}),
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.silver'], {
+		name: 'Драконорожденный (серебряный дракон)',
+		features: [
+			'[Оружие дыхания.] Холод: 15-фт. конус (спас. Тел.)',
+			'Сопротивление к урону холодом',
+		]
+	}),
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.blue'], {
+		name: 'Драконорожденный (синий дракон)',
+		features: [
+			'[Оружие дыхания.] Электричество: линия 5 на 30 фт. (спас. Лов.)',
+			'Сопротивление к урону электричеством',
+		]
+	}),
+	createRace(EBaseRace.dragonborn, ERace['dragonborn.black'], {
+		name: 'Драконорожденный (чёрный дракон)',
+		features: [
+			'[Оружие дыхания.] Кислота: линия 5 на 30 фт. (спас. Лов.)',
+			'Сопротивление к урону кислотой',
+		]
+	}),
+
+
+	// Гномы
+	createRace(EBaseRace.gnome, ERace['gnome.forest'], {
+		name: 'Лесной гном',
+		statsModifiers: [{ dex: 1 }],
+		features: [
+			'[Природная иллюзия.] Знаете заклинание {малая иллюзия}. Его базовая характеристика — Интеллект',
+			'С помощью звуков и жестов вы можете передавать простые понятия Маленьким или ещё меньшим зверям',
+		]
+	}),
+	createRace(EBaseRace.gnome, ERace['gnome.rock'], {
+		name: 'Скальный гном',
+		statsModifiers: [{ con: 1 }],
+		toolProficiencies: [ETool.tinkers],
+		features: [
+			'При совершении проверки Интеллекта (История) применительно к магическому, алхимическому или технологическому объекту, вы можете добавить к проверке удвоенный бонус мастерства вместо обычного',
+			'С помощью инструментов жестянщика, потратив час времени и материалы на сумму 10 зм, можно создать Крошечное механическое устройство (КД 5, 1 хит) из списка: [Заводная игрушка, Зажигалка, Музыкальная шкатулка]. Оно перестаёт работать через 24 часа (если не потратить час на поддержание его работы). Вы можете действием разобрать его, тогда можно получить обратно использованные материалы. Одновременно можно иметь не более трёх таких устройств'
+		]
+	}),
+] as const
 
 
 /** Генерация описания расы
@@ -378,8 +378,8 @@ function makeEmptyDescription(speed: TSpeed = 25, darkvision = false): TBaseRace
 		darkvision,
 		statsModifiers: [],
 		features: [],
-		weaponProfiencies: [],
-		toolProfiencies: [],
+		weaponProficiencies: [],
+		toolProficiencies: [],
 		languages: [],
 		skills: []
 	}
