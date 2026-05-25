@@ -108,12 +108,19 @@ export type TWeapon = {
 	props: TProp[]           // Свойства
 }
 
-export const weaponClassName: Record<EWeaponClass, string> = {
-	[EWeaponClass['simpe.melee']]: 'Простое рукопашное',
-	[EWeaponClass['simple.ranged']]: 'Простое дальнобойное',
-	[EWeaponClass['martial.melee']]: 'Воинское рукопашное',
-	[EWeaponClass['martial.ranged']]: 'Воинское дальнобойное'
-}
+export const weaponClasses: { classType: EWeaponClass, name: string }[] = [{
+	classType: EWeaponClass['simpe.melee'],
+	name: 'Простое рукопашное'
+}, {
+	classType: EWeaponClass['simple.ranged'],
+	name: 'Простое дальнобойное'
+}, {
+	classType: EWeaponClass['martial.melee'],
+	name: 'Воинское рукопашное'
+}, {
+	classType: EWeaponClass['martial.ranged'],
+	name: 'Воинское дальнобойное'
+}]
 
 //FIXME Учесть EProp.special при выводе характеристик оружия
 
