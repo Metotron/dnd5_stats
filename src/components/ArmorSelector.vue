@@ -1,42 +1,40 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { armorClassList, EShield, getArmorsOfClass, type TArmorDescription } from '@/baseLists/armors'
+import { computed, ref, watch } from 'vue'
+import { armorClassList, EArmor, EShield, getArmorsOfClass } from '@/baseLists/armors'
 
 import { useCharacter } from '@/composables/useCharacter'
-//FIXME Правильно достать персонажа
-const { newCharacter } = useCharacter()
+const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
 
-const character = newCharacter()
-
-const selectedArmor = ref<TArmorDescription>()
+const selectedArmor = ref<EArmor>()
 const armor = computed({
 	get() { return selectedArmor.value ?? '-' },
 	set(armor) { selectedArmor.value = armor == '-' ? undefined : armor }
 })
+watch(selectedArmor, armor => character.armor.value = armor)
 
 // Какой щит используется
-const shieldInUse = computed<string | undefined>(() => character.shield.value?.name)
+const shieldInUse = computed(() => character.shield.value?.name)
 
 /** Взять/убрать щит */
 function switchShield() {
 	// Пока что щит один, как в правилах
-	const shield = character.shield === undefined ? EShield.standard : undefined
+	const shield = character.shield.value === undefined ? EShield.standard : undefined
 	character.shield.value = shield
 }
 
 // Атрибут title для <select>
 const titleForSelectTag = computed<string>(() => {
-	if (!selectedArmor.value)
+	if (!character.armor.value)
 		return ''
 
-	let result = selectedArmor.value.AC.toString()
-	if (!selectedArmor.value.useDexModifier)
+	let result = character.armor.value.AC.toString()
+	if (!character.armor.value.useDexModifier)
 		return result
 
 	result += ' + ловкость'
 
-	if (selectedArmor.value.maximumDexModifier !== undefined)
-		result += ` (макс. ${selectedArmor.value.maximumDexModifier})`
+	if (character.armor.value.maximumDexModifier !== undefined)
+		result += ` (макс. ${character.armor.value.maximumDexModifier})`
 
 	return result
 })
@@ -45,7 +43,7 @@ const titleForSelectTag = computed<string>(() => {
 
 <template lang="pug">
 .pageBlock.armor
-	.blockTitle 👚 Защита
+	.blockTitle 🧥 Защита
 	.blockBody
 		select(v-model="armor" :title="titleForSelectTag")
 			option -
@@ -56,9 +54,9 @@ const titleForSelectTag = computed<string>(() => {
 					:value="armorDetails.id"
 				) {{ armorDetails.name }}
 
-		span(@click="switchShield") 🛡️ {{ shieldInUse ?? '' }}
+		span(@click="switchShield()" class="shield" :class="{ inUse: shieldInUse !== undefined }" :title="shieldInUse ? 'Убрать щит' : 'Экипировать щит'") 🛡️
 
-		.alert(v-if="character.needMoreStrength" :title="`Требуется ${character.armor.value?.minimumStr} силы`") ❗Скорость уменьшена на 10 футов
+		.alert(v-if="character.needMoreStrength.value" :title="`Требуется ${character.armor.value?.minimumStr} силы`") ❗Скорость уменьшена на 10 футов
 </template>
 
 
@@ -72,5 +70,23 @@ select { width: 170px; }
 	border: 1px solid var(--accentColor);
 	color: var(--accentColor);
 	font-size: .8rem;
+}
+
+.blockBody {
+	display: flex;
+	align-items: center;
+	gap: var(--blockPadding);
+}
+
+.shield {
+	opacity: .5;
+	filter: grayscale(1);
+	transition: opacity .2s, filter .2s;
+	cursor: pointer;
+
+	&.inUse {
+		opacity: 1;
+		filter: none;
+	}
 }
 </style>

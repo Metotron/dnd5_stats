@@ -6,10 +6,8 @@ import ValueLink from '@/components/ValueLink.vue'
 import { getRandomDiceValues, type TDiceValues } from '@/misc/randomDiceValues'
 
 import { useCharacter } from '@/composables/useCharacter'
-//FIXME Правильно достать персонажа
-const { newCharacter } = useCharacter()
 
-const character = newCharacter()
+const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
 
 // Сгенерированные значения (сумма трёх лучших кубиков из четырёх)
 const diceValues = ref<TDiceValues>([0, 0, 0, 0, 0, 0])
@@ -59,14 +57,15 @@ function autoLink() {
 
 <template lang="pug">
 .pageBlock.charStats
-	.blockTitle 🎲 Числовые значения
+	.blockTitle 📜 Числовые значения
 	.blockBody
 		.buttons.asymmetric
-			input.fullWidth(type="button" value="🔧 Перебросить" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3-18)" @click="generateDiceValues")
-			input.short(type="button" value="⤵️" title="Автопривязка" @click="autoLink")
+			input.fullWidth(type="button" value="🎲 Перебросить" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3-18)" @click="generateDiceValues")
+			input.short(type="button" value="⤵️" title="Автопривязка" @click="autoLink()")
 		.valuesToStats
-			ValueLink(
+			value-link(
 				v-for="(value, idx) in diceValues"
+				:idx
 				:value
 				:linked="linkedToStat"
 				v-model:dicevalue.number="diceValues[idx]"

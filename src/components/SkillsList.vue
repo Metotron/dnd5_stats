@@ -3,10 +3,9 @@ import { computed } from 'vue'
 import { type ESkill, fullSkillsList } from '@/baseLists/skills'
 
 import { getSkillModifier, useCharacter } from '@/composables/useCharacter'
+import { statsList } from '@/baseLists/stats'
 
-const { newCharacter } = useCharacter()
-//FIXME Правильно достать персонажа
-const character = newCharacter()
+const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
 
 const checkedSkillsCount = computed(() => character.proficienciesCount)
 
@@ -25,7 +24,7 @@ function changeProficiencyState(skill: ESkill, ev: Event) {
 			label
 				input(type="checkbox" :checked="character.hasProficiency(skillDescr.skill)" @change="changeProficiencyState(skillDescr.skill, $event)")
 				span.name(:class="{ selected: character.hasProficiency(skillDescr.skill) }") {{ skillDescr.name }}
-				span.stat ({{ skillDescr.statType }})
+				span.stat ({{ statsList[skillDescr.statType].shortName }})
 			span.value {{ 10 + getSkillModifier(skillDescr.skill, character) }}
 </template>
 

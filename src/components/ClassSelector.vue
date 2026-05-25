@@ -3,10 +3,8 @@ import { ref, watch } from 'vue'
 import { useCharacter } from '@/composables/useCharacter'
 import { ECharClass, fullCharClassesList } from '@/baseLists/classes';
 
-const { newCharacter, storeCharacter } = useCharacter()
+const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
 
-const character = newCharacter()
-storeCharacter(character)
 const selectedCharClass = ref(ECharClass.fighter)
 
 watch(selectedCharClass, charClass => character.charClass.value = charClass)
@@ -15,7 +13,7 @@ watch(selectedCharClass, charClass => character.charClass.value = charClass)
 
 <template lang="pug">
 .pageBlock.charClass
-	.blockTitle 🧍 Класс персонажа
+	.blockTitle 🧍 Класс
 	.blockBody
 		select(v-model="selectedCharClass")
 			option(v-for="cls in fullCharClassesList" :key="cls.name" :value="cls.charClass") {{ cls.name }}

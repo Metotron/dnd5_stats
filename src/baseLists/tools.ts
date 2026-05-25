@@ -440,7 +440,7 @@ export const fullMountsList: TMount<EMount>[] = [{
     cost: 200,
     speed: 40,
     carruingCapacity: 1320,
-}]
+}] as const
 
 /** Сёдла, упряжь и транспорт */
 export const fullTackHarnessList: TTool<ETackHarness>[] = [{
@@ -521,7 +521,7 @@ export const fullTackHarnessList: TTool<ETackHarness>[] = [{
     name: 'Фургон',
     cost: 35,
     weight: 400,
-}]
+}] as const
 
 /** Водный транспорт */
 export const fullWaterborneVehiclesList: TWaterborne<EWaterborneVehicle>[] = [{
@@ -560,7 +560,7 @@ export const fullWaterborneVehiclesList: TWaterborne<EWaterborneVehicle>[] = [{
     name: 'Шлюпка',
     cost: 50,
     speed: 1.5,
-}]
+}] as const
 
 /** Товары */
 export const fullgoodsList: TCostedItem<EGood>[] = [{
@@ -615,7 +615,7 @@ export const fullgoodsList: TCostedItem<EGood>[] = [{
     id: EGood.platinum,
     name: '1 фунт платины',
     cost: 500,
-}]
+}] as const
 
 /** Еда, напитки */
 export const fullFoodList: TCostedItem<EFood>[] = [{
@@ -698,11 +698,11 @@ export const fullFoodList: TCostedItem<EFood>[] = [{
     id: EFood.bread,
     name: 'Ломоть хлеба',
     cost: .02,
-}]
+}] as const
 
 /** Фильтр инструментов по категории */
 export function getToolsByCategory(category: TToolCategory): TTool<ETool>[] {
     return Object.values(fullToolsList).filter(tool => tool.category === category)
 }
 
-//TODO Доспехи для шонадей такие же, как для людей, только в 4 раза дороже и в 2 раза тяжелее. Скопировать из людских?
+//TODO Доспехи для лошадей такие же, как для людей, только в 4 раза дороже и в 2 раза тяжелее. Скопировать из людских?

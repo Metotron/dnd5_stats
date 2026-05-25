@@ -15,6 +15,8 @@ export enum ECharClass {
 	sorcerer,
 }
 
+//TODO Расширить характеристики до полного описания класса
+
 export type TCharClass = {
 	charClass: ECharClass
 	name: string

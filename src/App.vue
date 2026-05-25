@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import ClassSelector from "./components/ClassSelector.vue"
-import ValuesLinker from "./components/ValuesLinker.vue"
-import CharList from "./components/CharList.vue"
-import ArmorSelector from "./components/ArmorSelector.vue"
-import Skills from "./components/Skills.vue"
+import ArmorSelector from './components/ArmorSelector.vue'
+import CharList from './components/CharList.vue'
+import ClassSelector from './components/ClassSelector.vue'
+import FeaturesList from './components/FeaturesList.vue'
+import RaceSelector from './components/RaceSelector.vue'
+import SkillsList from './components/SkillsList.vue'
+import ValuesLinker from './components/ValuesLinker.vue'
 </script>
 
 
@@ -11,11 +13,16 @@ import Skills from "./components/Skills.vue"
 header
 	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e)
 .blocksArea
-	ClassSelector
-	ArmorSelector
-	ValuesLinker
-	CharList
-	Skills
+	.blockCol.col1
+		race-selector
+		class-selector
+		armor-selector
+		values-linker
+	.blockCol.col2
+		char-list
+		features-list
+	.blockCol.col3
+		skills-list
 </template>
 
 <style lang="scss" scoped>
@@ -33,51 +40,22 @@ h1 {
 	width: calc(var(--column1Width) + var(--column2Width) + var(--column3Width) + var(--blockPadding) * 4);
 	margin: 0 auto;
 	display: grid;
-	grid-template:
-		"class charlist skills" auto
-		"armor charlist skills" auto
-		"stats charlist skills" 1fr
-		/ var(--column1Width) var(--column2Width) var(--column3Width);
-	gap: calc(var(--blockPadding) * 2);
-	margin-top: 1em;
-	align-items: start;
+	grid-template-columns: var(--column1Width) var(--column2Width) var(--column3Width);
+	gap: var(--blockPadding);
+}
 
-	@media (width <= 1280px) {
-		--column3Width: 280px;
-	}
-
-	@media (width <= 994px) {
-		width: calc(var(--column1Width) + var(--column2Width) + var(--blockPadding) * 2);
-		grid-template-columns: --var(column1Width) --var(column2Width);
-		grid-template-areas:
-			"class charlist"
-			"armor charlist"
-			"stats charlist"
-			"skills skills";
-	}
-
-	@media (width <= 700px) {
-		--column2Width: 280px;
-	}
-
-	@media (width <= 600px) {
-		width: 100%;
-		grid-template-columns: 100%;
-		grid-template-areas: "class" "stats" "charlist" "skills";
-	}
+.blockCol {
+	display: flex;
+	flex-direction: column;
+	gap: var(--blockPadding);
 }
 
 .pageBlock {
+	width: 100%;
 	border: 1px solid var(--borderColor);
 	border-radius: 3px;
 	overflow: hidden;
-	box-shadow: 1px 1px 6px 0 rgb(150, 150, 150, 0.1);
-
-	&.charClass { grid-area: class; }
-	&.armor     { grid-area: armor; }
-	&.charStats { grid-area: stats; }
-	&.charList  { grid-area: charlist; }
-	&.skills    { grid-area: skills; }
+	box-shadow: 1px 1px 6px 0 rgb(150 150 150 / .1);
 
 	:deep(.blockTitle) {
 		background-color: #e2e2e2;

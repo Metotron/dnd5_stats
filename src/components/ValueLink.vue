@@ -11,6 +11,7 @@ import { isStatValueInRange, maxStatValue, statsArray, statsList } from '@/baseL
 const props = defineProps<{
 	value: number
 	linked: [TLnk, TLnk, TLnk, TLnk, TLnk, TLnk]
+	idx: number
 }>()
 
 /** Внутреннее числовое значение, может изменяться вручную */
@@ -19,7 +20,10 @@ const linkTo = defineModel<TStat | undefined>()
 
 // Ограничение значения сверху и снизу
 watch(diceValue, (newValue, oldValue) => diceValue.value = isStatValueInRange(newValue) ? newValue : (oldValue ?? 1))
-
+// Отслеживание автопривязки
+watch(() => props.linked, () => {
+	optionSelected.value = props.linked[props.idx] === undefined ? '-' : props.linked[props.idx]
+}, { deep: true })
 
 const optionSelected = ref<TStat | '-'>()
 watch(optionSelected, val => linkTo.value = val == '-' ? undefined : val)
@@ -37,7 +41,7 @@ watch(optionSelected, val => linkTo.value = val == '-' ? undefined : val)
 			:value="stat"
 			:key="stat"
 			:disabled="props.linked.includes(stat)"
-		) {{ statsList[stat] }}
+		) {{ statsList[stat].name }}
 </template>
 
 

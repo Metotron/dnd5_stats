@@ -1,6 +1,6 @@
 {
   "name": "dnd5_stats",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
@@ -9,7 +9,6 @@
     "typecheck": "vue-tsc --noEmit --composite false"
   },
   "dependencies": {
-    "pinia": "^3.0.4",
     "vue": "^3.5.34"
   },
   "devDependencies": {
@@ -20,7 +19,7 @@
     "@vue/tsconfig": "^0.9.1",
     "jsdom": "^29.1.1",
     "pug": "^3.0.4",
-    "sass": "^1.99.0",
+    "sass": "^1",
     "typescript": "^6.0.3",
     "vite": "^8.0.13",
     "vitest": "^4.1.6",

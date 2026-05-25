@@ -25,7 +25,7 @@ export function isStatValueInRange(statValue: number | undefined): boolean {
 /** Расчёт модификатора характеристики */
 export function getStatModifier(statValue: number): number {
 	if (isStatValueInRange(statValue))
-		return Math.floor((statValue - 1) / 2)
+		return Math.floor((statValue - 10) / 2)
 	
 	throw new Error('Неправильное значение характеристик персонажа')
 }

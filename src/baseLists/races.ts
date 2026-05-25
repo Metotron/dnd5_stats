@@ -63,7 +63,7 @@ export type TBaseRaceDescription = {
 }
 
 // Базовые расы, без разделения на подвиды. Экспортировать не нужно, потому что использоваться будут только подвиды
-const baseRaces: Record<EBaseRace, TBaseRaceDescription> = {
+export const baseRaces: Record<EBaseRace, TBaseRaceDescription> = {
 	[EBaseRace.dwarf]: createDescription(true, {
 		name: 'Дварф',
 		statsModifiers: [{ con: 2 }],
@@ -154,21 +154,23 @@ export type TRace = {
 	race: ERace,
 	diff: Partial<TBaseRaceDescription>
 }
+// Обёртка для создания объектов типа TRace
+const mkRace = (baseRace: EBaseRace, race: ERace, diff: Partial<TBaseRaceDescription>): TRace => ({ baseRace, race, diff })
 
 /** Список подипов рас для игры */
 export const fullRacesList: TRace[] = [
-	createRace(EBaseRace.halfelf, ERace['halfelf.standard'], {}),
-	createRace(EBaseRace.halforc, ERace['halforc.standard'], {}),
-	createRace(EBaseRace.tiefling, ERace['tiefling.standard'], {}),
+	mkRace(EBaseRace.halfelf, ERace['halfelf.standard'], {}),
+	mkRace(EBaseRace.halforc, ERace['halforc.standard'], {}),
+	mkRace(EBaseRace.tiefling, ERace['tiefling.standard'], {}),
 
 
 	// Дварфы
-	createRace(EBaseRace.dwarf, ERace['dwarf.mountain'], {
+	mkRace(EBaseRace.dwarf, ERace['dwarf.mountain'], {
 		name: 'Горный дварф',
 		statsModifiers: [{ str: 2 }],
 		armorProfiecies: [EArmorClass.light, EArmorClass.medium],
 	}),
-	createRace(EBaseRace.dwarf, ERace['dwarf.hill'], {
+	mkRace(EBaseRace.dwarf, ERace['dwarf.hill'], {
 		name: 'Горный дварф',
 		statsModifiers: [{ wis: 1 }],
 		features: ['[Дварфская выдержка.] Максимум хитов увеличивается на 1 за каждый уровень включая первый'],
@@ -176,14 +178,14 @@ export const fullRacesList: TRace[] = [
 
 
 	// Эльфы
-	createRace(EBaseRace.elf, ERace['elf.high'], {
+	mkRace(EBaseRace.elf, ERace['elf.high'], {
 		name: 'Высокий эльф',
 		statsModifiers: [{ int: 1 }],
 		weaponProficiencies: [EWeapon.shortsword, EWeapon.longsword, EWeapon.shortbow, EWeapon.longbow],
 		languages: ['Один дополнительный язык на выбор'],
 		features: ['Знаете один заговор из списка заклинаний волшебника. Его базовая характеристика — Интеллект'],
 	}),
-	createRace(EBaseRace.elf, ERace['elf.wood'], {
+	mkRace(EBaseRace.elf, ERace['elf.wood'], {
 		name: 'Лесной эльф',
 		statsModifiers: [{ wis: 1 }],
 		speed: 35,
@@ -192,7 +194,7 @@ export const fullRacesList: TRace[] = [
 			'[Маскировка в дикой местности.] Можете предпринять попытку спрятаться, даже если вы слабо заслонены листвой, сильным дождём, снегопадом, туманом или другими природными явлениями'
 		],
 	}),
-	createRace(EBaseRace.elf, ERace['elf.dark'], {
+	mkRace(EBaseRace.elf, ERace['elf.dark'], {
 		name: 'Тёмный эльф',
 		statsModifiers: [{ cha: 1 }],
 		weaponProficiencies: [EWeapon.rapier, EWeapon.shortsword, EWeapon.handcrossbow],
@@ -205,12 +207,12 @@ export const fullRacesList: TRace[] = [
 
 
 	// Полурослики
-	createRace(EBaseRace.halfling, ERace['halfling.lightfoot'],{
+	mkRace(EBaseRace.halfling, ERace['halfling.lightfoot'],{
 		name: 'Легконогий полурослик',
 		statsModifiers: [{ cha: 1 }],
 		features: ['[Естественная скрытность.] Можете предпринять попытку скрыться даже если заслонены только существом, превосходящими вас в размере как минимум на одну категорию'],
 	}),
-	createRace(EBaseRace.halfling, ERace['halfling.stout'], {
+	mkRace(EBaseRace.halfling, ERace['halfling.stout'], {
 		name: 'Коренастый полурослик',
 		statsModifiers: [{ con: 1 }],
 		features: ['[Устойчивость коренастых.] Преимущество при спасброске от яда. Сопротивление к урону ядом'],
@@ -218,11 +220,11 @@ export const fullRacesList: TRace[] = [
 
 
 	// Люди
-	createRace(EBaseRace.human, ERace['human.standard'], {
+	mkRace(EBaseRace.human, ERace['human.standard'], {
 		name: 'Человек',
 		features: ['Значения всех характеристик увеличиваются на 1'],
 	}),
-	createRace(EBaseRace.human, ERace['human.variant'],{
+	mkRace(EBaseRace.human, ERace['human.variant'],{
 		name: 'Человек (альт.)',
 		features: [
 			'Значения двух любых характеристик увеличиваются на 1',
@@ -233,70 +235,70 @@ export const fullRacesList: TRace[] = [
 
 
 	// Драконорожденные
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.white'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.white'], {
 		name: 'Драконорожденный (белый дракон)',
 		features: [
 			'[Оружие дыхания.] Холод: 15-фт. конус (спас. Тел.)',
 			'Сопротивление к урону холодом',
 		]
 	}),
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.bronze'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.bronze'], {
 		name: 'Драконорожденный (бронзовый дракон)',
 		features: [
 			'[Оружие дыхания.] Электричество: линия 5 на 30 фт. (спас. Лов.)',
 			'Сопротивление к урону электричеством',
 		]
 	}),
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.green'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.green'], {
 		name: 'Драконорожденный (зелёный дракон)',
 		features: [
 			'[Оружие дыхания.] Яд: 15-фт. конус (спас. Тел.)',
 			'Сопротивление к урону ядом',
 		]
 	}),
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.gold'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.gold'], {
 		name: 'Драконорожденный (золотой дракон)',
 		features: [
 			'[Оружие дыхания.] Огонь: 15-фт. конус (спас. Лов.)',
 			'Сопротивление к урону огнём',
 		]
 	}),
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.red'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.red'], {
 		name: 'Драконорожденный ( дракон)',
 		features: [
 			'[Оружие дыхания.] Огонь: 15-фт. конус (спас. Лов.)',
 			'Сопротивление к урону огнём',
 		]
 	}),
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.brass'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.brass'], {
 		name: 'Драконорожденный (латунный дракон)',
 		features: [
 			'[Оружие дыхания.] Огонь: линия 5 на 30 фт. (спас. Лов.)',
 			'Сопротивление к урону огнём',
 		]
 	}),
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.copper'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.copper'], {
 		name: 'Драконорожденный (медный дракон)',
 		features: [
 			'[Оружие дыхания.] Кислота: линия 5 на 30 фт. (спас. Лов.)',
 			'Сопротивление к урону кислотой',
 		]
 	}),
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.silver'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.silver'], {
 		name: 'Драконорожденный (серебряный дракон)',
 		features: [
 			'[Оружие дыхания.] Холод: 15-фт. конус (спас. Тел.)',
 			'Сопротивление к урону холодом',
 		]
 	}),
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.blue'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.blue'], {
 		name: 'Драконорожденный (синий дракон)',
 		features: [
 			'[Оружие дыхания.] Электричество: линия 5 на 30 фт. (спас. Лов.)',
 			'Сопротивление к урону электричеством',
 		]
 	}),
-	createRace(EBaseRace.dragonborn, ERace['dragonborn.black'], {
+	mkRace(EBaseRace.dragonborn, ERace['dragonborn.black'], {
 		name: 'Драконорожденный (чёрный дракон)',
 		features: [
 			'[Оружие дыхания.] Кислота: линия 5 на 30 фт. (спас. Лов.)',
@@ -306,7 +308,7 @@ export const fullRacesList: TRace[] = [
 
 
 	// Гномы
-	createRace(EBaseRace.gnome, ERace['gnome.forest'], {
+	mkRace(EBaseRace.gnome, ERace['gnome.forest'], {
 		name: 'Лесной гном',
 		statsModifiers: [{ dex: 1 }],
 		features: [
@@ -314,7 +316,7 @@ export const fullRacesList: TRace[] = [
 			'С помощью звуков и жестов вы можете передавать простые понятия Маленьким или ещё меньшим зверям',
 		]
 	}),
-	createRace(EBaseRace.gnome, ERace['gnome.rock'], {
+	mkRace(EBaseRace.gnome, ERace['gnome.rock'], {
 		name: 'Скальный гном',
 		statsModifiers: [{ con: 1 }],
 		toolProficiencies: [ETool.tinkers],
@@ -323,7 +325,7 @@ export const fullRacesList: TRace[] = [
 			'С помощью инструментов жестянщика, потратив час времени и материалы на сумму 10 зм, можно создать Крошечное механическое устройство (КД 5, 1 хит) из списка: [Заводная игрушка, Зажигалка, Музыкальная шкатулка]. Оно перестаёт работать через 24 часа (если не потратить час на поддержание его работы). Вы можете действием разобрать его, тогда можно получить обратно использованные материалы. Одновременно можно иметь не более трёх таких устройств'
 		]
 	}),
-] as const
+]
 
 
 /** Генерация описания расы
@@ -385,19 +387,6 @@ function makeEmptyDescription(speed: TSpeed = 25, darkvision = false): TBaseRace
 	}
 }
 
-/** Создание объекта для описания подтипа расы
- * @param baseRace Базовая раса
- * @param race Подтип базовой расы
- * @param diff Добавления/изменения в базовых характеристиках расы. Применяется через adjustBaseRace
- * @return
- */
-function createRace(baseRace: EBaseRace, race: ERace, diff: Partial<TBaseRaceDescription>): TRace {
-	if (fullRacesList.find(r => r.race == race))
-		throw new Error(`Раса ${race} уже добавлена`)
-
-	return { baseRace, race, diff }
-}
-
 /** Добавление дополнительных характеристик к базовым характеристикам расы */
 function adjustBaseRace(baseRace: EBaseRace, raceDiffs: Partial<TBaseRaceDescription>): TBaseRaceDescription {
 	const result = baseRaces[baseRace]
@@ -419,4 +408,9 @@ function adjustBaseRace(baseRace: EBaseRace, raceDiffs: Partial<TBaseRaceDescrip
 	})
 
 	return result
+}
+
+/** Получение списка подтипов рас для базовой расы */
+export function subracecoOfBase(baseRace: EBaseRace): TRace[] {
+	return fullRacesList.filter(race => race.baseRace == baseRace)
 }

@@ -5,23 +5,21 @@ import { ERace, fullRacesList } from '@/baseLists/races'
 import { ESkill, fullSkillsList } from '@/baseLists/skills'
 import { getStatModifier, maxStatValue, type TStat } from '@/baseLists/stats'
 
-/** Хранилище всех созданных персонажей */
-const characters = ref<Character[]>([])
+import { useCharacterSelector } from './useCharacterSelector'
+
+const { charactersStore, storeCharacter } = useCharacterSelector()
+
 let characterId = 1  // Идентификатор персонажа для уникальности
 
-export const useCharacter = () => {
-	return {
-		characters: readonly(characters),
+export const useCharacter = (id: number) => {
+	const found = charactersStore.find(char => char.id == id)
+	if (found)
+		return found
 
-		newCharacter: () => new Character(characterId++),
+	const newCharacter = new Character(characterId++)
+	storeCharacter(newCharacter)
 
-		/** Сохранить персонажа в хранилище */
-		storeCharacter: (character: Character): number => {
-			//@ts-ignore
-			characters.value.push(character)
-			return characters.value.length - 1
-		}
-	}
+	return newCharacter
 }
 
 
@@ -37,7 +35,7 @@ export class Character {
 		wis: 10,
 		cha: 10
 	})
-	get stats() { return readonly(this.#stats) }
+	get stats() { return this.#stats }
 	setStat(stat: TStat, value: number) { this.#stats[stat] = Math.max(1, Math.min(maxStatValue, value)) }
 
 	/** Модификатор для характеристики */
