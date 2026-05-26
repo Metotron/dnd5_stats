@@ -13,7 +13,7 @@ watch(selectedCharClass, charClass => character.charClass.value = charClass)
 
 <template lang="pug">
 .pageBlock.charClass
-	.blockTitle 🧍 Класс
+	.blockTitle 👷 Класс
 	.blockBody
 		select(v-model="selectedCharClass")
 			option(v-for="cls in fullCharClassesList" :key="cls.name" :value="cls.charClass") {{ cls.name }}

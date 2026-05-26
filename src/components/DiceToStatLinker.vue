@@ -18,15 +18,16 @@ const u = undefined
 const linkedToStat = ref<[TLnk, TLnk, TLnk, TLnk, TLnk, TLnk]>([u, u, u, u, u, u])
 
 watch(linkedToStat, () => {
-	// Обнуление привязок → характеристики должны стать десятками
+	// Сперва обнуление привязок → характеристики должны стать десятками
 	for (const stat of statsArray)
 		character.setStat(stat, 10)
 
-	// Если в linkedToStat есть привязки (не undefined), то в них кладётся то, что находится в соответствующем индексе diceValues
-	for (const idx in linkedToStat.value)
+	// Если в linkedToStat есть привязки (не undefined), то в них персонажу передаётся то, что находится в соответствующем индексе diceValues
+	for (const idx in linkedToStat.value) {
 		if (linkedToStat.value[idx] !== undefined)
 			character.setStat(linkedToStat.value[idx], diceValues.value[idx])
-})
+	}
+}, { deep: true })
 
 function resetLinks() {
 	linkedToStat.value = [u, u, u, u, u, u]

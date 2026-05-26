@@ -57,6 +57,7 @@ export class Character {
 		get: () => fullArmorsList.find(armor => armor.id === this.#armor.value),
 		set: (armor: EArmor | undefined) => this.#armor.value = armor
 	})
+	rawArmorValue(): EArmor | undefined { return this.#armor.value }
 
 	/** Нужно ли персонажу больше силы, чтобы носить выбранную броню */
 	get needMoreStrength() {
@@ -70,6 +71,7 @@ export class Character {
 		get: () => fullShieldsList.find(shield => shield.id === this.#shield.value),
 		set: (shield: EShield | undefined) => this.#shield.value = shield
 	})
+	rawShieldValue(): EShield | undefined { return this.#shield.value }
 
 
 	/** Раса */
@@ -78,6 +80,7 @@ export class Character {
 		get: () => fullRacesList.find(r => r.race == this.#race.value)!,
 		set: (race: ERace) => this.#race.value = race
 	})
+	rawRaceValue(): ERace { return this.#race.value }
 
 
 	/** Класс персонажа */
@@ -87,7 +90,7 @@ export class Character {
 		set: (charClass: ECharClass) => this.#charClass.value = charClass
 	})
 	hitDice = computed(() => this.charClass.value.hitDice)
-
+	rawCharClassValue(): ECharClass { return this.#charClass.value }
 
 	/** Уровень */
 	#level = ref(1)
