@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useCharacter } from '@/composables/useCharacter'
-import { ECharClass, fullCharClassesList } from '@/baseLists/classes';
+import { ECharClass, fullCharClassesList } from '@/handbook-data/classes';
 
 const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
 

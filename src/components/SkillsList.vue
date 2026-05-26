@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { type ESkill, fullSkillsList } from '@/baseLists/skills'
+import { type ESkill, fullSkillsList } from '@/handbook-data/skills'
 
 import { getSkillModifier, useCharacter } from '@/composables/useCharacter'
-import { statsList } from '@/baseLists/stats'
+import { statsList } from '@/handbook-data/stats'
 
 const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
 

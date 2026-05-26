@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { armorClassList, EArmor, EShield, getArmorsOfClass } from '@/baseLists/armors'
+import { armorClassList, EArmor, EShield, getArmorsOfClass } from '@/handbook-data/armors'
 
 import { useCharacter } from '@/composables/useCharacter'
 const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID

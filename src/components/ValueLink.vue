@@ -2,10 +2,10 @@
 /** @description Привязка значения дайса по индексу valueIndex к выбранной характеристике персонажа */
 
 import { ref, watch } from 'vue'
-import type { TStat } from '@/baseLists/stats'
+import type { TStat } from '@/handbook-data/stats'
 type TLnk = TStat | undefined
 
-import { isStatValueInRange, maxStatValue, statsArray, statsList } from '@/baseLists/stats';
+import { isStatValueInRange, maxStatValue, statsArray, statsList } from '@/handbook-data/stats';
 
 
 const props = defineProps<{

@@ -1,18 +1,18 @@
 import { computed, reactive, readonly, ref } from 'vue'
-import { fullArmorsList, fullShieldsList, type EArmor, type EShield } from '@/baseLists/armors'
-import { ECharClass, fullCharClassesList } from '@/baseLists/classes'
-import { ERace, fullRacesList } from '@/baseLists/races'
-import { ESkill, fullSkillsList } from '@/baseLists/skills'
-import { getStatModifier, maxStatValue, type TStat } from '@/baseLists/stats'
+import { fullArmorsList, fullShieldsList, type EArmor, type EShield } from '@/handbook-data/armors'
+import { ECharClass, fullCharClassesList } from '@/handbook-data/classes'
+import { ERace, fullRacesList } from '@/handbook-data/races'
+import { ESkill, fullSkillsList } from '@/handbook-data/skills'
+import { getStatModifier, maxStatValue, type TStat } from '@/handbook-data/stats'
 
 import { useCharacterSelector } from './useCharacterSelector'
 
-const { charactersStore, storeCharacter } = useCharacterSelector()
+const { findCharacterById, storeCharacter } = useCharacterSelector()
 
 let characterId = 1  // Идентификатор персонажа для уникальности
 
 export const useCharacter = (id: number) => {
-	const found = charactersStore.find(char => char.id == id)
+	const found = findCharacterById(id)
 	if (found)
 		return found
 
@@ -25,6 +25,15 @@ export const useCharacter = (id: number) => {
 
 export class Character {
 	constructor(public id: number) {}
+
+
+	/** Имя */
+	#name = ref('Персонаж')
+	name = computed({
+		get: () => readonly(this.#name),
+		set: (name: string) => this.#name.value = name
+	})
+
 
 	/** Значения характеристик */
 	#stats = reactive<Record<TStat, number>>({
@@ -60,14 +69,6 @@ export class Character {
 	shield = computed({
 		get: () => fullShieldsList.find(shield => shield.id === this.#shield.value),
 		set: (shield: EShield | undefined) => this.#shield.value = shield
-	})
-
-
-	/** Имя */
-	#name = ref('Персонаж')
-	name = computed({
-		get: () => readonly(this.#name),
-		set: (name: string) => this.#name.value = name
 	})
 
 

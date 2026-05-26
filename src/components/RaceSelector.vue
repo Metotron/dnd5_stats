@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { type ERace, baseRaces, EBaseRace, subracecoOfBase } from '@/baseLists/races'
+import { type ERace, baseRaces, EBaseRace, subracecoOfBase } from '@/handbook-data/races'
 
 import { useCharacter } from '@/composables/useCharacter'
 

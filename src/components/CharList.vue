@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { getArmorClassNameByEnum } from '@/baseLists/armors'
-import { ESkill } from '@/baseLists/skills'
-import { getStatModifier, statsList, type TStat } from '@/baseLists/stats'
+import { getArmorClassNameByEnum } from '@/handbook-data/armors'
+import { ESkill } from '@/handbook-data/skills'
+import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 
 import { useCharacter } from '@/composables/useCharacter'
 

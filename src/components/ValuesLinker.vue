@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
-import { statsArray, type TStat } from '@/baseLists/stats'
+import { statsArray, type TStat } from '@/handbook-data/stats'
 import ValueLink from '@/components/ValueLink.vue'
 import { getRandomDiceValues, type TDiceValues } from '@/misc/randomDiceValues'
 
