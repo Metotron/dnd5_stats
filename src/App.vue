@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import ArmorSelector from './components/ArmorSelector.vue'
-import CharList from './components/CharList.vue'
-import ClassSelector from './components/ClassSelector.vue'
-import FeaturesList from './components/FeaturesList.vue'
-import RaceSelector from './components/RaceSelector.vue'
-import SkillsList from './components/SkillsList.vue'
-import ValuesLinker from './components/ValuesLinker.vue'
+import ValuesLinker from './components/DiceToStatLinker.vue'
+import ArmorSelector from './components/selectors/ArmorSelector.vue'
+import ClassSelector from './components/selectors/ClassSelector.vue'
+import RaceSelector from './components/selectors/RaceSelector.vue'
+import SkillsList from './components/selectors/SkillsList.vue'
+import CharList from './components/views/CharList.vue'
+import FeaturesList from './components/views/FeaturesList.vue'
 </script>
 
 

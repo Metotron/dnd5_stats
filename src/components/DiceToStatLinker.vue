@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 
 import { statsArray, type TStat } from '@/handbook-data/stats'
-import ValueLink from '@/components/ValueLink.vue'
+import ValueLink from '@/components/DiceToStatLink.vue'
 import { getRandomDiceValues, type TDiceValues } from '@/misc/randomDiceValues'
 
 import { useCharacter } from '@/composables/useCharacter'
