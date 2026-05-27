@@ -33,7 +33,7 @@ export class Character {
 	/** Имя */
 	#name = ref('Персонаж')
 	name = computed({
-		get: () => readonly(this.#name),
+		get: () => this.#name.value,
 		set: (name: string) => this.#name.value = name
 	})
 

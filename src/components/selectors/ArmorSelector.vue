@@ -58,7 +58,7 @@ const titleForSelectTag = computed<string>(() => {
 
 		span(@click="switchShield()" class="shield" :class="{ inUse: shieldInUse !== undefined }" :title="shieldInUse ? 'Убрать щит' : 'Экипировать щит'") 🛡️
 
-		.alert(v-if="character.needMoreStrength.value" :title="`Требуется ${character.armor.value?.minimumStr} силы`") ❗Скорость уменьшена на 10 футов
+		.alert(v-if="character.needMoreStrength.value" :title="`Требуется ${character.armor.value?.minimumStr} силы`") Скорость уменьшена на 10 футов/сек
 </template>
 
 

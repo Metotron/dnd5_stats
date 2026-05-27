@@ -9,7 +9,7 @@ export function merge<T>(target: T[], diff: T[]): T[]
 export function merge<T>(target: T, diff: Partial<T>): T
 export function merge<T>(target: T[] | T, diff: T[] | Partial<T>): T[] | T {
 	if (Array.isArray(target) && Array.isArray(diff))
-		return target.concat(diff)
+		return [...target].concat(diff)
 
 	else if (!Array.isArray(target) && !Array.isArray(diff))
 		return { ...target, ...diff }

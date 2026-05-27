@@ -11,13 +11,18 @@ import { useCharacter } from './composables/useCharacter.ts'
 
 //FIXME Временное решение
 sessionStorage.clear()
-sessionStorage.setItem('charId', useCharacter().id.toString())
+const character = useCharacter()
+sessionStorage.setItem('charId', String(character.id))
 </script>
 
 
 <template lang="pug">
 header
 	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e)
+	div.name
+		b Имя:
+		input(class="textLike" placeholder="Имя персонажа" v-model="character.name.value")
+
 .blocksArea
 	.blockCol.col1
 		race-selector
@@ -32,9 +37,22 @@ header
 </template>
 
 <style lang="scss" scoped>
+header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--blockPadding);
+	margin-bottom: 1em;
+
+	.name {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+}
+
 h1 {
 	font-size: 1.2em;
-	margin: 0 0 1em;
 	font-weight: normal;
 	text-align: center;
 }
@@ -81,7 +99,15 @@ h1 {
 	--accentColor: #e07014;
 }
 
-* { box-sizing: border-box; }
+* {
+	box-sizing: border-box;
+	caret-color: var(--accentColor);
+}
+
+::selection {
+	background-color: var(--accentColor);
+	color: #fff;
+}
 
 html, body {
 	margin: 0;
@@ -92,7 +118,37 @@ html, body {
 	font-family: Droid sans, serif;
 }
 
+h1, h2, h3, h4, h5, h6, ul, li {
+	padding: 0;
+	margin: 0;
+}
+
+ul {
+	padding-left: 1em;
+
+	li + li {
+		margin-top: 1em;
+	}
+}
+
 input, select {
 	min-height: 26px;
+	font-family: inherit;
+	font-size: 1rem;
+	line-height: 1.2;
+}
+
+input.textLike {
+	flex: 0 1 220px;
+	width: 220px;
+	min-width: 0;
+	appearance: none;
+	border: 0;
+	border-radius: 1px;
+	padding: 0;
+
+	&:focus-visible, &:focus {
+		outline: 2px solid rgb(from var(--accentColor) r g b / .3);
+	}
 }
 </style>

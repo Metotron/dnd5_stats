@@ -70,7 +70,7 @@ export const baseRaces: Record<EBaseRace, TBaseRaceDescription> = {
 		features: [
 			'Сопротивление к урону ядом',
 			'Преимущество при спасброске от яда',
-			'При проверке Интеллекта (История), связанной с происхождением работы по камню, вы считаетесь владеющим навыком {История}, добавляете к проверке удвоенный бонус мастерства',
+			'При проверке Интеллекта (История), связанной с происхождением работы по камню, вы считаетесь владеющим навыком {История} и добавляете к проверке удвоенный бонус мастерства',
 		],
 		languages: ['Общий', 'Дварфский'],
 		weaponProficiencies: [EWeapon.battleaxe, EWeapon.handaxe, EWeapon.lighthammer, EWeapon.warhammer],
@@ -389,7 +389,7 @@ function makeEmptyDescription(speed: TSpeed = 25, darkvision = false): TBaseRace
 
 /** Добавление дополнительных характеристик к базовым характеристикам расы */
 export function adjustBaseRace(baseRace: EBaseRace, raceDiffs: Partial<TBaseRaceDescription>): TBaseRaceDescription {
-	const result = baseRaces[baseRace]
+	const result = structuredClone(baseRaces[baseRace])
 
 	Object.keys(raceDiffs).forEach(key => {
 		const tkey = key as keyof TBaseRaceDescription

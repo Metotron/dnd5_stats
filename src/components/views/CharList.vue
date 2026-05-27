@@ -16,11 +16,9 @@ const stats: TStat[] = Object.keys(character.stats) as TStat[]
 const
 	hitCount = computed(() => character.hitDice.value + character.statModifier('con')),
 	armorValues = computed(() => character.armorValues),
-	characteristics = computed(() => {
-		let ret = adjustBaseRace(character.race.value.baseRace, character.race.value.diff)
-		if (character.needMoreStrength.value)
-			ret.speed -= 10
-		return ret
+	speed = computed(() => {
+		const speed = adjustBaseRace(character.race.value.baseRace, character.race.value.diff).speed
+		return character.needMoreStrength.value ? speed - 10 : speed
 	}),
 	hitpointsTitle = computed(() => {
 		const conModifier = getStatModifier(character.stats.con)
@@ -51,7 +49,7 @@ function textModifier(statName: TStat): string | undefined {
 
 		.valueBlock
 			span Скорость:
-			span.value(title="Футов в секунду") {{ characteristics.speed }}
+			span.value(title="Футов в секунду") {{ speed }}
 
 		.valueBlock
 			span Инициатива:
@@ -71,7 +69,7 @@ function textModifier(statName: TStat): string | undefined {
 
 		.valueBlock(:title="character.armor ? '' : 'Рассчитывается из ловкости'")
 			span Класс доспеха:
-			span.value {{ armorValues.armorClass }} (КД: {{ armorValues.AC }})
+			span.value {{ armorValues.armorClass }} (КД: {{ armorValues.AC }}) #[span(v-if="character.shield.value !== undefined") 🛡️]
 </template>
 
 

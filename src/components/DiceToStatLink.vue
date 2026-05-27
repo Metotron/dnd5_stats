@@ -26,7 +26,6 @@ watch(() => props.linked, () => {
 }, { deep: true })
 
 //FIXME Смена diceValue не отображается в чарлисте
-//FIXME При сбросе не сбрасывается рассчитанный AC персонажа
 
 const optionSelected = ref<TStat | '-'>()
 watch(optionSelected, val => linkTo.value = val == '-' ? undefined : val)

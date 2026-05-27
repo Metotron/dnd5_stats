@@ -1,24 +1,24 @@
 import type { TStat } from './stats'
 
 export enum ESkill {
-	athletics,      // Атлетика
-	acrobatics,     // Акробатика
-	sleightOfHand,  // Ловкость рук
-	stealth,        // Скрытность
-	arcana,         // Магия
-	history,        // История
-	investigation,  // Анализ
-	nature,         // Природа
-	religion,       // Религия
-	animalHandling, // Уход за животными
-	insight,        // Проницательность
-	medicine,       // Медицина
-	perception,     // Внимательность
-	survival,       // Выживание
-	deception,      // Обман
-	intimidation,   // Запугивание
-	performance,    // Выступление
-	persuasion      // Убеждение
+	athletics      = 'athletics',      // Атлетика
+	acrobatics     = 'acrobatics',     // Акробатика
+	sleightOfHand  = 'sleightOfHand',  // Ловкость рук
+	stealth        = 'stealth',        // Скрытность
+	arcana         = 'arcana',         // Магия
+	history        = 'history',        // История
+	investigation  = 'investigation',  // Анализ
+	nature         = 'nature',         // Природа
+	religion       = 'religion',       // Религия
+	animalHandling = 'animalHandling', // Уход за животными
+	insight        = 'insight',        // Проницательность
+	medicine       = 'medicine',       // Медицина
+	perception     = 'perception',     // Внимательность
+	survival       = 'survival',       // Выживание
+	deception      = 'deception',      // Обман
+	intimidation   = 'intimidation',   // Запугивание
+	performance    = 'performance',    // Выступление
+	persuasion     = 'persuasion',     // Убеждение
 }
 
 export type TSkillDescription = {
