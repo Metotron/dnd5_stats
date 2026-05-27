@@ -8,10 +8,10 @@ import { statsList } from '@/handbook-data/stats'
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
 
-const checkedSkillsCount = computed(() => character.proficienciesCount)
+const checkedSkillsCount = computed(() => character.proficiencies.count)
 
 function changeProficiencyState(skill: ESkill, ev: Event) {
-	character.setProficiency(skill, (<HTMLInputElement>ev.target).checked)
+	character.proficiencies.set(skill, (<HTMLInputElement>ev.target).checked)
 }
 </script>
 
@@ -19,12 +19,12 @@ function changeProficiencyState(skill: ESkill, ev: Event) {
 <template lang="pug">
 .pageBlock.skills
 	.blockTitle 🧠 Навыки
-		span.selectedCount(v-if="checkedSkillsCount" title="Сбросить" @click="character.resetProficiencies()") (Выбрано: {{ checkedSkillsCount }})
+		span.selectedCount(v-if="checkedSkillsCount" title="Сбросить" @click="character.proficiencies.resetAll()") (Выбрано: {{ checkedSkillsCount }})
 	.blockBody
 		.skill(v-for="skillDescr in fullSkillsList" :key="skillDescr.name" :data-skillstat="skillDescr.statType" :data-skill="skillDescr.skill")
 			label
-				input(type="checkbox" :checked="character.hasProficiency(skillDescr.skill)" @change="changeProficiencyState(skillDescr.skill, $event)")
-				span.name(:class="{ selected: character.hasProficiency(skillDescr.skill) }") {{ skillDescr.name }}
+				input(type="checkbox" :checked="character.proficiencies.enabled(skillDescr.skill)" @change="changeProficiencyState(skillDescr.skill, $event)")
+				span.name(:class="{ selected: character.proficiencies.enabled(skillDescr.skill) }") {{ skillDescr.name }}
 				span.stat ({{ statsList[skillDescr.statType].shortName }})
 			span.value {{ 10 + getSkillModifier(skillDescr.skill, character) }}
 </template>

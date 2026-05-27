@@ -60,7 +60,7 @@ export enum EWeapon {
 	net            // Сеть
 }
 
-enum EProp {
+export enum EWeaponProp {
 	light,      // Лёгкое
 	finesse,    // Фехтовальное
 	thrown,     // Метательное
@@ -73,24 +73,24 @@ enum EProp {
 	special,    // Особое
 }
 
-type TProp = { prop: EProp.light }
-	| { prop: EProp.finesse }
-	| { prop: EProp.twohanded }
-	| { prop: EProp.loading }
-	| { prop: EProp.heavy }
-	| { prop: EProp.reach }
-	| { prop: EProp.special }
+type TProp = { prop: EWeaponProp.light }
+	| { prop: EWeaponProp.finesse }
+	| { prop: EWeaponProp.twohanded }
+	| { prop: EWeaponProp.loading }
+	| { prop: EWeaponProp.heavy }
+	| { prop: EWeaponProp.reach }
+	| { prop: EWeaponProp.special }
 	| {
-		prop: EProp.thrown
+		prop: EWeaponProp.thrown
 		normalRange: number  // Нормальная дистанция
 		maxRange: number     // Максимальная дистанция
 	}
 	| {
-		prop: EProp.versatile
+		prop: EWeaponProp.versatile
 		damage: number       // Урон при двуручном использовании
 	}
 	| {
-		prop: EProp.ammunition
+		prop: EWeaponProp.ammunition
 		normalRange: number  // Нормальная дистанция
 		maxRange: number     // Максимальная дистанция
 	}
@@ -135,7 +135,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 4,
-		props: [generateProp(EProp.versatile, 8)]
+		props: [generateProp(EWeaponProp.versatile, 8)]
 	}, {
 		id: EWeapon.mace,
 		group: EWeaponClass['simpe.melee'],
@@ -155,7 +155,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 2,
-		props: [generateProp(EProp.light)]
+		props: [generateProp(EWeaponProp.light)]
 	}, {
 		id: EWeapon.dagger,
 		group: EWeaponClass['simpe.melee'],
@@ -166,9 +166,9 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 1,
 		props: [
-			generateProp(EProp.light),
-			generateProp(EProp.finesse),
-			generateProp(EProp.thrown, 20, 60),
+			generateProp(EWeaponProp.light),
+			generateProp(EWeaponProp.finesse),
+			generateProp(EWeaponProp.thrown, 20, 60),
 		]
 	}, {
 		id: EWeapon.spear,
@@ -180,8 +180,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 3,
 		props: [
-			generateProp(EProp.versatile, 8),
-			generateProp(EProp.thrown, 20, 60),
+			generateProp(EWeaponProp.versatile, 8),
+			generateProp(EWeaponProp.thrown, 20, 60),
 		]
 	}, {
 		id: EWeapon.lighthammer,
@@ -193,8 +193,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.bludgeoning,
 		weight: 2,
 		props: [
-			generateProp(EProp.light),
-			generateProp(EProp.thrown, 20, 60),
+			generateProp(EWeaponProp.light),
+			generateProp(EWeaponProp.thrown, 20, 60),
 		]
 	}, {
 		id: EWeapon.javelin,
@@ -205,7 +205,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 2,
-		props: [generateProp(EProp.thrown, 30, 120)]
+		props: [generateProp(EWeaponProp.thrown, 30, 120)]
 	}, {
 		id: EWeapon.greatclub,
 		group: EWeaponClass['simpe.melee'],
@@ -215,7 +215,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 10,
-		props: [generateProp(EProp.twohanded)]
+		props: [generateProp(EWeaponProp.twohanded)]
 	}, {
 		id: EWeapon.handaxe,
 		group: EWeaponClass['simpe.melee'],
@@ -226,8 +226,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.slashing,
 		weight: 2,
 		props: [
-			generateProp(EProp.light),
-			generateProp(EProp.thrown, 20, 60),
+			generateProp(EWeaponProp.light),
+			generateProp(EWeaponProp.thrown, 20, 60),
 		]
 	}, {
 		id: EWeapon.sickle,
@@ -238,7 +238,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 2,
-		props: [generateProp(EProp.light)]
+		props: [generateProp(EWeaponProp.light)]
 	},
 
 	// Простое дальнобойное
@@ -252,9 +252,9 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 5,
 		props: [
-			generateProp(EProp.ammunition, 80, 320),
-			generateProp(EProp.loading),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.ammunition, 80, 320),
+			generateProp(EWeaponProp.loading),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.dart,
@@ -266,8 +266,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: .25,
 		props: [
-			generateProp(EProp.finesse),
-			generateProp(EProp.thrown, 20, 60),
+			generateProp(EWeaponProp.finesse),
+			generateProp(EWeaponProp.thrown, 20, 60),
 		]
 	}, {
 		id: EWeapon.shortbow,
@@ -279,8 +279,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 2,
 		props: [
-			generateProp(EProp.ammunition, 80, 320),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.ammunition, 80, 320),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.sling,
@@ -291,7 +291,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 0,
-		props: [generateProp(EProp.ammunition, 30, 120)]
+		props: [generateProp(EWeaponProp.ammunition, 30, 120)]
 	},
 
 	// Воинское рукопашное
@@ -305,9 +305,9 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.slashing,
 		weight: 6,
 		props: [
-			generateProp(EProp.heavy),
-			generateProp(EProp.reach),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.reach),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.warpick,
@@ -328,7 +328,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 2,
-		props: [generateProp(EProp.versatile, 10)]
+		props: [generateProp(EWeaponProp.versatile, 10)]
 	}, {
 		id: EWeapon.battleaxe,
 		group: EWeaponClass['martial.melee'],
@@ -338,7 +338,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 4,
-		props: [generateProp(EProp.versatile, 10)]
+		props: [generateProp(EWeaponProp.versatile, 10)]
 	}, {
 		id: EWeapon.halberd,
 		group: EWeaponClass['martial.melee'],
@@ -349,9 +349,9 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.slashing,
 		weight: 6,
 		props: [
-			generateProp(EProp.heavy),
-			generateProp(EProp.reach),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.reach),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.greatsword,
@@ -363,8 +363,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.slashing,
 		weight: 6,
 		props: [
-			generateProp(EProp.heavy),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.lance,
@@ -376,8 +376,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 6,
 		props: [
-			generateProp(EProp.reach),
-			generateProp(EProp.special),
+			generateProp(EWeaponProp.reach),
+			generateProp(EWeaponProp.special),
 		]
 	},
 	{
@@ -389,7 +389,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 3,
-		props: [generateProp(EProp.versatile, 10)]
+		props: [generateProp(EWeaponProp.versatile, 10)]
 	},
 	{
 		id: EWeapon.whip,
@@ -401,8 +401,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.slashing,
 		weight: 3,
 		props: [
-			generateProp(EProp.finesse),
-			generateProp(EProp.reach),
+			generateProp(EWeaponProp.finesse),
+			generateProp(EWeaponProp.reach),
 		]
 	},
 	{
@@ -415,8 +415,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 2,
 		props: [
-			generateProp(EProp.finesse),
-			generateProp(EProp.light),
+			generateProp(EWeaponProp.finesse),
+			generateProp(EWeaponProp.light),
 		]
 	},
 	{
@@ -429,8 +429,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.bludgeoning,
 		weight: 10,
 		props: [
-			generateProp(EProp.heavy),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.morningstar,
@@ -452,9 +452,9 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 18,
 		props: [
-			generateProp(EProp.heavy),
-			generateProp(EProp.reach),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.reach),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.rapier,
@@ -465,7 +465,7 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDicesCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 2,
-		props: [generateProp(EProp.finesse)]
+		props: [generateProp(EWeaponProp.finesse)]
 	}, {
 		id: EWeapon.greataxe,
 		group: EWeaponClass['martial.melee'],
@@ -476,8 +476,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.slashing,
 		weight: 7,
 		props: [
-			generateProp(EProp.heavy),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.scimitar,
@@ -489,8 +489,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.slashing,
 		weight: 3,
 		props: [
-			generateProp(EProp.finesse),
-			generateProp(EProp.light),
+			generateProp(EWeaponProp.finesse),
+			generateProp(EWeaponProp.light),
 		]
 	}, {
 		id: EWeapon.trident,
@@ -502,8 +502,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 4,
 		props: [
-			generateProp(EProp.thrown, 20, 60),
-			generateProp(EProp.versatile, 8),
+			generateProp(EWeaponProp.thrown, 20, 60),
+			generateProp(EWeaponProp.versatile, 8),
 		]
 	}, {
 		id: EWeapon.flail,
@@ -528,9 +528,9 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 3,
 		props: [
-			generateProp(EProp.ammunition, 30, 120),
-			generateProp(EProp.light),
-			generateProp(EProp.loading),
+			generateProp(EWeaponProp.ammunition, 30, 120),
+			generateProp(EWeaponProp.light),
+			generateProp(EWeaponProp.loading),
 		]
 	}, {
 		id: EWeapon.heavycrossbow,
@@ -542,10 +542,10 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 18,
 		props: [
-			generateProp(EProp.ammunition, 100, 400),
-			generateProp(EProp.heavy),
-			generateProp(EProp.loading),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.ammunition, 100, 400),
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.loading),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.longbow,
@@ -557,9 +557,9 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 2,
 		props: [
-			generateProp(EProp.ammunition, 150, 600),
-			generateProp(EProp.heavy),
-			generateProp(EProp.twohanded),
+			generateProp(EWeaponProp.ammunition, 150, 600),
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.twohanded),
 		]
 	}, {
 		id: EWeapon.blowgun,
@@ -571,8 +571,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.piercing,
 		weight: 1,
 		props: [
-			generateProp(EProp.ammunition, 25, 100),
-			generateProp(EProp.loading),
+			generateProp(EWeaponProp.ammunition, 25, 100),
+			generateProp(EWeaponProp.loading),
 		]
 	},  {
 		id: EWeapon.net,
@@ -584,35 +584,35 @@ export const fullWeaponsList: TWeapon[] = [
 		damageType: EDamageType.none,
 		weight: 3,
 		props: [
-			generateProp(EProp.thrown, 5, 15),
-			generateProp(EProp.special),
+			generateProp(EWeaponProp.thrown, 5, 15),
+			generateProp(EWeaponProp.special),
 		]
 	}
 ] as const
 
-function generateProp(prop: EProp.versatile, damage: number): Extract<TProp, { prop: EProp.versatile }>
-function generateProp(prop: EProp.thrown | EProp.ammunition, normal: number, max: number): Extract<TProp, { prop: EProp.thrown }>
-function generateProp<P extends EProp.light | EProp.finesse | EProp.twohanded | EProp.loading | EProp.heavy | EProp.reach | EProp.special>(prop: P): Extract<TProp, { prop: P }>
-function generateProp(prop: EProp, ...params: number[]): TProp {
+function generateProp(prop: EWeaponProp.versatile, damage: number): Extract<TProp, { prop: EWeaponProp.versatile }>
+function generateProp(prop: EWeaponProp.thrown | EWeaponProp.ammunition, normal: number, max: number): Extract<TProp, { prop: EWeaponProp.thrown }>
+function generateProp<P extends EWeaponProp.light | EWeaponProp.finesse | EWeaponProp.twohanded | EWeaponProp.loading | EWeaponProp.heavy | EWeaponProp.reach | EWeaponProp.special>(prop: P): Extract<TProp, { prop: P }>
+function generateProp(prop: EWeaponProp, ...params: number[]): TProp {
 	switch (prop) {
-		case EProp.light:
-		case EProp.finesse:
-		case EProp.twohanded:
-		case EProp.loading:
-		case EProp.heavy:
-		case EProp.reach:
-		case EProp.special:
+		case EWeaponProp.light:
+		case EWeaponProp.finesse:
+		case EWeaponProp.twohanded:
+		case EWeaponProp.loading:
+		case EWeaponProp.heavy:
+		case EWeaponProp.reach:
+		case EWeaponProp.special:
 			return { prop }
 
-		case EProp.thrown:
-		case EProp.ammunition:
+		case EWeaponProp.thrown:
+		case EWeaponProp.ammunition:
 			return {
 				prop,
 				normalRange: <number>params[0] ?? 0,
 				maxRange: <number>params[1] ?? 0
 			}
 
-		case EProp.versatile:
+		case EWeaponProp.versatile:
 			return {
 				prop,
 				damage: <number>params[0]
@@ -626,4 +626,13 @@ export function getWeaponsByClass(weaponClass: EWeaponClass): TWeapon[] {
 
 export function getWeaponByEnum(weapon: EWeapon): TWeapon {
 	return fullWeaponsList.find(w => w.id == weapon)!
+}
+
+export function damageTypeName(type: EDamageType): string {
+	switch (type) {
+		case EDamageType.none: return ''
+		case EDamageType.bludgeoning: return 'дробящий'
+		case EDamageType.piercing: return 'колющий'
+		case EDamageType.slashing: return 'рубящий'
+	}
 }

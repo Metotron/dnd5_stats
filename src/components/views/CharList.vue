@@ -57,7 +57,7 @@ function textModifier(statName: TStat): string | undefined {
 
 		.valueBlock
 			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
-			span.value {{ character.getProficiencyValue(ESkill.perception) }}
+			span.value {{ character.proficiencies.getValue(ESkill.perception) }}
 
 		.valueBlock
 			span(:title="hitpointsTitle") Количество хитов:
@@ -84,7 +84,7 @@ function textModifier(statName: TStat): string | undefined {
 
 .valueBlock {
 	border-bottom: 1px solid var(--borderColor);
-	padding: var(--blockPadding);
+	padding-block: var(--blockPadding);
 	font-size: 16px;
 
 	&:first-child { padding-top: 0; }

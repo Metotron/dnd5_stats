@@ -114,20 +114,27 @@ export class Character {
 	/** Включенные навыки */
 	#proficiencies = ref<Set<ESkill>>(new Set())
 
-	/** Количество установленных навыков */
-	get proficienciesCount(): ComputedRef<number> { return computed(() => this.#proficiencies.value.size) }
+	get proficiencies() {
+		const proficiencies = this.#proficiencies
+		const char = this
 
-	/** Установлен ли навык */
-	hasProficiency(skill: ESkill): boolean { return this.#proficiencies.value.has(skill) }
+		return {
+			/** Количество установленных навыков */
+			count: computed(() => proficiencies.value.size),
 
-	/** Получение численного значения навыка */
-	getProficiencyValue(skill: ESkill): number { return 10 + getSkillModifier(skill, this) }
+			/** Установлен ли навык */
+			enabled(skill: ESkill): boolean { return proficiencies.value.has(skill) },
 
-	/** Сброс навыков */
-	resetProficiencies() { this.#proficiencies.value.clear() }
+			/** Получение численного значения навыка */
+			getValue(skill: ESkill): number { return 10 + getSkillModifier(skill, char) },
 
-	/** Включение-выключение навыка */
-	setProficiency(skill: ESkill, value: boolean) { this.#proficiencies.value[value ? 'add' : 'delete'](skill) }
+			/** Сброс навыков */
+			resetAll() { proficiencies.value.clear() },
+
+			/** Включение-выключение навыка */
+			set(skill: ESkill, value: boolean) { proficiencies.value[value ? 'add' : 'delete'](skill) },
+		}
+	}
 
 
 	/** Вдохновение мастера */
@@ -140,17 +147,26 @@ export class Character {
 
 	/** Вооружение */
 	#weapons = ref<EWeapon[]>([])
-	get weapons() { return computed(() => this.#weapons.value.map(w => fullWeaponsList.find(weapon => weapon.id === w)!)) }
 	get rawWeaponsValue(): EWeapon[] { return this.#weapons.value }
-	
-	/** Добавить оружие к вооружению */
-	addWeapon(weapon: EWeapon) { this.#weapons.value.push(weapon) }
-	
-	/** Убрать одно оружие указанного наименования из вооружения */
-	removeWeapon(weapon: EWeapon) {
-		const weaponIdx = this.#weapons.value.findIndex(w => w === weapon)
-		if (weaponIdx != -1)
-			this.#weapons.value.splice(weaponIdx, 1)
+	get weapons() {
+		const weapons = this.#weapons
+
+		return {
+			list: computed(() => weapons.value.map(w => fullWeaponsList.find(weapon => weapon.id === w)!)),
+
+			/** Добавить оружие к вооружению */
+			add(weapon: EWeapon) { weapons.value.push(weapon) },
+
+			/** Убрать одно оружие указанного наименования */
+			remove(weapon: EWeapon) {
+				const weaponIdx = weapons.value.findIndex(w => w === weapon)
+				if (weaponIdx != -1)
+					weapons.value.splice(weaponIdx, 1)
+			},
+
+			/** Убрать всё оружие */
+			removeAll() { weapons.value.splice(0) }
+		}
 	}
 }
 
@@ -160,7 +176,7 @@ export function getSkillModifier(skillName: ESkill, character: Character): numbe
 	const statAbbr: TStat = fullSkillsList.find(s => s.skill == skillName)!.statType
 	const statValue = character.stats[statAbbr]
 	const modifier = statValue > 0 ? Math.ceil((statValue - 11) / 2) : 0
-	const bonus = character.hasProficiency(skillName) ? character.proficiencyBonus.value : 0
+	const bonus = character.proficiencies.enabled(skillName) ? character.proficiencyBonus.value : 0
 
 	return modifier + bonus
 }

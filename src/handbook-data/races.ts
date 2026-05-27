@@ -57,8 +57,8 @@ export type TBaseRaceDescription = {
 	languages: string[]
 	features?: string[]
 	weaponProficiencies?: (EWeapon | EWeaponClass)[]
-	armorProfiecies?: EArmorClass[]  // Владение классами доспехов
-	toolProficiencies?: ETool[]        // Владение инструментами
+	armorProficiencies?: EArmorClass[]  // Владение классами доспехов
+	toolProficiencies?: ETool[]         // Владение инструментами
 	skills?: ESkill[]
 }
 
@@ -168,7 +168,7 @@ export const fullRacesList: TRace[] = [
 	mkRace(EBaseRace.dwarf, ERace['dwarf.mountain'], {
 		name: 'Горный дварф',
 		statsModifiers: [{ str: 2 }],
-		armorProfiecies: [EArmorClass.light, EArmorClass.medium],
+		armorProficiencies: [EArmorClass.light, EArmorClass.medium],
 	}),
 	mkRace(EBaseRace.dwarf, ERace['dwarf.hill'], {
 		name: 'Горный дварф',
