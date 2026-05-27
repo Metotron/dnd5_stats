@@ -4,7 +4,7 @@ export type TDiceValues = [number, number, number, number, number, number]
  * @param generator - Генератор значения. Если не передавать, будет использована diceRoller()
  */
 export function getRandomDiceValues(generator: () => number = diceRoller): TDiceValues {
-	return [0, 0, 0, 0, 0, 0].map(() => generator()) as TDiceValues
+	return [0, 0, 0, 0, 0, 0].map(generator) as TDiceValues
 }
 
 /** Генерация одного случайного значения, являющегося суммой трёх лучших значений кубиков из четырёх брошенных */

@@ -5,16 +5,19 @@ import { ERace, fullRacesList } from '@/handbook-data/races'
 import { ESkill, fullSkillsList } from '@/handbook-data/skills'
 import { getStatModifier, maxStatValue, type TStat } from '@/handbook-data/stats'
 
-import { useCharacterSelector } from './useCharacterSelector'
+import { useCharacterStorage } from './useCharacterStorage'
 
-const { findCharacterById, storeCharacter } = useCharacterSelector()
+const { findCharacterById, storeCharacter } = useCharacterStorage()
 
 let characterId = 1  // Идентификатор персонажа для уникальности
 
-export const useCharacter = (id: number) => {
-	const found = findCharacterById(id)
-	if (found)
-		return found
+export const useCharacter = (id?: number) => {
+	if (id) {
+		const found = findCharacterById(id)
+		if (found)
+			return found
+		throw new Error(`Не найден персонаж с id ${id}`)
+	}
 
 	const newCharacter = new Character(characterId++)
 	storeCharacter(newCharacter)

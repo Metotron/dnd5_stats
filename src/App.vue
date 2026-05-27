@@ -6,6 +6,12 @@ import RaceSelector from './components/selectors/RaceSelector.vue'
 import SkillsList from './components/selectors/SkillsList.vue'
 import CharList from './components/views/CharList.vue'
 import FeaturesList from './components/views/FeaturesList.vue'
+
+import { useCharacter } from './composables/useCharacter.ts'
+
+//FIXME Временное решение
+sessionStorage.clear()
+sessionStorage.setItem('charId', useCharacter().id.toString())
 </script>
 
 

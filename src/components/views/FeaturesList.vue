@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import { useCharacter } from '@/composables/useCharacter'
 
-const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
+const charId = sessionStorage.getItem('charId') ?? 1
+const character = useCharacter(Number(charId))
 
 const combinedFeatures = computed(() => {
 	const race = character.race.value

@@ -1,22 +1,39 @@
 import { watch } from 'vue'
 import { useSaverLoader } from './saverLoader'
 import type { Character } from './useCharacter'
-import { S_AUTOSAVE } from '@/settings'
+import settings from '@/settings'
 
 /** Хранилище всех созданных персонажей */
 const charactersStore: Character[] = []
 
 // Автосохранение в стораж
-if (S_AUTOSAVE)
-	watch(() => charactersStore, saveStoreToStorage, { deep: true, immediate: true })
+if (settings.save_load.AUTOSAVE)
+	watch(() => charactersStore, saveToStorage, { deep: true, immediate: true })
+// Автозагрузка
+if (settings.save_load.AUTOLOAD)
+	console.info('Автозагрузка')
+	loadStoreFromStorage()
+
 
 /** Сохранение хранилища в стораже браузера */
-function saveStoreToStorage() {
-	const saverLoader = useSaverLoader()
+function saveToStorage() {
+	if (!window.localStorage)
+		return
+
+	const saverLoader = useSaverLoader(localStorage)
 	saverLoader.save(charactersStore)
 }
 
-export const useCharacterSelector = () => {
+/** Загрузка хранилища из стоража */
+function loadStoreFromStorage() {
+	if (!window.localStorage)
+		return
+
+	const saverLoader = useSaverLoader(localStorage)
+	charactersStore.splice(0, charactersStore.length, ...saverLoader.load())
+}
+
+export const useCharacterStorage = () => {
 	return {
 		charactersStore,
 
@@ -35,7 +52,7 @@ export const useCharacterSelector = () => {
 		},
 
 		/** Очистка хранилища */
-		clearStorage() {
+		clear() {
 			charactersStore.splice(0)
 		},
 

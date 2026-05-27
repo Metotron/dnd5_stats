@@ -1,5 +1,12 @@
-/** Нужно ли автоматически сохранять персонажей в стораж, когда они изменяются */
-export const S_AUTOSAVE: boolean = false
+export default {
+	save_load: {
+		/** Автоматическое сохранение персонажей в стораж, когда они изменяются */
+		AUTOSAVE: false,
 
-/** Имя в localStorage для сохранения */
-export const S_STORAGE_KEY: string = 'DnD5CharStore'
+		/** Автоматическая загрузка персонажей из стоража */
+		AUTOLOAD: false,
+
+		/** Имя в localStorage для сохранения */
+		STORAGE_KEY: 'DnD5CharStore',
+	}
+}

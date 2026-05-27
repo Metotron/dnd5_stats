@@ -7,7 +7,8 @@ import { getRandomDiceValues, type TDiceValues } from '@/misc/randomDiceValues'
 
 import { useCharacter } from '@/composables/useCharacter'
 
-const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
+const charId = sessionStorage.getItem('charId') ?? 1
+const character = useCharacter(Number(charId))
 
 // Сгенерированные значения (сумма трёх лучших кубиков из четырёх)
 const diceValues = ref<TDiceValues>([0, 0, 0, 0, 0, 0])

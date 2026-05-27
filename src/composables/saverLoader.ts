@@ -1,6 +1,6 @@
 /** Функции для сохраненияперсонажа и загрузки сохранения */
 
-import { S_STORAGE_KEY } from '@/settings'
+import settings from '@/settings'
 import type { Character } from './useCharacter'
 
 /** Формат хранения, преобразуется в JSON как есть, желательно минимизировать, вдуруг будем передавать через QR-код */
@@ -12,32 +12,25 @@ type TSaveFormat = {
 	l: 1                           // level, просто на всякий случай
 	i: 0 | 1                       // inspiration, вдохновение, может быть, объединить его с level?
 	p: number                      // profencies, владение навыками в виде битов в заранее заданном порядке. 18 штук => 3 байта
+	//TODO Добавить все поля класса
 }
 
-type TSaveTo = 'storage'  // Вдруг в будущем ещё куда-то будем сохранять
-
-export const useSaverLoader = () => {
+export const useSaverLoader = (store: Storage) => {
 	return {
-		save(charStore: Character[], to: TSaveTo = 'storage') {
-			//TODO Написать сохранение с учётом формата
+		save(charStore: Character[]) {
+			//TODO Написать сохранение с учётом формата выше
 
 			//xxx Дурацкая реализация. Классы так не сохранить
-			if (to == 'storage' && window.localStorage) {
-				localStorage.setItem(S_STORAGE_KEY, JSON.stringify(charStore))
-				return true
-			}
-
-			return false
+			store.setItem(settings.save_load.STORAGE_KEY, JSON.stringify(charStore))
+			return true
 		},
 
 		load(): Character[] {
-			if (!window.localStorage)
-				return []
-
-			const storedData = localStorage.getItem(S_STORAGE_KEY)
+			const storedData = store.getItem(settings.save_load.STORAGE_KEY)
 			if (storedData === null)
 				return []
 
+			//TODO Надо по-другому
 			const characters = JSON.parse(storedData) as Character[]
 			if (!Array.isArray(characters))
 				return []

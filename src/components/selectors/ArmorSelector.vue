@@ -3,7 +3,9 @@ import { computed, ref, watch } from 'vue'
 import { armorClassList, EArmor, EShield, getArmorsOfClass } from '@/handbook-data/armors'
 
 import { useCharacter } from '@/composables/useCharacter'
-const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
+
+const charId = sessionStorage.getItem('charId') ?? 1
+const character = useCharacter(Number(charId))
 
 const selectedArmor = ref<EArmor>()
 const armor = computed({

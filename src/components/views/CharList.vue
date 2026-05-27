@@ -7,7 +7,8 @@ import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 
 import { useCharacter } from '@/composables/useCharacter'
 
-const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
+const charId = sessionStorage.getItem('charId') ?? 1
+const character = useCharacter(Number(charId))
 
 const stats: TStat[] = Object.keys(character.stats) as TStat[]
 

@@ -4,7 +4,8 @@ import { type ERace, baseRaces, EBaseRace, subracecoOfBase } from '@/handbook-da
 
 import { useCharacter } from '@/composables/useCharacter'
 
-const character = useCharacter(1)  //TODO Вместо 1 подставить выбранный пользователем ID
+const charId = sessionStorage.getItem('charId') ?? 1
+const character = useCharacter(Number(charId))
 
 const selectedRace = ref<ERace>(character.race.value.race)
 watch(selectedRace, race => character.race.value = race)
