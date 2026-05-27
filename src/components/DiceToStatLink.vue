@@ -25,6 +25,9 @@ watch(() => props.linked, () => {
 	optionSelected.value = props.linked[props.idx] === undefined ? '-' : props.linked[props.idx]
 }, { deep: true })
 
+//FIXME Смена diceValue не отображается в чарлисте
+//FIXME При сбросе не сбрасывается рассчитанный AC персонажа
+
 const optionSelected = ref<TStat | '-'>()
 watch(optionSelected, val => linkTo.value = val == '-' ? undefined : val)
 </script>

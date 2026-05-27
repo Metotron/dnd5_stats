@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { getArmorClassNameByEnum } from '@/handbook-data/armors'
 import { ESkill } from '@/handbook-data/skills'
 import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 
 import { useCharacter } from '@/composables/useCharacter'
+import { adjustBaseRace } from '@/handbook-data/races'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
@@ -13,23 +13,15 @@ const character = useCharacter(Number(charId))
 const stats: TStat[] = Object.keys(character.stats) as TStat[]
 
 
-// Класс брони с учётом модификаторов ловкости и щита
-const totalAC = computed<number | undefined>(() => {
-	if (!character.armor.value)
-		return undefined
-
-	if (!character.armor.value.useDexModifier)
-		return character.armor.value.AC + (character.shield.value?.AC ?? 0)
-
-	let ACModifier = getStatModifier(character.stats.dex)
-	if (character.armor.value.maximumDexModifier)
-		ACModifier = Math.min(ACModifier, character.armor.value.maximumDexModifier)
-
-	return character.armor.value.AC + ACModifier + (character.shield.value?.AC ?? 0)
-})
 const
 	hitCount = computed(() => character.hitDice.value + character.statModifier('con')),
-	armorClass = computed(() => getArmorClassNameByEnum(character.armor.value?.group))
+	armorValues = computed(() => character.armorValues),
+	characteristics = computed(() => {
+		let ret = adjustBaseRace(character.race.value.baseRace, character.race.value.diff)
+		if (character.needMoreStrength.value)
+			ret.speed -= 10
+		return ret
+	})
 
 /** Модификатор текстом (с отображением плюса спереди, если модификатор больше нуля) */
 function textModifier(statName: TStat): string | undefined {
@@ -54,8 +46,12 @@ function textModifier(statName: TStat): string | undefined {
 					span.value (#[span(title="Применяемый модификатор") {{ textModifier(statName) }}])
 
 		.valueBlock
+			span Скорость:
+			span.value(title="Футов в секунду") {{ characteristics.speed }}
+
+		.valueBlock
 			span Инициатива:
-			span.value {{ 10 +character.statModifier('dex') }}
+			span.value {{ 10 + character.statModifier('dex') }}
 
 		.valueBlock
 			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
@@ -71,8 +67,7 @@ function textModifier(statName: TStat): string | undefined {
 
 		.valueBlock(:title="character.armor ? '' : 'Рассчитывается из ловкости'")
 			span Класс доспеха:
-			span.value(v-if="character.armor.value") {{ armorClass }} (КД: {{ totalAC }})
-			span.value(v-else) Без доспеха (КД: {{ 10 + getStatModifier(character.stats.dex) }})
+			span.value {{ armorValues.armorClass }} (КД: {{ armorValues.AC }})
 </template>
 
 

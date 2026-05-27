@@ -388,7 +388,7 @@ function makeEmptyDescription(speed: TSpeed = 25, darkvision = false): TBaseRace
 }
 
 /** Добавление дополнительных характеристик к базовым характеристикам расы */
-function adjustBaseRace(baseRace: EBaseRace, raceDiffs: Partial<TBaseRaceDescription>): TBaseRaceDescription {
+export function adjustBaseRace(baseRace: EBaseRace, raceDiffs: Partial<TBaseRaceDescription>): TBaseRaceDescription {
 	const result = baseRaces[baseRace]
 
 	Object.keys(raceDiffs).forEach(key => {

@@ -1,3 +1,5 @@
+import { getStatModifier } from './stats'
+
 export enum EArmor {
 	padded,
 	leather,
@@ -210,4 +212,26 @@ export function getArmorClassNameByEnum(classEnum: EArmorClass | undefined): str
 /** Получение списка доспехов указанного класса брони */
 export function getArmorsOfClass(armorClass: EArmorClass): TArmorDescription[] {
 	return fullArmorsList.filter(({ group }) => group === armorClass)
+}
+
+/** Расчёт КД персонажа по надетой броне и ловкости */
+export function calculateArmorValues(dex: number, armor?: TArmorDescription, shield?: TShield): { armorClass: string, AC: number } {
+	const shieldAC = shield?.AC ?? 0
+	let dexModifier = getStatModifier(dex)
+
+	if (armor === undefined)
+		return {
+			armorClass: 'Без доспеха',
+			AC: 10 + dexModifier + shieldAC
+		}
+
+	if (!armor.useDexModifier)
+		dexModifier = 0
+	else if (armor.maximumDexModifier)
+		dexModifier = Math.min(armor.maximumDexModifier, dexModifier)
+
+	return {
+		armorClass: getArmorClassNameByEnum(armor.group),
+		AC: armor.AC + shieldAC + dexModifier
+	}
 }

@@ -66,6 +66,7 @@ const titleForSelectTag = computed<string>(() => {
 select { width: 170px; }
 
 .alert {
+	width: 100%;
 	border-radius: 3px;
 	margin-top: var(--blockPadding);
 	padding: calc(var(--blockPadding) / 2) var(--blockPadding);
@@ -76,6 +77,7 @@ select { width: 170px; }
 
 .blockBody {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: var(--blockPadding);
 }

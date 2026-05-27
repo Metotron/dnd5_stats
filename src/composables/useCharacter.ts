@@ -1,5 +1,5 @@
 import { computed, reactive, readonly, ref } from 'vue'
-import { fullArmorsList, fullShieldsList, type EArmor, type EShield } from '@/handbook-data/armors'
+import { calculateArmorValues, fullArmorsList, fullShieldsList, getArmorClassNameByEnum, type EArmor, type EShield } from '@/handbook-data/armors'
 import { ECharClass, fullCharClassesList } from '@/handbook-data/classes'
 import { ERace, fullRacesList } from '@/handbook-data/races'
 import { ESkill, fullSkillsList } from '@/handbook-data/skills'
@@ -9,7 +9,7 @@ import { useCharacterStorage } from './useCharacterStorage'
 
 const { findCharacterById, storeCharacter } = useCharacterStorage()
 
-let characterId = 1  // Идентификатор персонажа для уникальности
+let characterId = 1  // Идентификатор персонажа
 
 export const useCharacter = (id?: number) => {
 	if (id) {
@@ -60,7 +60,7 @@ export class Character {
 		get: () => fullArmorsList.find(armor => armor.id === this.#armor.value),
 		set: (armor: EArmor | undefined) => this.#armor.value = armor
 	})
-	rawArmorValue(): EArmor | undefined { return this.#armor.value }
+	get rawArmorValue(): EArmor | undefined { return this.#armor.value }
 
 	/** Нужно ли персонажу больше силы, чтобы носить выбранную броню */
 	get needMoreStrength() {
@@ -74,7 +74,12 @@ export class Character {
 		get: () => fullShieldsList.find(shield => shield.id === this.#shield.value),
 		set: (shield: EShield | undefined) => this.#shield.value = shield
 	})
-	rawShieldValue(): EShield | undefined { return this.#shield.value }
+	get rawShieldValue(): EShield | undefined { return this.#shield.value }
+
+	// Объект со значениями брони
+	get armorValues(): { armorClass: string, AC: number } {
+		return calculateArmorValues(this.#stats.dex, this.armor.value, this.shield.value)
+	}
 
 
 	/** Раса */
@@ -83,7 +88,7 @@ export class Character {
 		get: () => fullRacesList.find(r => r.race == this.#race.value)!,
 		set: (race: ERace) => this.#race.value = race
 	})
-	rawRaceValue(): ERace { return this.#race.value }
+	get rawRaceValue(): ERace { return this.#race.value }
 
 
 	/** Класс персонажа */
@@ -93,7 +98,7 @@ export class Character {
 		set: (charClass: ECharClass) => this.#charClass.value = charClass
 	})
 	hitDice = computed(() => this.charClass.value.hitDice)
-	rawCharClassValue(): ECharClass { return this.#charClass.value }
+	get rawCharClassValue(): ECharClass { return this.#charClass.value }
 
 	/** Уровень */
 	#level = ref(1)
