@@ -4,7 +4,9 @@
 
 
 <template lang="pug">
-	// Выбранное оружие
+.pageBlock.selectedWeapons
+	.blockTitle 🏹 Вооружение
+	.blockBody
 </template>
 
 

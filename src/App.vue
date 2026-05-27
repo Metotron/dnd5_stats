@@ -4,8 +4,10 @@ import ArmorSelector from './components/selectors/ArmorSelector.vue'
 import ClassSelector from './components/selectors/ClassSelector.vue'
 import RaceSelector from './components/selectors/RaceSelector.vue'
 import SkillsList from './components/selectors/SkillsList.vue'
+import WeaponSelector from './components/selectors/WeaponSelector.vue'
 import CharList from './components/views/CharList.vue'
 import FeaturesList from './components/views/FeaturesList.vue'
+import Weapon from './components/views/Weapon.vue'
 
 import { useCharacter } from './composables/useCharacter.ts'
 
@@ -28,9 +30,11 @@ header
 		race-selector
 		class-selector
 		armor-selector
+		weapon-selector
 		values-linker
 	.blockCol.col2
 		char-list
+		weapon
 		features-list
 	.blockCol.col3
 		skills-list
@@ -150,5 +154,9 @@ input.textLike {
 	&:focus-visible, &:focus {
 		outline: 2px solid rgb(from var(--accentColor) r g b / .3);
 	}
+}
+
+option, optgroup {
+	font-size: .875rem;
 }
 </style>

@@ -6,6 +6,7 @@ import { ESkill, fullSkillsList } from '@/handbook-data/skills'
 import { getStatModifier, maxStatValue, type TStat } from '@/handbook-data/stats'
 
 import { useCharacterStorage } from './useCharacterStorage'
+import { fullWeaponsList, type EWeapon } from '@/handbook-data/weapons'
 
 const { findCharacterById, storeCharacter } = useCharacterStorage()
 
@@ -135,6 +136,22 @@ export class Character {
 		get: () => readonly(this.#inspiration),
 		set: (inspiration: boolean) => this.#inspiration.value = inspiration
 	})
+
+
+	/** Вооружение */
+	#weapons = ref<EWeapon[]>([])
+	get weapons() { return computed(() => this.#weapons.value.map(w => fullWeaponsList.find(weapon => weapon.id === w)!)) }
+	get rawWeaponsValue(): EWeapon[] { return this.#weapons.value }
+	
+	/** Добавить оружие к вооружению */
+	addWeapon(weapon: EWeapon) { this.#weapons.value.push(weapon) }
+	
+	/** Убрать одно оружие указанного наименования из вооружения */
+	removeWeapon(weapon: EWeapon) {
+		const weaponIdx = this.#weapons.value.findIndex(w => w === weapon)
+		if (weaponIdx != -1)
+			this.#weapons.value.splice(weaponIdx, 1)
+	}
 }
 
 
