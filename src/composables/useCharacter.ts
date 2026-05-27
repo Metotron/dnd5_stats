@@ -1,4 +1,4 @@
-import { computed, reactive, readonly, ref } from 'vue'
+import { computed, reactive, readonly, ref, type ComputedRef } from 'vue'
 import { calculateArmorValues, fullArmorsList, fullShieldsList, getArmorClassNameByEnum, type EArmor, type EShield } from '@/handbook-data/armors'
 import { ECharClass, fullCharClassesList } from '@/handbook-data/classes'
 import { ERace, fullRacesList } from '@/handbook-data/races'
@@ -114,21 +114,19 @@ export class Character {
 	#proficiencies = ref<Set<ESkill>>(new Set())
 
 	/** Количество установленных навыков */
-	get proficienciesCount() { return computed(() => this.#proficiencies.value.size) }
+	get proficienciesCount(): ComputedRef<number> { return computed(() => this.#proficiencies.value.size) }
 
 	/** Установлен ли навык */
-	hasProficiency(skill: ESkill) { return this.#proficiencies.value.has(skill) }
+	hasProficiency(skill: ESkill): boolean { return this.#proficiencies.value.has(skill) }
 
 	/** Получение численного значения навыка */
-	getProficiencyValue(skill: ESkill) { return 10 + getSkillModifier(skill, this) }
+	getProficiencyValue(skill: ESkill): number { return 10 + getSkillModifier(skill, this) }
 
 	/** Сброс навыков */
 	resetProficiencies() { this.#proficiencies.value.clear() }
 
 	/** Включение-выключение навыка */
-	setProficiency(skill: ESkill, value: boolean) {
-		this.#proficiencies.value[value ? 'add' : 'delete'](skill)
-	}
+	setProficiency(skill: ESkill, value: boolean) { this.#proficiencies.value[value ? 'add' : 'delete'](skill) }
 
 
 	/** Вдохновение мастера */

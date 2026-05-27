@@ -3,7 +3,10 @@ import { useCharacter } from '@/composables/useCharacter'
 import { useCharacterStorage } from '@/composables/useCharacterStorage'
 import { beforeEach, describe, expect, test } from 'vitest'
 import settings from '@/settings'
-import { EArmor } from '@/handbook-data/armors'
+import { EArmor, EShield } from '@/handbook-data/armors'
+import { EBaseRace, ERace } from '@/handbook-data/races'
+import { ECharClass } from '@/handbook-data/classes'
+import { ESkill } from '@/handbook-data/skills'
 
 settings.save_load.AUTOSAVE = false  // Нужно, чтобы стор управлялся
 settings.save_load.AUTOLOAD = false  // только действиями тестов
@@ -56,30 +59,113 @@ describe('Работа со стором персонажей', () => {
 		charStorage.deleteCharacter(character.id)
 		expect(charStorage.charactersStore.length).toBe(storeSize - 1)
 	})
+
+	//TODO Замокать объект с типом Storage и посохранять в него, но только когда будет готов формат хранения
 })
 
 
-describe('Работа класса персонажа', () => {
-	test('Класс персонажа корректно обрабатывает установку и получение атрибутов', () => {
-		const char = useCharacter()
+describe('Класс персонажа корректно обрабатывает установку и получение атрибутов', () => {
+	const char = useCharacter()
 
-		expect(char.id).toBeTypeOf('number')
+	expect(char.id).toBeTypeOf('number')
 
+	test('Смена имени', () => {
 		char.name.value = 'Валера'
 		expect(unref(char.name.value)).toBe('Валера')
+	})
 
+	test('Смена брони', () => {
 		char.armor.value = EArmor.chainShirt
 		expect(unref(char.rawArmorValue)).toBe(EArmor.chainShirt)
 		expect(unref(char.armor.value)?.name).toBe('Кольчужная рубаха')
 
+		expect(unref(char.needMoreStrength.value)).toBe(false)
+		char.armor.value = EArmor.plate  // Надел латы
+		expect(unref(char.needMoreStrength.value)).toBe(true)
+	})
+
+	test('Смена характеристик', () => {
 		char.setStat('str', -2)
 		expect(char.stats.str).toBe(1)
+
 		char.setStat('str', 40)
 		expect(char.stats.str).toBe(30)
+
 		char.setStat('str', 7)
 		expect(char.stats.str).toBe(7)
-		expect(unref(char.needMoreStrength.value)).toBe(false)
-		char.armor.value = EArmor.plate
-		expect(unref(char.needMoreStrength.value)).toBe(true)
+	})
+
+	test('Взятие / снятие щита', () => {
+		expect(unref(char.shield.value)).toBeUndefined()
+
+		char.shield.value = EShield.standard  // Взял щит
+		expect(unref(char.shield.value?.AC)).toBe(2)
+		expect(unref(char.armorValues.AC)).toBe(20)  // Суммарный КД лат и щита
+
+		char.shield.value = undefined
+		expect(unref(char.shield.value)).toBeUndefined()
+		expect(unref(char.armorValues.AC)).toBe(18)
+	})
+
+	test('Смена расы', () => {
+		char.race.value = ERace['dragonborn.bronze']
+		expect(unref(char.race.value.baseRace)).toBe(EBaseRace.dragonborn)
+	})
+
+	test('Смена класса', () => {
+		char.charClass.value = ECharClass['paladin']
+		expect(unref(char.charClass.value.name)).toBe('Паладин')
+		expect(unref(char.charClass.value.hitDice)).toBe(10)
+	})
+
+	test('Смена уровня с проверкой выхода за допустимый диапазон', () => {
+		expect(unref(char.level.value)).toBe(1)
+		expect(unref(char.proficiencyBonus.value)).toBe(2)
+		
+		char.level.value = 0
+		expect(unref(char.level.value)).toBe(1)
+		
+		char.level.value = 30
+		expect(unref(char.level.value)).toBe(20)
+		expect(unref(char.proficiencyBonus.value)).toBe(6)
+		
+		char.level.value = 5
+		expect(unref(char.level.value)).toBe(5)
+		expect(unref(char.proficiencyBonus.value)).toBe(3)
+	})
+
+	test('Включение/выключение навыков и подсчёт их количества', () => {
+		expect(unref(char.proficienciesCount.value)).toBe(0)
+		
+		char.setProficiency(ESkill.deception, true)
+		expect(unref(char.proficienciesCount.value)).toBe(1)
+		
+		char.setProficiency(ESkill.intimidation, true)
+		expect(unref(char.proficienciesCount.value)).toBe(2)
+
+		char.setProficiency(ESkill.intimidation, false)
+		expect(unref(char.proficienciesCount.value)).toBe(1)
+	})
+
+	test('Бонус мастерства прибавляется к проницательности, если её включить', () => {
+		expect(char.getProficiencyValue(ESkill.insight)).toBe(10)
+		char.setProficiency(ESkill.insight, true)
+		expect(unref(char.hasProficiency(ESkill.insight))).toBe(true)
+		expect(char.getProficiencyValue(ESkill.insight)).toBe(10 + unref(char.proficiencyBonus.value))
+	})
+
+	test('Сброс всех навыков', () => {
+		char.resetProficiencies()
+		expect(unref(char.proficienciesCount.value)).toBe(0)
+	})
+
+	test('Установка и снятие вдохновения', () => {
+		expect(unref(char.inspiration.value)).toBe(false)
+
+		char.inspiration.value = true
+		expect(unref(char.inspiration.value)).toBe(true)
+
+		char.inspiration.value = false
+		expect(unref(char.inspiration.value)).toBe(false)
 	})
 })

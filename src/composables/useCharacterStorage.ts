@@ -7,12 +7,14 @@ import settings from '@/settings'
 const charactersStore: Character[] = []
 
 // Автосохранение в стораж
-if (settings.save_load.AUTOSAVE)
+if (settings.save_load.AUTOSAVE) {
 	watch(() => charactersStore, saveToStorage, { deep: true, immediate: true })
+}
 // Автозагрузка
-if (settings.save_load.AUTOLOAD)
-	console.info('Автозагрузка')
+if (settings.save_load.AUTOLOAD) {
 	loadStoreFromStorage()
+	//TODO window.addEventListener('storage', () => loadStoreFromStorage())
+}
 
 
 /** Сохранение хранилища в стораже браузера */

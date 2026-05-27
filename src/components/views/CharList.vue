@@ -21,6 +21,10 @@ const
 		if (character.needMoreStrength.value)
 			ret.speed -= 10
 		return ret
+	}),
+	hitpointsTitle = computed(() => {
+		const conModifier = getStatModifier(character.stats.con)
+		return `Для каждого последующего уровня нужно бросать d${character.hitDice.value}` + (conModifier != 0 ? ` и к значению прибавлять ${conModifier}` : '')
 	})
 
 /** Модификатор текстом (с отображением плюса спереди, если модификатор больше нуля) */
@@ -58,7 +62,7 @@ function textModifier(statName: TStat): string | undefined {
 			span.value {{ character.getProficiencyValue(ESkill.perception) }}
 
 		.valueBlock
-			span(:title="`Для каждого последующего уровня нужно бросать d${character.hitDice} и к значению прибавлять ${getStatModifier(character.stats.con)}`") Количество хитов:
+			span(:title="hitpointsTitle") Количество хитов:
 			span.value {{ hitCount }}
 
 		.valueBlock

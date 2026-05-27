@@ -179,7 +179,7 @@ export const fullRacesList: TRace[] = [
 
 	// Эльфы
 	mkRace(EBaseRace.elf, ERace['elf.high'], {
-		name: 'Высокий эльф',
+		name: 'Высший эльф',
 		statsModifiers: [{ int: 1 }],
 		weaponProficiencies: [EWeapon.shortsword, EWeapon.longsword, EWeapon.shortbow, EWeapon.longbow],
 		languages: ['Один дополнительный язык на выбор'],
@@ -264,7 +264,7 @@ export const fullRacesList: TRace[] = [
 		]
 	}),
 	mkRace(EBaseRace.dragonborn, ERace['dragonborn.red'], {
-		name: 'Драконорожденный ( дракон)',
+		name: 'Драконорожденный (красный дракон)',
 		features: [
 			'[Оружие дыхания.] Огонь: 15-фт. конус (спас. Лов.)',
 			'Сопротивление к урону огнём',
