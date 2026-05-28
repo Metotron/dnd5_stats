@@ -1,3 +1,5 @@
+/** @description Оружие */
+
 //TODO Сделать функцию проверки владения оружием конкретным персонажем
 //TODO Учесть влияние размера существа на владение оружием
 
@@ -121,8 +123,6 @@ export const weaponClasses: { classType: EWeaponClass, name: string }[] = [{
 	classType: EWeaponClass['martial.ranged'],
 	name: 'Воинское дальнобойное'
 }]
-
-//FIXME Учесть EProp.special при выводе характеристик оружия
 
 export const fullWeaponsList: TWeapon[] = [
 	// Простое рукопашное
@@ -594,7 +594,7 @@ function generateProp(prop: EWeaponProp.versatile, damage: number): Extract<TPro
 function generateProp(prop: EWeaponProp.thrown | EWeaponProp.ammunition, normal: number, max: number): Extract<TProp, { prop: EWeaponProp.thrown }>
 function generateProp<P extends EWeaponProp.light | EWeaponProp.finesse | EWeaponProp.twohanded | EWeaponProp.loading | EWeaponProp.heavy | EWeaponProp.reach | EWeaponProp.special>(prop: P): Extract<TProp, { prop: P }>
 function generateProp(prop: EWeaponProp, ...params: number[]): TProp {
-	switch (prop) {
+	switch(prop) {
 		case EWeaponProp.light:
 		case EWeaponProp.finesse:
 		case EWeaponProp.twohanded:
@@ -629,10 +629,26 @@ export function getWeaponByEnum(weapon: EWeapon): TWeapon {
 }
 
 export function damageTypeName(type: EDamageType): string {
-	switch (type) {
+	switch(type) {
 		case EDamageType.none: return ''
 		case EDamageType.bludgeoning: return 'дробящий'
 		case EDamageType.piercing: return 'колющий'
 		case EDamageType.slashing: return 'рубящий'
 	}
+}
+
+export function getWeaponSpecialDescription(weapon: EWeapon): string | undefined {
+	if (![EWeapon.lance, EWeapon.net].includes(weapon))
+		return undefined
+
+	switch(weapon) {
+		case EWeapon.lance:
+			return 'Вы совершаете с помехой атаки длинным копьём по существам, находящимся в пределах 5 футов от вас. Кроме того, если вы не находитесь верхом, длинное копьё используется двумя руками'
+
+		case EWeapon.net:
+			return 'Существа Большого и меньшего размеров, по которым попала атака сетью, становятся опутанными, пока не высвободятся. Сеть не оказывает эффекта на бесформенных существ и тех, чей размер Огромный или ещё больше. Существо может действием совершить проверку Силы со Сл 10, чтобы высвободиться самому или освободить другое существо, находящееся в пределах его досягаеости. Причинение сети 5 единиц рубящего урона (КД 10) тоже освобождает существо, не причиняя ему вреда, оканчивая эффект и уничтожая сеть.\n\n\
+			Если вы действием, бонусным действием или реакцией совершаете атаку сетью, вы можете совершить только одну атаку, вне зависимости от количества положенных атак.'
+	}
+
+	return ''
 }

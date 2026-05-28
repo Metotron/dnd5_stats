@@ -13,6 +13,8 @@ const checkedSkillsCount = computed(() => character.proficiencies.count)
 function changeProficiencyState(skill: ESkill, ev: Event) {
 	character.proficiencies.set(skill, (<HTMLInputElement>ev.target).checked)
 }
+
+//TODO Если навык включен из выбранных пользователем предустановок, заблокировать его выключение
 </script>
 
 

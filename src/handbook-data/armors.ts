@@ -1,3 +1,5 @@
+/** @description Списки доспехов и щитов */
+
 import { getStatModifier } from './stats'
 
 export enum EArmor {

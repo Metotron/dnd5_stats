@@ -5,7 +5,7 @@ import { ESkill } from '@/handbook-data/skills'
 import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 
 import { useCharacter } from '@/composables/useCharacter'
-import { adjustBaseRace } from '@/handbook-data/races'
+import { adjustBaseRace, baseRaces } from '@/handbook-data/races'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
@@ -17,7 +17,8 @@ const
 	hitCount = computed(() => character.hitDice.value + character.statModifier('con')),
 	armorValues = computed(() => character.armorValues),
 	speed = computed(() => {
-		const speed = adjustBaseRace(character.race.value.baseRace, character.race.value.diff).speed
+		//TODO Добавить background, если там есть влияние на скорость
+		const speed = adjustBaseRace(baseRaces[character.race.value.baseRace], character.race.value.diff).speed
 		return character.needMoreStrength.value ? speed - 10 : speed
 	}),
 	hitpointsTitle = computed(() => {

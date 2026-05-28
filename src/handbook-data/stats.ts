@@ -1,3 +1,5 @@
+/** @description Характеристики персонажа */
+
 export type TStat = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
 export const statsArray: TStat[] = ['str', 'dex', 'con', 'int', 'wis', 'cha']
 

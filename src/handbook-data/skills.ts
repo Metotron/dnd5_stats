@@ -1,3 +1,5 @@
+/** @description Навыки */
+
 import type { TStat } from './stats'
 
 export enum ESkill {

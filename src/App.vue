@@ -7,6 +7,7 @@ import SkillsList from './components/selectors/SkillsList.vue'
 import WeaponSelector from './components/selectors/WeaponSelector.vue'
 import CharList from './components/views/CharList.vue'
 import FeaturesList from './components/views/FeaturesList.vue'
+import GoodsList from './components/views/GoodsList.vue'
 import LanguagesList from './components/views/LanguagesList.vue'
 import Weapon from './components/views/Weapon.vue'
 
@@ -16,6 +17,8 @@ import { useCharacter } from './composables/useCharacter.ts'
 sessionStorage.clear()
 const character = useCharacter()
 sessionStorage.setItem('charId', String(character.id))
+
+//FIXME Сделать адаптив
 </script>
 
 
@@ -40,6 +43,7 @@ header
 	.blockCol.col3
 		skills-list
 		languages-list
+		goods-list 
 </template>
 
 <style lang="scss" scoped>

@@ -1,4 +1,4 @@
-/** Игровые классы персонажей */
+/** @description Игровые классы персонажей */
 
 export enum ECharClass {
 	bard,

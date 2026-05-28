@@ -8,6 +8,7 @@ import { EBaseRace, ERace } from '@/handbook-data/races'
 import { ECharClass } from '@/handbook-data/classes'
 import { ESkill } from '@/handbook-data/skills'
 import { EWeapon } from '@/handbook-data/weapons'
+import { EBackground } from '@/handbook-data/backgrounds'
 
 settings.save_load.AUTOSAVE = false  // Нужно, чтобы стор управлялся
 settings.save_load.AUTOLOAD = false  // только действиями тестов
@@ -206,5 +207,16 @@ describe('Класс персонажа корректно обрабатыва�
 
 		char.weapons.removeAll()
 		expect(unref(char.weapons.list.value.length)).toBe(0)
+	})
+
+
+	test ('Выбор предыстории', () => {
+		expect(unref(char.background.value)).toBeUndefined()
+
+		char.background.value = EBackground['acolyte.standard']
+		expect(unref(char.background.value?.name)).toBe('Прислужник')
+
+		char.background.value = undefined
+		expect(unref(char.background.value)).toBeUndefined()
 	})
 })

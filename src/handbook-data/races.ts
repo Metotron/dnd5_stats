@@ -1,3 +1,5 @@
+/** @description Игровые расы */
+
 import { merge } from '@/misc/commonUtils'
 import { EArmorClass } from './armors'
 import { ESkill } from './skills'
@@ -60,6 +62,7 @@ export type TBaseRaceDescription = {
 	armorProficiencies?: EArmorClass[]  // Владение классами доспехов
 	toolProficiencies?: ETool[]         // Владение инструментами
 	skills?: ESkill[]
+	goods?: string[]                    // Вещи, которые есть у персонажа
 }
 
 // Базовые расы, без разделения на подвиды. Экспортировать не нужно, потому что использоваться будут только подвиды
@@ -383,28 +386,31 @@ function makeEmptyDescription(speed: TSpeed = 25, darkvision = false): TBaseRace
 		weaponProficiencies: [],
 		toolProficiencies: [],
 		languages: [],
-		skills: []
+		skills: [],
+		goods: [],
 	}
 }
 
 /** Добавление дополнительных характеристик к базовым характеристикам расы */
-export function adjustBaseRace(baseRace: EBaseRace, raceDiffs: Partial<TBaseRaceDescription>): TBaseRaceDescription {
-	const result = structuredClone(baseRaces[baseRace])
+export function adjustBaseRace(baseDescription: TBaseRaceDescription, ...raceDiffs: Partial<TBaseRaceDescription>[]): TBaseRaceDescription {
+	const result = structuredClone(baseDescription)
 
-	Object.keys(raceDiffs).forEach(key => {
-		const tkey = key as keyof TBaseRaceDescription
-		if (!(tkey in result) || typeof result[tkey] === 'undefined')
-			return
+	raceDiffs.forEach(diff => {
+		Object.keys(diff).forEach(key => {
+			const tkey = key as keyof TBaseRaceDescription
+			if (!(tkey in result) || typeof result[tkey] === 'undefined')
+				return
 
-		// Массивы или объекты объединяем
-		if (Array.isArray(result[tkey]) || typeof result[tkey] === 'object')
-			//@ts-ignore
-			result[tkey] = merge(result[tkey], raceDiffs[tkey])
+			// Массивы или объекты объединяем
+			if (Array.isArray(result[tkey]) || typeof result[tkey] === 'object')
+				//@ts-ignore
+				result[tkey] = merge(result[tkey], diff[tkey])
 
-		// Прочие свойства перезаписываем
-		else
-			//@ts-ignore
-			result[tkey] = raceDiffs[tkey]
+			// Прочие свойства перезаписываем
+			else
+				//@ts-ignore
+				result[tkey] = diff[tkey]
+		})
 	})
 
 	return result

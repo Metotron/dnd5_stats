@@ -10,7 +10,7 @@
 </template>
 
 <style lang="scss" scoped>
-.pageBlock {
+.pageBlock.languagesList {
 	grid-column-end: span 1;
 }
 

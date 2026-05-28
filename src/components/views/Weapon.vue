@@ -13,7 +13,8 @@ function weaponDescription(weapon: TWeapon): string {
 	return weapon.name + `${damage}${damageType}`
 }
 
-//TODO Сделать всплывающий элемент для описания special-оружия
+//TODO Сделать всплывающий элемент для описания special-оружия через getWeaponSpecialDescription
+//TODO Отобразить особенности каждого оружия
 </script>
 
 
@@ -29,7 +30,6 @@ function weaponDescription(weapon: TWeapon): string {
 .blockBody {
 	display: flex;
 	flex-direction: column;
-	gap: calc(var(--blockPadding) / 2);
 }
 
 :deep(i) { font-style: normal; }
@@ -37,15 +37,19 @@ function weaponDescription(weapon: TWeapon): string {
 .weapon {
 	display: grid;
 	grid-template-columns: 2fr 50px 1fr;
-	padding-block: calc(var(--blockPadding) / 1.5);
+	padding-block: calc(var(--blockPadding) * 1.2);
 	line-height: 1;
-	transition: all .2s;
+	transition: background .2s;
+
+	&:not(:last-child) {
+		border-bottom: 1px solid var(--borderColor);
+	}
 
 	&:has(.special) {
 		cursor: pointer;
 
 		&:hover {
-			background-color: rgb(from #eee r g b / 0.6);
+			background: rgb(from #eee r g b / 0.6);
 
 			:deep(.special) {
 				color: var(--accentColor);

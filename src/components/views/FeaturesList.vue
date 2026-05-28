@@ -1,23 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useCharacter } from '@/composables/useCharacter'
-import { adjustBaseRace } from '@/handbook-data/races'
+import { adjustBaseRace, baseRaces } from '@/handbook-data/races'
 import { fullSkillsList } from '@/handbook-data/skills'
+import { textMarkToHTML } from '@/misc/textConvert'
+import { computed } from 'vue'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
 
 const combinedFeatures = computed<string[]>(() => {
-	return adjustBaseRace(character.race.value.baseRace, character.race.value.diff).features ?? []
+	//TODO Добавить background
+	return adjustBaseRace(baseRaces[character.race.value.baseRace], character.race.value.diff).features ?? []
 })
 
-/** Стилизация текста в соответствии со спец. разметкой */
-function textMarkToHTML(str: string): string {
-	str = str.replaceAll('<', '&lt;').replaceAll('>', '&gt;')
-	str = str.replace(/\[(?<bold>.+?)\]/g, '<b>$<bold></b>')
-	str = str.replace(/\{(?<italic>.+?)\}/g, '<em>$<italic></em>')
-	return str
-}
 
 function highlightSkill(ev: MouseEvent) {
 	if ((<HTMLElement>ev.target).tagName != 'EM')

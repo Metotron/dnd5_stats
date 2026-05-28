@@ -1,12 +1,13 @@
-import { computed, reactive, readonly, ref, type ComputedRef } from 'vue'
-import { calculateArmorValues, fullArmorsList, fullShieldsList, getArmorClassNameByEnum, type EArmor, type EShield } from '@/handbook-data/armors'
+import { calculateArmorValues, fullArmorsList, fullShieldsList, type EArmor, type EShield } from '@/handbook-data/armors'
 import { ECharClass, fullCharClassesList } from '@/handbook-data/classes'
 import { ERace, fullRacesList } from '@/handbook-data/races'
 import { ESkill, fullSkillsList } from '@/handbook-data/skills'
 import { getStatModifier, maxStatValue, type TStat } from '@/handbook-data/stats'
+import { computed, reactive, readonly, ref } from 'vue'
 
-import { useCharacterStorage } from './useCharacterStorage'
+import { fullBackgroundsList, type EBackground } from '@/handbook-data/backgrounds'
 import { fullWeaponsList, type EWeapon } from '@/handbook-data/weapons'
+import { useCharacterStorage } from './useCharacterStorage'
 
 const { findCharacterById, storeCharacter } = useCharacterStorage()
 
@@ -100,6 +101,15 @@ export class Character {
 	})
 	hitDice = computed(() => this.charClass.value.hitDice)
 	get rawCharClassValue(): ECharClass { return this.#charClass.value }
+
+
+	/** Предыстория */
+	#background = ref<EBackground>()
+	background = computed({
+		get: () => fullBackgroundsList.find(bg => bg.id == this.#background.value),
+		set: (bg: EBackground | undefined) => this.#background.value = bg
+	})
+
 
 	/** Уровень */
 	#level = ref(1)
