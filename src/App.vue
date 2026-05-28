@@ -7,6 +7,7 @@ import SkillsList from './components/selectors/SkillsList.vue'
 import WeaponSelector from './components/selectors/WeaponSelector.vue'
 import CharList from './components/views/CharList.vue'
 import FeaturesList from './components/views/FeaturesList.vue'
+import LanguagesList from './components/views/LanguagesList.vue'
 import Weapon from './components/views/Weapon.vue'
 
 import { useCharacter } from './composables/useCharacter.ts'
@@ -38,6 +39,7 @@ header
 		features-list
 	.blockCol.col3
 		skills-list
+		languages-list
 </template>
 
 <style lang="scss" scoped>
@@ -65,20 +67,22 @@ h1 {
 	--column1Width: 270px;
 	--column2Width: 380px;
 	--column3Width: 550px;
-	width: calc(var(--column1Width) + var(--column2Width) + var(--column3Width) + var(--blockPadding) * 4);
-	margin: 0 auto;
 	display: grid;
 	grid-template-columns: var(--column1Width) var(--column2Width) var(--column3Width);
+	align-items: start;
 	gap: var(--blockPadding);
+	width: calc(var(--column1Width) + var(--column2Width) + var(--column3Width) + var(--blockPadding) * 4);
+	margin: 0 auto;
 }
 
 .blockCol {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 	gap: var(--blockPadding);
 }
 
 .pageBlock {
+	grid-column: 1 / -1;
 	width: 100%;
 	border: 1px solid var(--borderColor);
 	border-radius: 3px;
@@ -98,9 +102,10 @@ h1 {
 
 <style>
 :root {
-	--borderColor: #ccc;
 	--blockPadding: 8px;
+	--borderColor: #ccc;
 	--accentColor: #e07014;
+	--greyColor: #9d9d9d;
 }
 
 * {

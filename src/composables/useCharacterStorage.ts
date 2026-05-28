@@ -13,7 +13,7 @@ if (settings.save_load.AUTOSAVE) {
 // Автозагрузка
 if (settings.save_load.AUTOLOAD) {
 	loadStoreFromStorage()
-	//TODO window.addEventListener('storage', () => loadStoreFromStorage())
+	window.addEventListener('storage', loadStoreFromStorage)
 }
 
 

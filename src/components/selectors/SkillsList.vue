@@ -69,7 +69,7 @@ function changeProficiencyState(skill: ESkill, ev: Event) {
 	}
 	.stat {
 		font-size: .75em;
-		color: #9d9d9d;
+		color: var(--greyColor);
 		margin-left: calc(var(--blockPadding) / 2);
 	}
 
