@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useCharacter } from '@/composables/useCharacter'
-import { adjustBaseRace, baseRaces } from '@/handbook-data/races'
+import { fullBackgroundsList } from '@/handbook-data/backgrounds'
+import { fullCharClassesList } from '@/handbook-data/classes'
+import { adjustDescription, baseRaces } from '@/handbook-data/races'
 import { fullSkillsList } from '@/handbook-data/skills'
 import { textMarkToHTML } from '@/misc/textConvert'
 import { computed } from 'vue'
@@ -9,8 +11,11 @@ const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
 
 const combinedFeatures = computed<string[]>(() => {
-	//TODO Добавить background
-	return adjustBaseRace(baseRaces[character.race.value.baseRace], character.race.value.diff).features ?? []
+	const classDiff = fullCharClassesList.find(cl => cl.id == character.rawCharClassValue)!.diff ?? {}
+	const bgDiff = fullBackgroundsList.find(bg => bg.id === character.background.value?.id)?.diff ?? {}
+	
+	const descr = adjustDescription(baseRaces[character.race.value.baseRace], character.race.value.diff, classDiff, bgDiff)
+	return descr.features ?? []
 })
 
 
@@ -41,7 +46,7 @@ function unhighlight() {
 	.blockTitle 🪶 Особенности
 	.blockBody
 		ul.features
-			li.feature(v-for="feature in combinedFeatures" v-html="textMarkToHTML(feature)" @mouseover="highlightSkill" @mouseout="unhighlight")
+			li.feature(v-for="feature in combinedFeatures" v-html="textMarkToHTML(feature, character.stats, character.proficiencyBonus.value)" @mouseover="highlightSkill" @mouseout="unhighlight")
 </template>
 
 <style lang="scss" scoped>

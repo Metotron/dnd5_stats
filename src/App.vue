@@ -31,11 +31,11 @@ header
 
 .blocksArea
 	.blockCol.col1
+		values-linker
 		race-selector
 		class-selector
 		armor-selector
 		weapon-selector
-		values-linker
 	.blockCol.col2
 		char-list
 		weapon
@@ -167,5 +167,15 @@ input.textLike {
 
 option, optgroup {
 	font-size: .875rem;
+}
+
+.modifierValue {
+	color: var(--accentColor);
+
+	i {
+		font-style: normal;
+		color: var(--greyColor);
+		font-size: .7em;
+	}
 }
 </style>

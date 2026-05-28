@@ -5,7 +5,8 @@ import { ESkill } from '@/handbook-data/skills'
 import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 
 import { useCharacter } from '@/composables/useCharacter'
-import { adjustBaseRace, baseRaces } from '@/handbook-data/races'
+import { adjustDescription, baseRaces } from '@/handbook-data/races'
+import { ECharClass } from '@/handbook-data/classes'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
@@ -15,10 +16,18 @@ const stats: TStat[] = Object.keys(character.stats) as TStat[]
 
 const
 	hitCount = computed(() => character.hitDice.value + character.statModifier('con')),
-	armorValues = computed(() => character.armorValues),
+	armorValues = computed(() => {
+		const armorClass = character.armorValues.armorClass
+		let AC = character.armorValues.AC
+
+		if (character.rawCharClassValue == ECharClass.barbarian && character.rawArmorValue === undefined)
+			AC = 10 + getStatModifier(character.stats.dex) + getStatModifier(character.stats.con)
+
+		return { armorClass, AC }
+	}),
 	speed = computed(() => {
 		//TODO Добавить background, если там есть влияние на скорость
-		const speed = adjustBaseRace(baseRaces[character.race.value.baseRace], character.race.value.diff).speed
+		const speed = adjustDescription(baseRaces[character.race.value.baseRace], character.race.value.diff).speed
 		return character.needMoreStrength.value ? speed - 10 : speed
 	}),
 	hitpointsTitle = computed(() => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { adjustBaseRace, baseRaces } from '@/handbook-data/races'
+import { adjustDescription, baseRaces } from '@/handbook-data/races'
 import { textMarkToHTML } from '@/misc/textConvert'
 
 import { useCharacter } from '@/composables/useCharacter'
@@ -14,7 +14,7 @@ const goods = computed(() => {
 
 	const raceDiff = character.race.value?.diff ?? {}
 	const bgDiff = character.background.value?.diff ?? {}
-	const goods = adjustBaseRace(baseRaces[character.race.value.baseRace], raceDiff, bgDiff).goods
+	const goods = adjustDescription(baseRaces[character.race.value.baseRace], raceDiff, bgDiff).goods
 	return goods ?? []
 })
 </script>

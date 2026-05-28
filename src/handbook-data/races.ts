@@ -1,7 +1,7 @@
 /** @description Игровые расы */
 
 import { merge } from '@/misc/commonUtils'
-import { EArmorClass } from './armors'
+import { EArmorClass, EShieldClass } from './armors'
 import { ESkill } from './skills'
 import type { TStat } from './stats'
 import { ETool } from './tools'
@@ -59,10 +59,11 @@ export type TBaseRaceDescription = {
 	languages: string[]
 	features?: string[]
 	weaponProficiencies?: (EWeapon | EWeaponClass)[]
-	armorProficiencies?: EArmorClass[]  // Владение классами доспехов
+	armorProficiencies?: (EArmorClass | EShieldClass)[]  // Владение классами доспехов
 	toolProficiencies?: ETool[]         // Владение инструментами
 	skills?: ESkill[]
 	goods?: string[]                    // Вещи, которые есть у персонажа
+	savingThrows?: TStat[]              // Владение спасбросками
 }
 
 // Базовые расы, без разделения на подвиды. Экспортировать не нужно, потому что использоваться будут только подвиды
@@ -103,7 +104,7 @@ export const baseRaces: Record<EBaseRace, TBaseRaceDescription> = {
 	}),
 	[EBaseRace.human]: createDescription(30, {
 		name: 'Человек',
-		languages: ['Общий', 'Один язык на выбор'],
+		languages: ['Общий', 'Язык на выбор'],
 	}),
 	[EBaseRace.dragonborn]: createDescription(30, {
 		name: 'Драконорожденный',
@@ -121,7 +122,7 @@ export const baseRaces: Record<EBaseRace, TBaseRaceDescription> = {
 	[EBaseRace.halfelf]: createDescription(30, true, {
 		name: 'Полуэльф',
 		statsModifiers: [{ cha: 2 }],
-		languages: ['Общий' ,'Эльфийский' ,'Один язык на выбор'],
+		languages: ['Общий' ,'Эльфийский' ,'Язык на выбор'],
 		features: [
 			'Невозможно магически усыпить',
 			'Преимущество при спасброске от очарования',
@@ -185,7 +186,7 @@ export const fullRacesList: TRace[] = [
 		name: 'Высший эльф',
 		statsModifiers: [{ int: 1 }],
 		weaponProficiencies: [EWeapon.shortsword, EWeapon.longsword, EWeapon.shortbow, EWeapon.longbow],
-		languages: ['Один дополнительный язык на выбор'],
+		languages: ['Язык на выбор'],
 		features: ['Знаете один заговор из списка заклинаний волшебника. Его базовая характеристика — Интеллект'],
 	}),
 	mkRace(EBaseRace.elf, ERace['elf.wood'], {
@@ -231,7 +232,7 @@ export const fullRacesList: TRace[] = [
 		name: 'Человек (альт.)',
 		features: [
 			'Значения двух любых характеристик увеличиваются на 1',
-			'Владение одним навыком на выбор',
+			'Владеете одним навыком на выбор',
 			'Одна черта на выбор',
 		],
 	}),
@@ -392,7 +393,7 @@ function makeEmptyDescription(speed: TSpeed = 25, darkvision = false): TBaseRace
 }
 
 /** Добавление дополнительных характеристик к базовым характеристикам расы */
-export function adjustBaseRace(baseDescription: TBaseRaceDescription, ...raceDiffs: Partial<TBaseRaceDescription>[]): TBaseRaceDescription {
+export function adjustDescription(baseDescription: TBaseRaceDescription, ...raceDiffs: Partial<TBaseRaceDescription>[]): TBaseRaceDescription {
 	const result = structuredClone(baseDescription)
 
 	raceDiffs.forEach(diff => {

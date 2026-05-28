@@ -184,12 +184,18 @@ export const fullArmorsList: TArmorDescription[] = [{
 }] as const
 
 
+// Чтобы можно было указывать щиты как группу, а не по отдельности
+export enum EShieldClass {
+	standard
+}
+
 export enum EShield {
 	standard,      // Обычный щит с +2 к КД
 }
 
 export type TShield = {
 	id: EShield
+	class: EShieldClass
 	name: string   // Наименование
 	cost: number   // Цена
 	AC: number     // Прибавка к классу брони
@@ -199,6 +205,7 @@ export type TShield = {
 // Щиты
 export const fullShieldsList: TShield[] = [{
 	id: EShield.standard,
+	class: EShieldClass.standard,
 	name: 'Обычный щит',
 	cost: 10,
 	AC: 2,

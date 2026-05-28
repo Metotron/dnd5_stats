@@ -56,6 +56,28 @@ export class Character {
 	statModifier(stat: TStat) { return getStatModifier(this.#stats[stat]) }
 
 
+	/** Владение спасбросками */
+	#savingThrows = ref<Set<TStat>>(new Set())
+
+	get savingThrows() {
+		const savingThrows = this.#savingThrows
+
+		return {
+			/** Количество спасбросков, которыми владеет персонаж */
+			count: computed(() => savingThrows.value.size),
+
+			/** Есть ли владение спасброском */
+			enabled(stat: TStat): boolean { return savingThrows.value.has(stat) },
+
+			/** Сброс */
+			resetAll() { savingThrows.value.clear() },
+
+			/** Включение-выключение владения спасброском */
+			set(stat: TStat, value: boolean) { savingThrows.value[value ? 'add' : 'delete'](stat) },
+		}
+	}
+
+
 	/** Надетая броня */
 	#armor = ref<EArmor>()
 	armor = computed({
@@ -96,7 +118,7 @@ export class Character {
 	/** Класс персонажа */
 	#charClass = ref<ECharClass>(ECharClass.fighter)
 	charClass = computed({
-		get: () => fullCharClassesList.find(cl => cl.charClass == this.#charClass.value)!,
+		get: () => fullCharClassesList.find(cl => cl.id == this.#charClass.value)!,
 		set: (charClass: ECharClass) => this.#charClass.value = charClass
 	})
 	hitDice = computed(() => this.charClass.value.hitDice)
