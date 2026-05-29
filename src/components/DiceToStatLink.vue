@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /** @description Привязка значения дайса по индексу valueIndex к выбранной характеристике персонажа */
 
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import type { TStat } from '@/handbook-data/stats'
 type TLnk = TStat | undefined
 
@@ -19,13 +19,18 @@ const diceValue = defineModel<number>('dicevalue')
 const linkTo = defineModel<TStat | undefined>()
 
 // Ограничение значения сверху и снизу
-watch(diceValue, (newValue, oldValue) => diceValue.value = isStatValueInRange(newValue) ? newValue : (oldValue ?? 1))
+watch(diceValue, (newValue, oldValue) => {
+	diceValue.value = isStatValueInRange(newValue) ? newValue : (oldValue ?? 1)
+	if (optionSelected.value != '-' && optionSelected.value !== undefined) {
+		const saved = optionSelected.value
+		optionSelected.value = '-'
+		nextTick(() => optionSelected.value = saved)
+	}
+})
 // Отслеживание автопривязки
 watch(() => props.linked, () => {
 	optionSelected.value = props.linked[props.idx] === undefined ? '-' : props.linked[props.idx]
 }, { deep: true })
-
-//FIXME Смена diceValue не отображается в чарлисте
 
 const optionSelected = ref<TStat | '-'>()
 watch(optionSelected, val => linkTo.value = val == '-' ? undefined : val)

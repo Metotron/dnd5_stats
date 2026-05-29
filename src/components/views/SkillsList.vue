@@ -31,6 +31,7 @@ function changeProficiencyState(skill: ESkill, ev: Event) {
 			span.value {{ 10 + getSkillModifier(skillDescr.skill, character) }}
 </template>
 
+
 <style lang="scss" scoped>
 .blockBody {
 	display: grid;
@@ -94,7 +95,7 @@ function changeProficiencyState(skill: ESkill, ev: Event) {
 	&:where([data-skillstat="dex"], [data-skillstat="wis"])  {
 		background-color: #f2f2f2;
 	}
- 
+
 	&:where(body.dimSkills .skill) {
 		filter: grayscale(1);
 		opacity: .4;

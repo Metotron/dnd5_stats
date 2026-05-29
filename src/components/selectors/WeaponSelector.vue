@@ -31,6 +31,7 @@ function resetCharacterWeapons() {
 }
 </script>
 
+
 <template lang="pug">
 .pageBlock.weapons
 	.blockTitle ⚔️ Оружие
@@ -41,10 +42,13 @@ function resetCharacterWeapons() {
 				option(v-for="weapon in getWeaponsByClass(wcl.classType)" :value="weapon.id") {{ weapon.name }}
 </template>
 
+
 <style lang="scss" scoped>
 .blockBody {
 	display: flex;
 	flex-direction: column;
 	gap: var(--blockPadding)
 }
+
+select { width: 100%; }
 </style>

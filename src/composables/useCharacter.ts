@@ -66,6 +66,9 @@ export class Character {
 			/** Количество спасбросков, которыми владеет персонаж */
 			count: computed(() => savingThrows.value.size),
 
+			/** Получение всех срасбросков, для которых есть владение */
+			getAll(): TStat[] { return Array.from(savingThrows.value) },
+
 			/** Есть ли владение спасброском */
 			enabled(stat: TStat): boolean { return savingThrows.value.has(stat) },
 

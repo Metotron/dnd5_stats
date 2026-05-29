@@ -389,6 +389,7 @@ function makeEmptyDescription(speed: TSpeed = 25, darkvision = false): TBaseRace
 		languages: [],
 		skills: [],
 		goods: [],
+		savingThrows: [],
 	}
 }
 

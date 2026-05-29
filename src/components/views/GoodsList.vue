@@ -19,6 +19,7 @@ const goods = computed(() => {
 })
 </script>
 
+
 <template lang="pug">
 .pageBlock.goodsList(v-if="goods.length")
 	.blockTitle 👜 Вещи при себе
@@ -27,9 +28,10 @@ const goods = computed(() => {
 			li.good(v-for="good in goods" v-html="textMarkToHTML(good)")
 </template>
 
+
 <style lang="scss" scoped>
 .pageBlock.goodsList {
-	grid-column-end: span 1;
+	grid-column: auto / span 1;
 }
 
 .blockBody {

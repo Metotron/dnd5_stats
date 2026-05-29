@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import ValuesLinker from './components/DiceToStatLinker.vue'
 import ArmorSelector from './components/selectors/ArmorSelector.vue'
+import BackgroundSelector from './components/selectors/BackgroundSelector.vue'
 import ClassSelector from './components/selectors/ClassSelector.vue'
 import RaceSelector from './components/selectors/RaceSelector.vue'
-import SkillsList from './components/selectors/SkillsList.vue'
 import WeaponSelector from './components/selectors/WeaponSelector.vue'
 import CharList from './components/views/CharList.vue'
 import FeaturesList from './components/views/FeaturesList.vue'
 import GoodsList from './components/views/GoodsList.vue'
 import LanguagesList from './components/views/LanguagesList.vue'
+import SkillsList from './components/views/SkillsList.vue'
 import Weapon from './components/views/Weapon.vue'
 
 import { useCharacter } from './composables/useCharacter.ts'
@@ -34,6 +35,7 @@ header
 		values-linker
 		race-selector
 		class-selector
+		background-selector
 		armor-selector
 		weapon-selector
 	.blockCol.col2
@@ -43,7 +45,7 @@ header
 	.blockCol.col3
 		skills-list
 		languages-list
-		goods-list 
+		goods-list
 </template>
 
 <style lang="scss" scoped>
@@ -110,6 +112,8 @@ h1 {
 	--borderColor: #ccc;
 	--accentColor: #e07014;
 	--greyColor: #9d9d9d;
+	--highColor: #6c6;
+	--lowColor: #e66;
 }
 
 * {
@@ -128,7 +132,7 @@ html, body {
 	font-size: 16px;
 	color: #000;
 	background-color: #fff;
-	font-family: Droid sans, serif;
+	font-family: 'Droid sans', serif;
 }
 
 h1, h2, h3, h4, h5, h6, ul, li {

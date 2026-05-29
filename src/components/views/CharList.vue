@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 
 import { ESkill } from '@/handbook-data/skills'
 import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 
 import { useCharacter } from '@/composables/useCharacter'
 import { adjustDescription, baseRaces } from '@/handbook-data/races'
-import { ECharClass } from '@/handbook-data/classes'
+import { ECharClass, fullCharClassesList } from '@/handbook-data/classes'
+import { fullBackgroundsList } from '@/handbook-data/backgrounds'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
@@ -25,15 +26,29 @@ const
 
 		return { armorClass, AC }
 	}),
+	combinedDescription = computed(() => {
+		const classDiff = fullCharClassesList.find(cl => cl.id == character.rawCharClassValue)!.diff ?? {}
+		const bgDiff = fullBackgroundsList.find(bg => bg.id === character.background.value?.id)?.diff ?? {}
+
+		return adjustDescription(baseRaces[character.race.value.baseRace], character.race.value.diff, classDiff, bgDiff)
+	}),
 	speed = computed(() => {
-		//TODO Добавить background, если там есть влияние на скорость
-		const speed = adjustDescription(baseRaces[character.race.value.baseRace], character.race.value.diff).speed
+		const speed = combinedDescription.value.speed
 		return character.needMoreStrength.value ? speed - 10 : speed
 	}),
 	hitpointsTitle = computed(() => {
 		const conModifier = getStatModifier(character.stats.con)
 		return `Для каждого последующего уровня нужно бросать d${character.hitDice.value}` + (conModifier != 0 ? ` и к значению прибавлять ${conModifier}` : '')
 	})
+
+watch(combinedDescription, () => {
+	const savingThrows = combinedDescription.value.savingThrows
+	console.log('Меняется', savingThrows)
+	if (!savingThrows) return
+
+	character.savingThrows.resetAll()
+	savingThrows.forEach(svt => character.savingThrows.set(svt, true))
+}, { immediate: true })
 
 /** Модификатор текстом (с отображением плюса спереди, если модификатор больше нуля) */
 function textModifier(statName: TStat): string | undefined {
@@ -51,11 +66,15 @@ function textModifier(statName: TStat): string | undefined {
 	.blockBody
 		.valueBlock
 			.stats
-				div(v-for="statName in stats" :key="statName")
+				div.statRow(v-for="statName in stats" :key="statName")
 					span {{ statsList[statName].name }}:
 					span.statValue
-					| {{ character.stats[statName] }}
-					span.value (#[span(title="Применяемый модификатор") {{ textModifier(statName) }}])
+						| {{ character.stats[statName] }}
+						span.value(:class="{ high: character.statModifier(statName) > 0, low: character.statModifier(statName) < 0 }") [#[span(title="Применяемый модификатор") {{ textModifier(statName) }}]]
+
+		.valueBlock.flexBlock(v-if="character.savingThrows.count.value > 0")
+			span Спасброски:
+			span.value(v-for="svt in  character.savingThrows.getAll()" :key="svt") {{ statsList[svt].name }}
 
 		.valueBlock
 			span Скорость:
@@ -84,13 +103,9 @@ function textModifier(statName: TStat): string | undefined {
 
 
 <style lang="scss" scoped>
-.pageBlock.charList {
-	align-self: start;
-}
+.pageBlock.charList { align-self: start; }
 
-.blockBody {
-	padding-inline: 0;
-}
+.blockBody { padding-inline: 0; }
 
 .valueBlock {
 	border-bottom: 1px solid var(--borderColor);
@@ -108,6 +123,37 @@ function textModifier(statName: TStat): string | undefined {
 		color: var(--accentColor);
 		margin-left: .4em;
 	}
+
+	.statValue .value {
+		font-family: monospace;
+		color: rgb(from var(--greyColor) r g b / .3);
+
+		span {
+			color: var(--greyColor);
+			line-height: 1;
+			font-weight: bold;
+		}
+
+		&.high span { color: var(--highColor); }
+		&.low span {	color: var(--lowColor); }
+	}
+
+	&.flexBlock {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .4em;
+
+		.value { margin-left: 0; }
+	}
+}
+
+.statRow {
+	display: inline-grid;
+	grid-template-columns: auto 1fr auto;
+	gap: .4em;
+
+	.statValue { display: contents; }
+	.statValue, .value { margin-inline: 0; }
 }
 
 .stats {
@@ -121,6 +167,6 @@ function textModifier(statName: TStat): string | undefined {
 		grid-auto-flow: row;
 	}
 
-	.statValue { color: #999; }
+	.statValue { color: var(--greyColor); }
 }
 </style>

@@ -36,11 +36,5 @@ watch(selectedRace, race => character.race.value = race)
 
 
 <style lang="scss" scoped>
-.blockBody {
-
-}
-
-select {
-	max-width: 100%;
-}
+select { width: 100%; }
 </style>

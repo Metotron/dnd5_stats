@@ -35,9 +35,6 @@ function unhighlight() {
 	document.body.classList.remove('dimSkills')
 	document.body.removeAttribute('data-hlskill')
 }
-
-//TODO Нужны предыстории
-//TODO Внести фичи в классы и тоже взять сюда
 </script>
 
 
@@ -48,6 +45,7 @@ function unhighlight() {
 		ul.features
 			li.feature(v-for="feature in combinedFeatures" v-html="textMarkToHTML(feature, character.stats, character.proficiencyBonus.value)" @mouseover="highlightSkill" @mouseout="unhighlight")
 </template>
+
 
 <style lang="scss" scoped>
 .features:has(li:hover) {

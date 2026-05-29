@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { useCharacter } from '@/composables/useCharacter'
 import { ECharClass, fullCharClassesList } from '@/handbook-data/classes';
+
+import { useCharacter } from '@/composables/useCharacter'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))

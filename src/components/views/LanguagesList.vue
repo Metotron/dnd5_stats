@@ -2,6 +2,7 @@
 
 </script>
 
+
 <template lang="pug">
 .pageBlock.languagesList
 	.blockTitle 🎏 Владение языками
@@ -9,9 +10,10 @@
 		div //Список языков//
 </template>
 
+
 <style lang="scss" scoped>
 .pageBlock.languagesList {
-	grid-column-end: span 1;
+	grid-column: auto / span 1;
 }
 
 .blockBody {
