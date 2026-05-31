@@ -5,12 +5,12 @@ import { ESkill } from '@/handbook-data/skills'
 import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 
 import { useCharacter } from '@/composables/useCharacter'
-import { adjustDescription, baseSpecies } from '@/handbook-data/species'
-import { ECharClass, fullCharClassesList } from '@/handbook-data/charClasses'
-import { fullOriginsList } from '@/handbook-data/origins'
+import { useFullDescription } from '@/composables/useFullDescription'
+import { ECharClass } from '@/handbook-data/charClasses'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
+const fullDescription = useFullDescription(character)
 
 const stats: TStat[] = Object.keys(character.stats) as TStat[]
 
@@ -34,15 +34,8 @@ const
 
 		return { armorClass, AC }
 	}),
-	combinedDescription = computed(() => {
-		const speciesDiff = character.species.value?.diff ?? {}
-		const classDiff = fullCharClassesList.find(cl => cl.id == character.charClass.value.id)!.diff ?? {}
-		const bgDiff = fullOriginsList.find(origin => origin.id === character.origin.value?.id)?.diff ?? {}
-
-		return adjustDescription(baseSpecies[character.species.value.baseSpecies], speciesDiff, classDiff, bgDiff)
-	}),
 	speed = computed(() => {
-		const speed = combinedDescription.value.speed
+		const speed = fullDescription.value.speed
 		return character.needMoreStrength.value ? speed - 10 : speed
 	}),
 	hitpointsTitle = computed(() => {
@@ -50,8 +43,8 @@ const
 		return `Для каждого последующего уровня нужно бросать d${character.hitDie.value}` + (conModifier != 0 ? ` и к значению прибавлять ${conModifier}` : '')
 	})
 
-watch(combinedDescription, () => {
-	const savingThrows = combinedDescription.value.savingThrows
+watch(fullDescription, () => {
+	const savingThrows = fullDescription.value.savingThrows
 	if (!savingThrows) return
 
 	character.savingThrows.resetAll()
@@ -64,12 +57,15 @@ function textModifier(statName: TStat): string | undefined {
 	return modifier < 0 ? modifier.toString() : '+' + modifier
 }
 
+//TODO Обработать fullDescription.statsModifiers
 //TODO Отобразить наличие помехи для скрытности со стороны доспехов
 //TODO Отобразить наличие вдохновения
 //TODO Показать наличие darkvision с описанием его действия
 //TODO Вывести размер существа
 //TODO Вывести количество денег
 //TODO Отобразить владение доспехами и оружием
+//TODO Нужно редактирование максимума хитов (черты могут их менять).
+//? Отобразить временные хиты?
 </script>
 
 

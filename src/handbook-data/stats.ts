@@ -17,8 +17,8 @@ export const statsList: Record<TStat, TStatDescription> = {
 	cha: { name: 'Харизма',      shortName: 'хар' },
 }
 
-// Максимальное значение характеристики (в книге игрока — 30)
-export const maxStatValue = 30
+// Максимальное значение характеристики (в книге игрока — 20 для обычных персонажей)
+export const maxStatValue = 20
 
 export function isStatValueInRange(statValue: number | undefined): boolean {
 	return statValue !== undefined && statValue > 1 && statValue <= maxStatValue

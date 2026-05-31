@@ -1,23 +1,15 @@
 <script setup lang="ts">
 import { useCharacter } from '@/composables/useCharacter'
-import { fullOriginsList } from '@/handbook-data/origins'
-import { fullCharClassesList } from '@/handbook-data/charClasses'
-import { adjustDescription, baseSpecies } from '@/handbook-data/species'
+import { useFullDescription } from '@/composables/useFullDescription'
 import { fullSkillsList } from '@/handbook-data/skills'
 import { textMarkToHTML } from '@/misc/textConvert'
 import { computed } from 'vue'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
+const fullDescription = useFullDescription(character)
 
-const combinedFeatures = computed<string[]>(() => {
-	const speciesDiff = character.species.value?.diff ?? {}
-	const classDiff = fullCharClassesList.find(cl => cl.id == character.charClass.value.id)!.diff ?? {}
-	const bgDiff = fullOriginsList.find(origin => origin.id === character.origin.value?.id)?.diff ?? {}
-
-	const descr = adjustDescription(baseSpecies[character.species.value.baseSpecies], speciesDiff, classDiff, bgDiff)
-	return descr.features ?? []
-})
+const combinedFeatures = computed<string[]>(() => fullDescription.value.features ?? [])
 
 
 function highlightSkill(ev: MouseEvent) {

@@ -18,18 +18,13 @@ export enum EOrigin {
 	acolyte,      // Прислужник
 	criminal,     // Преступник
 	guide,        // Путешественник
-
-	charlatan,    // Шарлатан
-	artisan, // Гильдейский ремесленник
+	artisan,      // Ремесленник
 	soldier,      // Солдат
-	urchin,       // Беспризорник
-	farmer,
-	guard,
-	merchant,
-	wayfarer,
-
-folkhero,     // Народный герой
-outlander,    // Чужеземец
+	guard,        // Стражник
+	wayfarer,     // Странник
+	merchant,     // Торговец
+	farmer,       // Фермер
+	charlatan,    // Шарлатан
 'sailor.badreputation',  // Моряк с дурной репутацией
 }
 
@@ -44,7 +39,7 @@ export const fullOriginsList: TOrigin[] = [{
 	name: 'Артист',
 	diff: {
 		charsForGrow: ['str', 'int', 'cha'],
-		feat: EFeat.skilled,
+		feat: EFeat.musician,
 		skills: [ESkill.acrobatics, ESkill.performance],
 		features: ['Владеете одним видом музыкального инструмента'],
 		goods: [
@@ -95,6 +90,7 @@ export const fullOriginsList: TOrigin[] = [{
 		feat: EFeat.magicinitiate,
 		skills: [ESkill.arcana, ESkill.history],
 		toolProficiencies: [ETool.calligraphers],
+		features: ['Для черты {Посвящённый в магию} выбирайте заклинания {Волшебника}'],
 		goods: [
 			EWeapon.quaterstaff,
 			'Книга (история)',
@@ -148,6 +144,7 @@ export const fullOriginsList: TOrigin[] = [{
 		feat: EFeat.magicinitiate,
 		skills: [ESkill.insight, ESkill.religion],
 		toolProficiencies: [ETool.calligraphers],
+		features: ['Для черты {Посвящённый в магию} выбирайте заклинания {Жреца}'],
 		goods: [
 			ETool.calligraphers,
 			'Книга (молитвенник)',
@@ -183,6 +180,7 @@ export const fullOriginsList: TOrigin[] = [{
 		feat: EFeat.magicinitiate,
 		skills: [ESkill.stealth, ESkill.survival],
 		toolProficiencies: [ETool.cartographers],
+		features: ['Для черты {Посвящённый в магию} выбирайте заклинания {Друида}'],
 		goods: [
 			EWeapon.shortbow,
 			ETool.cartographers,
@@ -228,6 +226,91 @@ export const fullOriginsList: TOrigin[] = [{
 			'{14 зм}',
 		],
 	}
-},  //TODO Продолжить заполнять предыстории
-
-]
+}, {
+	id: EOrigin.guard,
+	name: 'Стражник',
+	diff: {
+		charsForGrow: ['str', 'int', 'wis'],
+		feat: EFeat.alert,
+		skills: [ESkill.athletics, ESkill.perception],
+		features: ['Владеете игровым набором на выбор'],
+		goods: [
+			EWeapon.spear,
+			EWeapon.lightcrossbow,
+			'Колчан',
+			'20 болтов',
+			'Игровой набор',
+			'Закрытый фонарь',
+			'Кандалы',
+			'Одежда путешественника',
+			'{12 зм}',
+		],
+	}
+}, {
+	id: EOrigin.wayfarer,
+	name: 'Странник',
+	diff: {
+		charsForGrow: ['dex', 'wis', 'cha'],
+		feat: EFeat.lucky,
+		skills: [ESkill.insight, ESkill.stealth],
+		toolProficiencies: [ETool.thieves],
+		goods: [
+			EWeapon.dagger,
+			EWeapon.dagger,
+			ETool.thieves,
+			'Игровой набор (любой)',
+			'Спальник',
+			'2 сумки',
+			'Одежда путешественника',
+			'{16 зм}',
+		],
+	}
+}, {
+	id: EOrigin.merchant,
+	name: 'Торговец',
+	diff: {
+		charsForGrow: ['con', 'int', 'cha'],
+		feat: EFeat.lucky,
+		skills: [ESkill.persuasion, ESkill.animalHandling],
+		toolProficiencies: [ETool.navigators],
+		goods: [
+			ETool.navigators,
+			'2 сумки',
+			'Одежда путешественника',
+			'{22 зм}',
+		],
+	}
+}, {
+	id: EOrigin.farmer,
+	name: 'Фермер',
+	diff: {
+		charsForGrow: ['str', 'con', 'wis'],
+		feat: EFeat.tough,
+		skills: [ESkill.nature, ESkill.animalHandling],
+		toolProficiencies: [ETool.carpenters],
+		goods: [
+			EWeapon.sickle,
+			ETool.carpenters,
+			'Комплект целителя',
+			'Железный горшок',
+			'Лопата',
+			'Одежда путешественника',
+			'{30 зм}',
+		],
+	}
+}, {
+	id: EOrigin.charlatan,
+	name: 'Шарлатан',
+	diff: {
+		charsForGrow: ['dex', 'con', 'cha'],
+		feat: EFeat.skilled,
+		skills: [ESkill.deception, ESkill.sleightOfHand],
+		toolProficiencies: [ETool.forgery],
+		goods: [
+			ETool.forgery,
+			'Костюм',
+			'Парадная одежда',
+			'{15 зм}',
+		],
+	}
+}]

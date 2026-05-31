@@ -1,26 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { adjustDescription, baseSpecies } from '@/handbook-data/species'
 import { textMarkToHTML } from '@/misc/textConvert'
+import { computed } from 'vue'
 
 import { useCharacter } from '@/composables/useCharacter'
-import { fullCharClassesList } from '@/handbook-data/charClasses'
-import { fullOriginsList } from '@/handbook-data/origins'
+import { useFullDescription } from '@/composables/useFullDescription'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
+const fullDescription = useFullDescription(character)
 
-const goods = computed(() => {
-	if (character.origin.value === undefined)
-		return []
+const goods = computed(() => fullDescription.goods ?? [])
 
-	const speciesDiff = character.species.value?.diff ?? {}
-	const classDiff = fullCharClassesList.find(cl => cl.id == character.charClass.value.id)!.diff ?? {}
-	const bgDiff = fullOriginsList.find(origin => origin.id === character.origin.value?.id)?.diff ?? {}
 
-	const goods = adjustDescription(baseSpecies[character.species.value.baseSpecies], speciesDiff, classDiff, bgDiff).goods
-	return goods ?? []
-})
 //TODO Нужна возможность вписывать свои строки
 
 //TODO Оружие и инструменты вывести по их названию, а по клику на оружие добавлять его в список

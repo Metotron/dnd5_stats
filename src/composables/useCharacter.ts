@@ -8,6 +8,7 @@ import { computed, reactive, ref } from 'vue'
 import { fullOriginsList, type EOrigin } from '@/handbook-data/origins'
 import { fullWeaponsList, type EWeapon } from '@/handbook-data/weapons'
 import { useCharacterStorage } from './useCharacterStorage'
+import { fullFeatsList, type EFeat } from '@/handbook-data/feats'
 
 const { findCharacterById, storeCharacter } = useCharacterStorage()
 
@@ -134,6 +135,14 @@ export class Character {
 	origin = computed({
 		get: () => fullOriginsList.find(({id }) => id == this.#origin.value),
 		set: (origin: EOrigin | undefined) => this.#origin.value = origin
+	})
+
+
+	/** Черта */
+	#feat = ref<EFeat>()
+	feat = computed({
+		get: () => fullFeatsList.find(feat => feat.id == this.#feat.value),
+		set: (feat: EFeat | undefined) => this.#feat.value = feat
 	})
 
 

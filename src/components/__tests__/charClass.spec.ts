@@ -9,6 +9,8 @@ import { ECharClass } from '@/handbook-data/charClasses'
 import { ESkill } from '@/handbook-data/skills'
 import { EWeapon } from '@/handbook-data/weapons'
 import { EOrigin } from '@/handbook-data/origins'
+import { EFeat } from '@/handbook-data/feats'
+import { maxStatValue } from '@/handbook-data/stats'
 
 settings.save_load.AUTOSAVE = false  // Нужно, чтобы стор управлялся
 settings.save_load.AUTOLOAD = false  // только действиями тестов
@@ -94,7 +96,7 @@ describe('Класс персонажа корректно обрабатыва�
 		expect(char.stats.str).toBe(1)
 
 		char.setStat('str', 40)
-		expect(char.stats.str).toBe(30)
+		expect(char.stats.str).toBe(maxStatValue)
 
 		char.setStat('str', 7)
 		expect(char.stats.str).toBe(7)
@@ -216,7 +218,7 @@ describe('Класс персонажа корректно обрабатыва�
 		expect(unref(char.origin.value)).toBeUndefined()
 
 		char.origin.value = EOrigin['acolyte']
-		expect(unref(char.origin.value?.name)).toBe('Прислужник')
+		expect(unref(char.origin.value?.name)).toBe('Послушник')
 
 		char.origin.value = undefined
 		expect(unref(char.origin.value)).toBeUndefined()
@@ -243,5 +245,11 @@ describe('Класс персонажа корректно обрабатыва�
 
 		char.savingThrows.resetAll()
 		expect(unref(char.savingThrows.count.value)).toBe(0)
+	})
+
+	test('Управление чертой', () => {
+		expect(unref(char.feat.value)).toBeUndefined()
+		char.feat.value = EFeat.healer
+		expect(unref(char.feat.value?.name)).toBe('Лекарь')
 	})
 })
