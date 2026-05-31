@@ -67,12 +67,17 @@ function reset() {
 }
 
 .skill {
+	min-height: 32px;
 	display: flex;
 	align-items: center;
 	padding-inline: calc(var(--blockPadding) / 2) var(--blockPadding);
 	transition: all .2s;
 
-	[type=checkbox] { margin-right: calc(var(--blockPadding) / 2); }
+	[type=checkbox] {
+		margin-right: calc(var(--blockPadding) / 2);
+
+		&:is(.locked input) { display: none; }
+	}
 
 	[type=checkbox], .name, .stat {
 		user-select: none;

@@ -23,7 +23,7 @@ const goods = computed(() => {
 
 
 <template lang="pug">
-.pageBlock.goodsList(v-if="goods.length")
+.pageBlock.goodsList(v-if="goods.length" :class="{ locked: character.locked }")
 	.blockTitle 👜 Вещи при себе
 	.blockBody
 		ul

@@ -37,14 +37,17 @@ registerHotkey('alt', 'shift', 'KeyU', () => { character.unlock() })
 header
 	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e, 2024)
 	div.name
-		b Имя:
+		div.flexed
+			span.unlock(v-if="character.locked" @click="character.unlock()" title="Разблокировать [alt + shift + U]") 🔒
+			span.lock(v-else @click="character.lock()" title="Заблокировать [alt + shift + L]") 🔓
+			span.lockedText(v-if="character.locked") Заблокирован
+			b Имя:
 		input(
 			class="textLike"
 			placeholder="Имя персонажа"
 			v-model="character.name.value"
 			:readonly="character.locked"
 			ref="titleRef")
-		span.lockedText(v-if="character.locked") Заблокирован
 
 .blocksArea
 	.blockCol.col1
@@ -76,6 +79,16 @@ header {
 		display: flex;
 		align-items: center;
 		gap: 8px;
+	}
+
+	.flexed {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.lock, .unlock { cursor: pointer; }
+	.lockedText {
+		color: var(--lowColor);
 	}
 }
 
@@ -119,9 +132,6 @@ h1 {
 	:deep(.blockBody) {
 		padding: var(--blockPadding);
 	}
-}
-.lockedText {
-	color: var(--lowColor);
 }
 </style>
 
