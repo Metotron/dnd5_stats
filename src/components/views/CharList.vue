@@ -6,7 +6,7 @@ import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 
 import { useCharacter } from '@/composables/useCharacter'
 import { adjustDescription, baseSpecies } from '@/handbook-data/species'
-import { ECharClass, fullCharClassesList } from '@/handbook-data/classes'
+import { ECharClass, fullCharClassesList } from '@/handbook-data/charClasses'
 import { fullBackgroundsList } from '@/handbook-data/backgrounds'
 
 const charId = sessionStorage.getItem('charId') ?? 1
@@ -16,17 +16,21 @@ const stats: TStat[] = Object.keys(character.stats) as TStat[]
 
 
 const
-	hitCount = computed(() => character.hitDice.value + character.statModifier('con')),
+	hitCount = computed(() => {
+		const level1hits = character.hitDie.value + character.statModifier('con')
+		const nextLevelsHits = character.nextLevelHitDie.value + character.statModifier('con')
+		return level1hits + nextLevelsHits * (character.level.value - 1)
+	}),
 	armorValues = computed(() => {
 		const armorClass = character.armorValues.armorClass
 		let AC = character.armorValues.AC
 
 		// Защита варвара без доспехов
 		if (character.charClass.value.id == ECharClass.barbarian && character.armor.value === undefined)
-			AC = 10 + getStatModifier(character.stats.dex) + getStatModifier(character.stats.con)
+			AC = 10 + character.statModifier('dex') + character.statModifier('con')
 		// Защита монаха без доспехов
 		else if (character.charClass.value.id == ECharClass.monk && character.armor.value === undefined && character.shield.value === undefined)
-			AC = 10 + getStatModifier(character.stats.dex) + getStatModifier(character.stats.wis)
+			AC = 10 + character.statModifier('dex') + character.statModifier('wis')
 
 		return { armorClass, AC }
 	}),
@@ -43,7 +47,7 @@ const
 	}),
 	hitpointsTitle = computed(() => {
 		const conModifier = getStatModifier(character.stats.con)
-		return `Для каждого последующего уровня нужно бросать d${character.hitDice.value}` + (conModifier != 0 ? ` и к значению прибавлять ${conModifier}` : '')
+		return `Для каждого последующего уровня нужно бросать d${character.hitDie.value}` + (conModifier != 0 ? ` и к значению прибавлять ${conModifier}` : '')
 	})
 
 watch(combinedDescription, () => {
@@ -63,7 +67,9 @@ function textModifier(statName: TStat): string | undefined {
 //TODO Отобразить наличие помехи для скрытности со стороны доспехов
 //TODO Отобразить наличие вдохновения
 //TODO Показать наличие darkvision с описанием его действия
-//TODO Вывести размер
+//TODO Вывести размер существа
+//TODO Вывести количество денег
+//TODO Отобразить владение доспехами и оружием
 </script>
 
 
@@ -101,7 +107,7 @@ function textModifier(statName: TStat): string | undefined {
 
 		.valueBlock
 			span(title="Зависит от выбранного класса") Кость хитов:
-			span.value d{{ character.hitDice }}
+			span.value d{{ character.hitDie }}
 
 		.valueBlock(:title="character.armor ? '' : 'Рассчитывается из ловкости'")
 			span Класс доспеха:

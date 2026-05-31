@@ -19,12 +19,12 @@ const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
 
 /** Внутреннее числовое значение, может изменяться вручную */
-const diceValue = defineModel<number>('dicevalue')
+const dieValue = defineModel<number>('dievalue')
 const linkTo = defineModel<TStat | undefined>()
 
 // Ограничение значения сверху и снизу
-watch(diceValue, (newValue, oldValue) => {
-	diceValue.value = isStatValueInRange(newValue) ? newValue : (oldValue ?? 1)
+watch(dieValue, (newValue, oldValue) => {
+	dieValue.value = isStatValueInRange(newValue) ? newValue : (oldValue ?? 1)
 	if (optionSelected.value != '-' && optionSelected.value !== undefined) {
 		const saved = optionSelected.value
 		optionSelected.value = '-'
@@ -43,7 +43,7 @@ watch(optionSelected, val => linkTo.value = val == '-' ? undefined : val)
 
 <template lang="pug">
 .valueLink
-	input(v-model.number="diceValue" type="number" min="1" :readonly="character.locked" :max="maxStatValue")
+	input(v-model.number="dieValue" type="number" min="1" :readonly="character.locked" :max="maxStatValue")
 	span.arrow →
 	select(v-model="optionSelected" :disabled="character.locked")
 		option -

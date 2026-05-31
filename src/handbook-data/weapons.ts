@@ -4,7 +4,7 @@
 //TODO Учесть влияние размера существа на владение оружием
 
 export enum EWeaponClass {
-	'simpe.melee',
+	'simple.melee',
 	'simple.ranged',
 	'martial.melee',
 	'martial.ranged'
@@ -62,6 +62,7 @@ export enum EWeapon {
 	net            // Сеть
 }
 
+/** Свойства оружия */
 export enum EWeaponProp {
 	light,      // Лёгкое
 	finesse,    // Фехтовальное
@@ -72,7 +73,18 @@ export enum EWeaponProp {
 	loading,    // Перезарядка
 	heavy,      // Тяжёлое
 	reach,      // Досягаемость
-	special,    // Особое
+}
+
+/** Оружейные приёмы */
+export enum EWeaponMastery {
+	cleave,
+	graze,
+	nick,
+	push,
+	sap,
+	slow,
+	toppple,
+	vex,
 }
 
 type TProp = { prop: EWeaponProp.light }
@@ -81,7 +93,6 @@ type TProp = { prop: EWeaponProp.light }
 	| { prop: EWeaponProp.loading }
 	| { prop: EWeaponProp.heavy }
 	| { prop: EWeaponProp.reach }
-	| { prop: EWeaponProp.special }
 	| {
 		prop: EWeaponProp.thrown
 		normalRange: number  // Нормальная дистанция
@@ -104,14 +115,14 @@ export type TWeapon = {
 	name: string             // Название
 	cost: number             // Стоимость в золотых монетах
 	damage: number           // Урон dX
-	damageDicesCount: number // Количество дайсов урона: Xd…
+	damageDiceCount: number  // Количество дайсов урона: Xd…
 	damageType: EDamageType  // Тип урона
 	weight: number           // Вес в фунтах
 	props: TProp[]           // Свойства
 }
 
 export const weaponClasses: { classType: EWeaponClass, name: string }[] = [{
-	classType: EWeaponClass['simpe.melee'],
+	classType: EWeaponClass['simple.melee'],
 	name: 'Простое рукопашное'
 }, {
 	classType: EWeaponClass['simple.ranged'],
@@ -128,41 +139,41 @@ export const fullWeaponsList: TWeapon[] = [
 	// Простое рукопашное
 	{
 		id: EWeapon.quaterstaff,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Боевой посох',
 		cost: .2,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 4,
 		props: [generateProp(EWeaponProp.versatile, 8)]
 	}, {
 		id: EWeapon.mace,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Булава',
 		cost: 5,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 4,
 		props: []
 	}, {
 		id: EWeapon.club,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Дубинка',
 		cost: .1,
 		damage: 4,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 2,
 		props: [generateProp(EWeaponProp.light)]
 	}, {
 		id: EWeapon.dagger,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Кинжал',
 		cost: 2,
 		damage: 4,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 1,
 		props: [
@@ -172,11 +183,11 @@ export const fullWeaponsList: TWeapon[] = [
 		]
 	}, {
 		id: EWeapon.spear,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Копье',
 		cost: 1,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 3,
 		props: [
@@ -185,11 +196,11 @@ export const fullWeaponsList: TWeapon[] = [
 		]
 	}, {
 		id: EWeapon.lighthammer,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Легкий молот',
 		cost: 2,
 		damage: 4,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 2,
 		props: [
@@ -198,31 +209,31 @@ export const fullWeaponsList: TWeapon[] = [
 		]
 	}, {
 		id: EWeapon.javelin,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Метательное копьё',
 		cost: .5,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 2,
 		props: [generateProp(EWeaponProp.thrown, 30, 120)]
 	}, {
 		id: EWeapon.greatclub,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Палица',
 		cost: .2,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 10,
 		props: [generateProp(EWeaponProp.twohanded)]
 	}, {
 		id: EWeapon.handaxe,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Ручной топор',
 		cost: 5,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 2,
 		props: [
@@ -231,11 +242,11 @@ export const fullWeaponsList: TWeapon[] = [
 		]
 	}, {
 		id: EWeapon.sickle,
-		group: EWeaponClass['simpe.melee'],
+		group: EWeaponClass['simple.melee'],
 		name: 'Серп',
 		cost: 1,
 		damage: 4,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 2,
 		props: [generateProp(EWeaponProp.light)]
@@ -248,7 +259,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Лёгкий арбалет',
 		cost: 25,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 5,
 		props: [
@@ -262,7 +273,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Дротик',
 		cost: .05,
 		damage: 4,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: .25,
 		props: [
@@ -275,7 +286,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Короткий лук',
 		cost: 25,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 2,
 		props: [
@@ -288,7 +299,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Праща',
 		cost: .1,
 		damage: 4,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 0,
 		props: [generateProp(EWeaponProp.ammunition, 30, 120)]
@@ -301,7 +312,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Алебарда',
 		cost: 20,
 		damage: 10,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 6,
 		props: [
@@ -315,7 +326,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Боевая кирка',
 		cost: 5,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 2,
 		props: []
@@ -325,7 +336,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Боевой молот',
 		cost: 15,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 2,
 		props: [generateProp(EWeaponProp.versatile, 10)]
@@ -335,7 +346,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Боевой топор',
 		cost: 10,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 4,
 		props: [generateProp(EWeaponProp.versatile, 10)]
@@ -345,7 +356,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Глефа',
 		cost: 20,
 		damage: 10,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 6,
 		props: [
@@ -359,7 +370,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Двуручный меч',
 		cost: 50,
 		damage: 6,
-		damageDicesCount: 2,
+		damageDiceCount: 2,
 		damageType: EDamageType.slashing,
 		weight: 6,
 		props: [
@@ -372,13 +383,10 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Длинное копьё',
 		cost: 10,
 		damage: 12,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 6,
-		props: [
-			generateProp(EWeaponProp.reach),
-			generateProp(EWeaponProp.special),
-		]
+		props: [generateProp(EWeaponProp.reach)]
 	},
 	{
 		id: EWeapon.longsword,
@@ -386,7 +394,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Длинный меч',
 		cost: 15,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 3,
 		props: [generateProp(EWeaponProp.versatile, 10)]
@@ -397,7 +405,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Кнут',
 		cost: 2,
 		damage: 4,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 3,
 		props: [
@@ -411,7 +419,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Короткий меч',
 		cost: 10,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 2,
 		props: [
@@ -425,7 +433,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Молот',
 		cost: 10,
 		damage: 6,
-		damageDicesCount: 2,
+		damageDiceCount: 2,
 		damageType: EDamageType.bludgeoning,
 		weight: 10,
 		props: [
@@ -438,7 +446,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Моргенштерн',
 		cost: 15,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 4,
 		props: []
@@ -448,7 +456,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Пика',
 		cost: 5,
 		damage: 10,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 18,
 		props: [
@@ -462,7 +470,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Рапира',
 		cost: 25,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 2,
 		props: [generateProp(EWeaponProp.finesse)]
@@ -472,7 +480,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Секира',
 		cost: 30,
 		damage: 12,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 7,
 		props: [
@@ -485,7 +493,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Скимитар',
 		cost: 25,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 3,
 		props: [
@@ -498,7 +506,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Трезубец',
 		cost: 5,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 4,
 		props: [
@@ -511,7 +519,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Цеп',
 		cost: 10,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 2,
 		props: []
@@ -524,7 +532,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Ручной арбалет',
 		cost: 75,
 		damage: 6,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 3,
 		props: [
@@ -538,7 +546,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Тяжёлый арбалет',
 		cost: 50,
 		damage: 10,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 18,
 		props: [
@@ -553,7 +561,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Длинный лук',
 		cost: 50,
 		damage: 8,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 2,
 		props: [
@@ -567,7 +575,7 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Духовая трубка',
 		cost: 10,
 		damage: 1,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 1,
 		props: [
@@ -580,19 +588,16 @@ export const fullWeaponsList: TWeapon[] = [
 		name: 'Сеть',
 		cost: 1,
 		damage: 0,
-		damageDicesCount: 1,
+		damageDiceCount: 1,
 		damageType: EDamageType.none,
 		weight: 3,
-		props: [
-			generateProp(EWeaponProp.thrown, 5, 15),
-			generateProp(EWeaponProp.special),
-		]
+		props: [generateProp(EWeaponProp.thrown, 5, 15)]
 	}
 ] as const
 
 function generateProp(prop: EWeaponProp.versatile, damage: number): Extract<TProp, { prop: EWeaponProp.versatile }>
 function generateProp(prop: EWeaponProp.thrown | EWeaponProp.ammunition, normal: number, max: number): Extract<TProp, { prop: EWeaponProp.thrown }>
-function generateProp<P extends EWeaponProp.light | EWeaponProp.finesse | EWeaponProp.twohanded | EWeaponProp.loading | EWeaponProp.heavy | EWeaponProp.reach | EWeaponProp.special>(prop: P): Extract<TProp, { prop: P }>
+function generateProp<P extends EWeaponProp.light | EWeaponProp.finesse | EWeaponProp.twohanded | EWeaponProp.loading | EWeaponProp.heavy | EWeaponProp.reach>(prop: P): Extract<TProp, { prop: P }>
 function generateProp(prop: EWeaponProp, ...params: number[]): TProp {
 	switch(prop) {
 		case EWeaponProp.light:
@@ -601,7 +606,6 @@ function generateProp(prop: EWeaponProp, ...params: number[]): TProp {
 		case EWeaponProp.loading:
 		case EWeaponProp.heavy:
 		case EWeaponProp.reach:
-		case EWeaponProp.special:
 			return { prop }
 
 		case EWeaponProp.thrown:
@@ -635,20 +639,4 @@ export function damageTypeName(type: EDamageType): string {
 		case EDamageType.piercing: return 'колющий'
 		case EDamageType.slashing: return 'рубящий'
 	}
-}
-
-export function getWeaponSpecialDescription(weapon: EWeapon): string | undefined {
-	if (![EWeapon.lance, EWeapon.net].includes(weapon))
-		return undefined
-
-	switch(weapon) {
-		case EWeapon.lance:
-			return 'Вы совершаете с помехой атаки длинным копьём по существам, находящимся в пределах 5 футов от вас. Кроме того, если вы не находитесь верхом, длинное копьё используется двумя руками'
-
-		case EWeapon.net:
-			return 'Существа Большого и меньшего размеров, по которым попала атака сетью, становятся опутанными, пока не высвободятся. Сеть не оказывает эффекта на бесформенных существ и тех, чей размер Огромный или ещё больше. Существо может действием совершить проверку Силы со Сл 10, чтобы высвободиться самому или освободить другое существо, находящееся в пределах его досягаеости. Причинение сети 5 единиц рубящего урона (КД 10) тоже освобождает существо, не причиняя ему вреда, оканчивая эффект и уничтожая сеть.\n\n\
-			Если вы действием, бонусным действием или реакцией совершаете атаку сетью, вы можете совершить только одну атаку, вне зависимости от количества положенных атак.'
-	}
-
-	return ''
 }

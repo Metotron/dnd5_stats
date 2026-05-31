@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 
 import { statsArray, type TStat } from '@/handbook-data/stats'
-import ValueLink from '@/components/DiceToStatLink.vue'
+import ValueLink from '@/components/DieToStatLink.vue'
 import { getRandomDiceValues, type TDiceValues } from '@/misc/randomDiceValues'
 
 import { useCharacter } from '@/composables/useCharacter'
@@ -58,28 +58,30 @@ function autoLink() {
 
 
 <template lang="pug">
-.pageBlock.charStats
+.pageBlock.charStats(:class="{ hidden: character.locked }")
 	.blockTitle 📜 Числовые значения
 	.blockBody
 		.buttons.asymmetric
-			input.fullWidth(type="button" value="🎲 Перебросить" :disabled="character.locked" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3-18)" @click="generateDiceValues")
-			input(type="button" value="⤵️" title="Автопривязка" :disabled="character.locked" @click="autoLink()")
+			input.fullWidth(type="button" value="🎲 Перебросить" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3-18)" @click="generateDiceValues")
+			input(type="button" value="⤵️" title="Автопривязка" @click="autoLink()")
 		.valuesToStats
 			value-link(
 				v-for="(value, idx) in diceValues"
 				:idx
 				:value
 				:linked="linkedToStat"
-				v-model:dicevalue.number="diceValues[idx]"
+				v-model:dievalue.number="diceValues[idx]"
 				v-model="linkedToStat[idx]"
 				:key="idx"
 			)
 		.buttons.bottom
-			input(type="button" value="♻️ Сбросить" :disabled="character.locked" @click="resetLinks()")
+			input(type="button" value="♻️ Сбросить" @click="resetLinks()")
 </template>
 
 
 <style lang="scss" scoped>
+.hidden { display: none; }
+
 input[type="button"] {
 	min-height: 28px;
 

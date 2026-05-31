@@ -1,5 +1,5 @@
 import { calculateArmorValues, fullArmorsList, fullShieldsList, type EArmor, type EShield } from '@/handbook-data/armors'
-import { ECharClass, fullCharClassesList } from '@/handbook-data/classes'
+import { ECharClass, fullCharClassesList } from '@/handbook-data/charClasses'
 import { ESpecies, fullSpeciesList } from '@/handbook-data/species'
 import { ESkill, fullSkillsList } from '@/handbook-data/skills'
 import { getStatModifier, maxStatValue, type TStat } from '@/handbook-data/stats'
@@ -125,7 +125,8 @@ export class Character {
 		get: () => fullCharClassesList.find(cl => cl.id == this.#charClass.value)!,
 		set: (charClass: ECharClass) => this.#charClass.value = charClass
 	})
-	hitDice = computed(() => this.charClass.value.hitDice)
+	hitDie = computed(() => this.charClass.value.hitDie)
+	nextLevelHitDie = computed(() => this.charClass.value.levelDie)
 
 
 	/** Предыстория */

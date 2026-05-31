@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, test } from 'vitest'
 import settings from '@/settings'
 import { EArmor, EShield } from '@/handbook-data/armors'
 import { EBaseSpecies, ESpecies } from '@/handbook-data/species'
-import { ECharClass } from '@/handbook-data/classes'
+import { ECharClass } from '@/handbook-data/charClasses'
 import { ESkill } from '@/handbook-data/skills'
 import { EWeapon } from '@/handbook-data/weapons'
 import { EBackground } from '@/handbook-data/backgrounds'
@@ -123,7 +123,7 @@ describe('Класс персонажа корректно обрабатыва�
 	test('Смена класса', () => {
 		char.charClass.value = ECharClass['paladin']
 		expect(unref(char.charClass.value.name)).toBe('Паладин')
-		expect(unref(char.charClass.value.hitDice)).toBe(10)
+		expect(unref(char.charClass.value.hitDie)).toBe(10)
 	})
 
 

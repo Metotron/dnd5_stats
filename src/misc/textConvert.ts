@@ -1,12 +1,22 @@
 import type { Character } from '@/composables/useCharacter'
+import { charClassValues } from '@/handbook-data/charClassesLevelValues'
 import { getStatModifier, type TStat } from '@/handbook-data/stats'
 
 /** Стилизация текста в соответствии со спец. разметкой */
 export function textMarkToHTML(str: string, character?: Character): string {
 	str = str.replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+
+	if (character !== undefined) {
+		if (/\[:.+?\/.+?:\]/.test(str))
+			str = classValueByLevel(str, character.level.value)
+
+		if (/\[\*\d+:(0\.)?\d+:уровень\*\]/.test(str))
+			str = mathWithLevel(str, character.level.value)
+	}
+
 	str = str.replace(/\[(?<bold>.+?)\]/g, '<b>$<bold></b>')
 
-	str = str.replace(/\{((?<prefix>.+?):)?(?<text>.+?)\}/g, (str, ...params) => {
+	str = str.replace(/\{((?<prefix>.+?):)?(?<text>.+?)\}/g, (_, ...params) => {
 		const groups = params.at(-1)
 		if (!groups.prefix)
 			return `<em>${groups.text}</em>`
@@ -15,7 +25,7 @@ export function textMarkToHTML(str: string, character?: Character): string {
 
 
 	// Есть особая разметка для модификаторов характеристик и других значений
-	if (character != undefined) {
+	if (character !== undefined) {
 		str = str.replaceAll('/*уровень*/', `<span class="modifierValue" title="Уровень">${character.level.value}<i>(ур)</i></span>`)
 		str = str.replaceAll('/*бонус мастерства*/', `<span class="modifierValue" title="Бонус мастерства">${character.proficiencyBonus.value}<i>(бм)</i></span>`)
 	}
@@ -68,4 +78,35 @@ function makeShortName(stat: string): string {
 	}
 
 	return stat in shortNames ? shortNames[stat] : ''
+}
+
+/** Замена значений вида [:barbarian/rages:] */
+function classValueByLevel(input: string, level: number): string {
+	const tokens = input.match(/\[:.+?:\]/g)
+	if (!tokens) return input
+
+	for (const token of tokens) {
+		if (!token.includes('/'))
+			continue
+
+		const [className, valueName] = token.slice(2, -2).split('/')
+		const replaceWith = charClassValues[className as keyof typeof charClassValues]?.[valueName]?.[level - 1] ?? ''
+		input = input.replaceAll(token, `<em class="byLevelValue">${replaceWith}</em>`)
+	}
+
+	return input
+}
+
+/** Математические замены с уровнем: [*6:2уровень*] = 6 + 2 * [уровень] */
+function mathWithLevel(input: string, level: number): string {
+	const tokens = input.match(/\[\*(\d+):((0\.)?\d+):уровень\*\]/g)
+	if (!tokens) return input
+
+	for (const token of tokens) {
+		const [base, mult, _] = token.slice(2).split(':')
+		const replaceWith = String(parseInt(base) + Math.ceil(parseFloat(mult) * level))
+		input = input.replaceAll(token, `<em class="byLevelValue">${replaceWith}</em>`)
+	}
+
+	return input
 }

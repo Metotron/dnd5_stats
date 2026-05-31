@@ -85,7 +85,7 @@ export const baseSpecies: Record<EBaseSpecies, TBaseSpeciesDescription> = {
 			'Выберите свой размер: маленький или средний',
 			'[Небесное сопротивление.] Сопроивление некротическому урону и урону излучением',
 			'[Исцеляющие руки.] Раз в день магическим действием, касаясь существа, восстанавливаете ему /*бонус мастерства*/d4 хитов',
-			'Знаете заговор {cantrip:Свет}, заклинательная характеристика для него — Харизма'
+			'Знаете заговор {cantrip:Свет}, заклинательная характеристика для него — {Харизма}'
 		],
 	}),
 	[EBaseSpecies.dragonborn]: createBaseDescription(EDarkvision.dv60, {
@@ -115,7 +115,7 @@ export const baseSpecies: Record<EBaseSpecies, TBaseSpeciesDescription> = {
 	[EBaseSpecies.gnome]: createBaseDescription(EDarkvision.dv60, {
 		name: 'Гном',
 		size: 'small',
-		features: ['Совершаете с преимуществом спасброски Интеллекта, Мудрости и Харизмы']
+		features: ['Совершаете с преимуществом спасброски {Интеллекта}, {Мудрости} и {Харизмы}']
 	}),
 	[EBaseSpecies.goliath]: createBaseDescription(35, {
 		name: 'Голиаф',

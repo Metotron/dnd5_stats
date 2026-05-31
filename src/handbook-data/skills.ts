@@ -7,7 +7,7 @@ export enum ESkill {
 	acrobatics     = 'acrobatics',     // Акробатика
 	sleightOfHand  = 'sleightOfHand',  // Ловкость рук
 	stealth        = 'stealth',        // Скрытность
-	arcana         = 'arcana',         // Магия
+	arcana         = 'arcana',         // Аркана
 	history        = 'history',        // История
 	investigation  = 'investigation',  // Анализ
 	nature         = 'nature',         // Природа
@@ -47,7 +47,7 @@ export const fullSkillsList: TSkillDescription[] = [{
 	statType: 'dex'
 }, {
 	skill: ESkill.arcana,
-	name: 'Магия',
+	name: 'Аркана',
 	statType: 'int'
 }, {
 	skill: ESkill.history,

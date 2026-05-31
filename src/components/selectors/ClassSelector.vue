@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { ECharClass, fullCharClassesList } from '@/handbook-data/classes';
+import { ECharClass, fullCharClassesList } from '@/handbook-data/charClasses';
 
 import { useCharacter } from '@/composables/useCharacter'
 
@@ -20,7 +20,7 @@ watch(selectedCharClass, charClass => character.charClass.value = charClass)
 		select(v-model="selectedCharClass" :disabled="character.locked")
 			option(v-for="cls in fullCharClassesList" :key="cls.name" :value="cls.id") {{ cls.name }}
 		span.arrow →
-		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ character.hitDice }}
+		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ character.hitDie }}
 </template>
 
 

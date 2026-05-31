@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { useCharacter } from '@/composables/useCharacter'
-import { damageTypeName, EWeaponProp, type TWeapon } from '@/handbook-data/weapons'
+import { damageTypeName, type TWeapon } from '@/handbook-data/weapons'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
 
 function weaponDescription(weapon: TWeapon): string {
-	const damage = weapon.damage == 0 ? '<i></i>' : `<i>${ weapon.damageDicesCount }d${ weapon.damage }</i>`
-	const specialMark = weapon.props.some(p => p.prop == EWeaponProp.special) ? '<i class="special">&gt;</i>' : ''
-	const damageType = `<span class="type">${damageTypeName(weapon.damageType)}${specialMark}</span>`
+	const damage = weapon.damage == 0 ? '<i></i>' : `<i>${ weapon.damageDiceCount }d${ weapon.damage }</i>`
+	const damageType = `<span class="type">${damageTypeName(weapon.damageType)}</span>`
 
 	return weapon.name + `${damage}${damageType}`
 }
 
-//TODO Сделать всплывающий элемент для описания special-оружия через getWeaponSpecialDescription
 //TODO Отобразить особенности каждого оружия
 </script>
 
@@ -45,18 +43,6 @@ function weaponDescription(weapon: TWeapon): string {
 		border-bottom: 1px solid var(--borderColor);
 	}
 
-	&:has(.special) {
-		cursor: pointer;
-
-		&:hover {
-			background: rgb(from #eee r g b / 0.6);
-
-			:deep(.special) {
-				color: var(--accentColor);
-			}
-		}
-	}
-	
 	:deep(> i) {
 		color: var(--accentColor);
 	}
@@ -64,13 +50,6 @@ function weaponDescription(weapon: TWeapon): string {
 	:deep(.type) {
 		color: #bbb;
 		justify-self: end;
-
-		.special {
-			color: #000;
-			line-height: 1rem;
-			margin-left: var(--blockPadding);
-			transition: color .2s;
-		}
 	}
 }
 </style>

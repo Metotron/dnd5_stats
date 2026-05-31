@@ -47,7 +47,8 @@ header
 			placeholder="Имя персонажа"
 			v-model="character.name.value"
 			:readonly="character.locked"
-			ref="titleRef")
+			title="[alt + shift + N]"
+			ref="titleRef" )
 
 .blocksArea
 	.blockCol.col1
@@ -145,6 +146,7 @@ h1 {
 	--lowColor: #e66;
 	--cantripColor: #48b8cf;
 	--spellColor: #52b852;
+	--computedValueColor: #ff1355;
 }
 
 * {
@@ -218,5 +220,9 @@ em.cantrip, .feature em.cantrip {
 }
 em.spell, .feature em.spell {
 	color: var(--spellColor);
+}
+#app em.byLevelValue {
+	font-style: normal;
+	color: var(--computedValueColor);
 }
 </style>

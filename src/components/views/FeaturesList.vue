@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCharacter } from '@/composables/useCharacter'
 import { fullBackgroundsList } from '@/handbook-data/backgrounds'
-import { fullCharClassesList } from '@/handbook-data/classes'
+import { fullCharClassesList } from '@/handbook-data/charClasses'
 import { adjustDescription, baseSpecies } from '@/handbook-data/species'
 import { fullSkillsList } from '@/handbook-data/skills'
 import { textMarkToHTML } from '@/misc/textConvert'
@@ -66,7 +66,7 @@ function unhighlight() {
 		color: var(--accentColor);
 	}
 
-	:deep(em) {
+	:deep(:where(em)) {
 		color: var(--accentColor);
 		cursor: default;
 	}
