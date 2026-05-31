@@ -171,7 +171,6 @@ export type TSpecies = {
 // Обёртка для создания объектов типа TSpecies
 const mkSpecies = (baseSpeciesE: EBaseSpecies, species: ESpecies, diff?: Partial<TBaseSpeciesDescription>): TSpecies => {
 	if (diff === undefined) diff = {}
-	console.log(diff.name)
 	if (!diff.name)
 		diff.name = baseSpecies[baseSpeciesE].name
 

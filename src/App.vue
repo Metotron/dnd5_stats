@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTemplateRef, watch } from 'vue'
 import ValuesLinker from './components/DiceToStatLinker.vue'
 import ArmorSelector from './components/selectors/ArmorSelector.vue'
 import BackgroundSelector from './components/selectors/BackgroundSelector.vue'
@@ -13,6 +14,7 @@ import SkillsList from './components/views/SkillsList.vue'
 import Weapon from './components/views/Weapon.vue'
 
 import { useCharacter } from './composables/useCharacter.ts'
+import { useHotkey } from './composables/useHotkeys.ts'
 
 //FIXME Временное решение
 sessionStorage.clear()
@@ -20,6 +22,12 @@ const character = useCharacter()
 sessionStorage.setItem('charId', String(character.id))
 
 //FIXME Сделать адаптив
+
+watch(() => character.name.value, name => document.title = name, { immediate: true })
+
+const { registerHotkey } = useHotkey()
+const title = useTemplateRef('titleRef')
+registerHotkey('alt', 'shift', 'KeyN', () => title.value && title.value.focus())
 </script>
 
 
@@ -28,7 +36,7 @@ header
 	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e, 2024)
 	div.name
 		b Имя:
-		input(class="textLike" placeholder="Имя персонажа" v-model="character.name.value")
+		input(class="textLike" placeholder="Имя персонажа" v-model="character.name.value" ref="titleRef")
 
 .blocksArea
 	.blockCol.col1
