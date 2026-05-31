@@ -9,7 +9,7 @@ const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
 const fullDescription = useFullDescription(character)
 
-const goods = computed(() => fullDescription.goods ?? [])
+const goods = computed(() => fullDescription.value.goods ?? [])
 
 
 //TODO Нужна возможность вписывать свои строки

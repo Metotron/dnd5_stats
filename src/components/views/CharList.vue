@@ -57,7 +57,7 @@ function textModifier(statName: TStat): string | undefined {
 	return modifier < 0 ? modifier.toString() : '+' + modifier
 }
 
-//TODO Обработать fullDescription.statsModifiers
+//TODO Обработать fullDescription.value.statsModifiers
 //TODO Отобразить наличие помехи для скрытности со стороны доспехов
 //TODO Отобразить наличие вдохновения
 //TODO Показать наличие darkvision с описанием его действия
