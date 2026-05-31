@@ -1,6 +1,6 @@
 /** @description Предыстории */
 
-import type { TBaseRaceDescription } from './races'
+import type { TBaseSpeciesDescription } from './species'
 import { ESkill } from './skills'
 import { ETool } from './tools'
 
@@ -27,7 +27,7 @@ export enum EBackground {
 export type TBackground = {
 	id: EBackground
 	name: string
-	diff: Partial<TBaseRaceDescription>
+	diff: Partial<TBaseSpeciesDescription>
 }
 
 export const fullBackgroundsList: TBackground[] = [{

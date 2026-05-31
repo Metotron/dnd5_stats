@@ -5,12 +5,12 @@ import type { Character } from './useCharacter'
 
 /** Формат хранения, преобразуется в JSON как есть, желательно минимизировать, вдуруг будем передавать через QR-код */
 type TSaveFormat = {
-	r: number                      // race, индекс расы в fullRacesList
+	r: number                      // species, индекс вида в fullSpeciesList
 	s: number                      // char class, индекс класса в charClassesList
 	n: string                      // name, имя персонажа
 	c: `\d\d\d\d\d\d\d\d\d\d\d\d`  // chars, характеристики персонажа, по две цифры на каждую в том порядке, в каком они иписаны в композабле персонажа
 	l: 1                           // level, просто на всякий случай
-	i: 0 | 1                       // inspiration, вдохновение, может быть, объединить его с level?
+	i: 0 | 1                       // inspiration, вдохновение, может быть, объединить его с level? Там куча свободеных битов
 	p: number                      // profencies, владение навыками в виде битов в заранее заданном порядке. 18 штук => 3 байта
 	//TODO Добавить все поля класса
 }

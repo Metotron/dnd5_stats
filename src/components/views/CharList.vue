@@ -5,7 +5,7 @@ import { ESkill } from '@/handbook-data/skills'
 import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 
 import { useCharacter } from '@/composables/useCharacter'
-import { adjustDescription, baseRaces } from '@/handbook-data/races'
+import { adjustDescription, baseSpecies } from '@/handbook-data/species'
 import { ECharClass, fullCharClassesList } from '@/handbook-data/classes'
 import { fullBackgroundsList } from '@/handbook-data/backgrounds'
 
@@ -21,16 +21,21 @@ const
 		const armorClass = character.armorValues.armorClass
 		let AC = character.armorValues.AC
 
-		if (character.rawCharClassValue == ECharClass.barbarian && character.rawArmorValue === undefined)
+		// Защита варвара без доспехов
+		if (character.charClass.value.id == ECharClass.barbarian && character.armor.value === undefined)
 			AC = 10 + getStatModifier(character.stats.dex) + getStatModifier(character.stats.con)
+		// Защита монаха без доспехов
+		else if (character.charClass.value.id == ECharClass.monk && character.armor.value === undefined && character.shield.value === undefined)
+			AC = 10 + getStatModifier(character.stats.dex) + getStatModifier(character.stats.wis)
 
 		return { armorClass, AC }
 	}),
 	combinedDescription = computed(() => {
-		const classDiff = fullCharClassesList.find(cl => cl.id == character.rawCharClassValue)!.diff ?? {}
+		const speciesDiff = character.species.value?.diff ?? {}
+		const classDiff = fullCharClassesList.find(cl => cl.id == character.charClass.value.id)!.diff ?? {}
 		const bgDiff = fullBackgroundsList.find(bg => bg.id === character.background.value?.id)?.diff ?? {}
 
-		return adjustDescription(baseRaces[character.race.value.baseRace], character.race.value.diff, classDiff, bgDiff)
+		return adjustDescription(baseSpecies[character.species.value.baseSpecies], speciesDiff, classDiff, bgDiff)
 	}),
 	speed = computed(() => {
 		const speed = combinedDescription.value.speed
@@ -43,7 +48,6 @@ const
 
 watch(combinedDescription, () => {
 	const savingThrows = combinedDescription.value.savingThrows
-	console.log('Меняется', savingThrows)
 	if (!savingThrows) return
 
 	character.savingThrows.resetAll()
@@ -57,6 +61,9 @@ function textModifier(statName: TStat): string | undefined {
 }
 
 //TODO Отобразить наличие помехи для скрытности со стороны доспехов
+//TODO Отобразить наличие вдохновения
+//TODO Показать наличие darkvision с описанием его действия
+//TODO Вывести размер
 </script>
 
 

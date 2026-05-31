@@ -19,7 +19,6 @@ export function merge<T>(target: T[] | T | undefined, diff: T[] | Partial<T>): T
 	}
 
 	else {
-		console.info(diff, target)
 		throw new Error('Оба аргумента должны быть массивами или объектами')
 	}
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { adjustDescription, baseRaces } from '@/handbook-data/races'
+import { adjustDescription, baseSpecies } from '@/handbook-data/species'
 import { textMarkToHTML } from '@/misc/textConvert'
 
 import { useCharacter } from '@/composables/useCharacter'
@@ -12,11 +12,13 @@ const goods = computed(() => {
 	if (character.background.value === undefined)
 		return []
 
-	const raceDiff = character.race.value?.diff ?? {}
+	const speciesDiff = character.species.value?.diff ?? {}
+	// Класс не подразумевает вещей, поэтому тут нет класса
 	const bgDiff = character.background.value?.diff ?? {}
-	const goods = adjustDescription(baseRaces[character.race.value.baseRace], raceDiff, bgDiff).goods
+	const goods = adjustDescription(baseSpecies[character.species.value.baseSpecies], speciesDiff, bgDiff).goods
 	return goods ?? []
 })
+//TODO Нужна возможность вписывать свои строки
 </script>
 
 

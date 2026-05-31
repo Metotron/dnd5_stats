@@ -1,21 +1,31 @@
+import type { Character } from '@/composables/useCharacter'
 import { getStatModifier, type TStat } from '@/handbook-data/stats'
 
 /** Стилизация текста в соответствии со спец. разметкой */
-export function textMarkToHTML(str: string, stats?: Record<TStat, number>, proficiencyBonus?: number): string {
+export function textMarkToHTML(str: string, character?: Character): string {
 	str = str.replaceAll('<', '&lt;').replaceAll('>', '&gt;')
 	str = str.replace(/\[(?<bold>.+?)\]/g, '<b>$<bold></b>')
-	str = str.replace(/\{(?<italic>.+?)\}/g, '<em>$<italic></em>')
 
-	
-	// Есть особая разметка для модификаторов характеристик
+	str = str.replace(/\{((?<prefix>.+?):)?(?<text>.+?)\}/g, (str, ...params) => {
+		const groups = params.at(-1)
+		if (!groups.prefix)
+			return `<em>${groups.text}</em>`
+		return `<em class="${groups.prefix}">${groups.text}</em>`
+	})
 
-	if (proficiencyBonus !== undefined)
-		str = str.replace(/\/\*бонус мастерства\*\//g, `<span class="modifierValue" title="Бонус мастерства">${proficiencyBonus}<i>(бм)</i></span>`)
-	else
-		str = str.replace(/\/\*бонус мастерства\*\//g, 'бонус мастерства')
+
+	// Есть особая разметка для модификаторов характеристик и других значений
+	if (character != undefined) {
+		str = str.replaceAll('/*уровень*/', `<span class="modifierValue" title="Уровень">${character.level.value}<i>(ур)</i></span>`)
+		str = str.replaceAll('/*бонус мастерства*/', `<span class="modifierValue" title="Бонус мастерства">${character.proficiencyBonus.value}<i>(бм)</i></span>`)
+	}
+	else {
+		str = str.replaceAll('/*уровень*/', 'уровень')
+		str = str.replaceAll('/*бонус мастерства*/', 'бонус мастерства')
+	}
 
 	const modifiers = str.matchAll(/\/\*(?<mod>.+?)\*\//g)
-	if (stats !== undefined && modifiers)
+	if (character !== undefined && modifiers)
 		for (const mod of modifiers) {
 			const group = mod.groups?.mod
 			if (!group) continue
@@ -24,7 +34,7 @@ export function textMarkToHTML(str: string, stats?: Record<TStat, number>, profi
 			const char = splitted[0].replace(/^мод\. /, '')  // Характеристика в родительном падеже
 			const minValue = splitted.length > 0 && /^min\d+$/.test(splitted[1]) ? Number(splitted[1].replace(/^min/, '')) : Number.MIN_SAFE_INTEGER
 
-			let replaceTo = makeReplaceTxt(char, stats, minValue)
+			let replaceTo = makeReplaceTxt(char, character.stats, minValue)
 			str = str.replace(`/*${group}*/`, `<span class="modifierValue" title="${splitted[0].replace('мод.', 'Модификатор')}">${replaceTo}<i>(${makeShortName(char)})</i></span>`)
 		}
 

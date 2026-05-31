@@ -1,9 +1,9 @@
 import { calculateArmorValues, fullArmorsList, fullShieldsList, type EArmor, type EShield } from '@/handbook-data/armors'
 import { ECharClass, fullCharClassesList } from '@/handbook-data/classes'
-import { ERace, fullRacesList } from '@/handbook-data/races'
+import { ESpecies, fullSpeciesList } from '@/handbook-data/species'
 import { ESkill, fullSkillsList } from '@/handbook-data/skills'
 import { getStatModifier, maxStatValue, type TStat } from '@/handbook-data/stats'
-import { computed, reactive, readonly, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 
 import { fullBackgroundsList, type EBackground } from '@/handbook-data/backgrounds'
 import { fullWeaponsList, type EWeapon } from '@/handbook-data/weapons'
@@ -66,7 +66,7 @@ export class Character {
 			/** Количество спасбросков, которыми владеет персонаж */
 			count: computed(() => savingThrows.value.size),
 
-			/** Получение всех срасбросков, для которых есть владение */
+			/** Список спасбросков */
 			getAll(): TStat[] { return Array.from(savingThrows.value) },
 
 			/** Есть ли владение спасброском */
@@ -87,9 +87,8 @@ export class Character {
 		get: () => fullArmorsList.find(armor => armor.id === this.#armor.value),
 		set: (armor: EArmor | undefined) => this.#armor.value = armor
 	})
-	get rawArmorValue(): EArmor | undefined { return this.#armor.value }
 
-	/** Нужно ли персонажу больше силы, чтобы носить выбранную броню */
+	/** Нужно ли персонажу больше силы, чтобы носить выбранную броню (иначе снизится скорость) */
 	get needMoreStrength() {
 		return computed(() => this.armor.value !== undefined && this.#stats.str < (this.armor.value.minimumStr ?? 0))
 	}
@@ -101,21 +100,17 @@ export class Character {
 		get: () => fullShieldsList.find(shield => shield.id === this.#shield.value),
 		set: (shield: EShield | undefined) => this.#shield.value = shield
 	})
-	get rawShieldValue(): EShield | undefined { return this.#shield.value }
-
-	// Объект со значениями брони
 	get armorValues(): { armorClass: string, AC: number } {
 		return calculateArmorValues(this.#stats.dex, this.armor.value, this.shield.value)
 	}
 
 
-	/** Раса */
-	#race = ref<ERace>(ERace['human.standard'])
-	race = computed({
-		get: () => fullRacesList.find(r => r.race == this.#race.value)!,
-		set: (race: ERace) => this.#race.value = race
+	/** Вид */
+	#species = ref<ESpecies>(ESpecies['human.standard'])
+	species = computed({
+		get: () => fullSpeciesList.find(r => r.species == this.#species.value)!,
+		set: (species: ESpecies) => this.#species.value = species
 	})
-	get rawRaceValue(): ERace { return this.#race.value }
 
 
 	/** Класс персонажа */
@@ -125,7 +120,6 @@ export class Character {
 		set: (charClass: ECharClass) => this.#charClass.value = charClass
 	})
 	hitDice = computed(() => this.charClass.value.hitDice)
-	get rawCharClassValue(): ECharClass { return this.#charClass.value }
 
 
 	/** Предыстория */
@@ -139,7 +133,7 @@ export class Character {
 	/** Уровень */
 	#level = ref(1)
 	level = computed({
-		get: () => readonly(this.#level),
+		get: () => this.#level.value,
 		set: (level: number) => this.#level.value = Math.max(1, Math.min(20, level))
 	})
 	/** Бонус мастерства */
@@ -148,7 +142,6 @@ export class Character {
 
 	/** Включенные навыки */
 	#proficiencies = ref<Set<ESkill>>(new Set())
-
 	get proficiencies() {
 		const proficiencies = this.#proficiencies
 		const char = this
@@ -175,14 +168,13 @@ export class Character {
 	/** Вдохновение мастера */
 	#inspiration = ref(false)
 	inspiration = computed({
-		get: () => readonly(this.#inspiration),
+		get: () => this.#inspiration.value,
 		set: (inspiration: boolean) => this.#inspiration.value = inspiration
 	})
 
 
 	/** Вооружение */
 	#weapons = ref<EWeapon[]>([])
-	get rawWeaponsValue(): EWeapon[] { return this.#weapons.value }
 	get weapons() {
 		const weapons = this.#weapons
 

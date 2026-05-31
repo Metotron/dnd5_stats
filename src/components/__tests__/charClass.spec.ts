@@ -4,7 +4,7 @@ import { useCharacterStorage } from '@/composables/useCharacterStorage'
 import { beforeEach, describe, expect, test } from 'vitest'
 import settings from '@/settings'
 import { EArmor, EShield } from '@/handbook-data/armors'
-import { EBaseRace, ERace } from '@/handbook-data/races'
+import { EBaseSpecies, ESpecies } from '@/handbook-data/species'
 import { ECharClass } from '@/handbook-data/classes'
 import { ESkill } from '@/handbook-data/skills'
 import { EWeapon } from '@/handbook-data/weapons'
@@ -80,7 +80,7 @@ describe('Класс персонажа корректно обрабатыва�
 
 	test('Смена брони', () => {
 		char.armor.value = EArmor.chainShirt
-		expect(unref(char.rawArmorValue)).toBe(EArmor.chainShirt)
+		expect(unref(char.armor.value?.id)).toBe(EArmor.chainShirt)
 		expect(unref(char.armor.value)?.name).toBe('Кольчужная рубаха')
 
 		expect(unref(char.needMoreStrength.value)).toBe(false)
@@ -114,9 +114,9 @@ describe('Класс персонажа корректно обрабатыва�
 	})
 
 
-	test('Смена расы', () => {
-		char.race.value = ERace['dragonborn.bronze']
-		expect(unref(char.race.value.baseRace)).toBe(EBaseRace.dragonborn)
+	test('Смена вида', () => {
+		char.species.value = ESpecies['dragonborn.bronze']
+		expect(unref(char.species.value.baseSpecies)).toBe(EBaseSpecies.dragonborn)
 	})
 
 

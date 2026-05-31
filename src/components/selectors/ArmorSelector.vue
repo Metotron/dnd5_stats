@@ -63,7 +63,9 @@ const titleForSelectTag = computed<string>(() => {
 
 
 <style lang="scss" scoped>
-select { width: 170px; }
+select {
+	flex-grow: 1;
+}
 
 .alert {
 	width: 100%;
@@ -83,6 +85,7 @@ select { width: 170px; }
 }
 
 .shield {
+	flex-shrink: 0;
 	opacity: .5;
 	filter: grayscale(1);
 	transition: opacity .2s, filter .2s;

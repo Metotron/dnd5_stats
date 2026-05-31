@@ -3,7 +3,7 @@ import ValuesLinker from './components/DiceToStatLinker.vue'
 import ArmorSelector from './components/selectors/ArmorSelector.vue'
 import BackgroundSelector from './components/selectors/BackgroundSelector.vue'
 import ClassSelector from './components/selectors/ClassSelector.vue'
-import RaceSelector from './components/selectors/RaceSelector.vue'
+import SpeciesSelector from './components/selectors/SpeciesSelector.vue'
 import WeaponSelector from './components/selectors/WeaponSelector.vue'
 import CharList from './components/views/CharList.vue'
 import FeaturesList from './components/views/FeaturesList.vue'
@@ -25,7 +25,7 @@ sessionStorage.setItem('charId', String(character.id))
 
 <template lang="pug">
 header
-	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e)
+	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e, 2024)
 	div.name
 		b Имя:
 		input(class="textLike" placeholder="Имя персонажа" v-model="character.name.value")
@@ -33,7 +33,7 @@ header
 .blocksArea
 	.blockCol.col1
 		values-linker
-		race-selector
+		species-selector
 		class-selector
 		background-selector
 		armor-selector
@@ -114,6 +114,8 @@ h1 {
 	--greyColor: #9d9d9d;
 	--highColor: #6c6;
 	--lowColor: #e66;
+	--cantripColor: #48b8cf;
+	--spellColor: #52b852;
 }
 
 * {
@@ -181,5 +183,11 @@ option, optgroup {
 		color: var(--greyColor);
 		font-size: .7em;
 	}
+}
+em.cantrip, .feature em.cantrip {
+	color: var(--cantripColor);
+}
+em.spell, .feature em.spell {
+	color: var(--spellColor);
 }
 </style>
