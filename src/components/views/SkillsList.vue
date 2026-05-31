@@ -14,18 +14,23 @@ function changeProficiencyState(skill: ESkill, ev: Event) {
 	character.proficiencies.set(skill, (<HTMLInputElement>ev.target).checked)
 }
 
+function reset() {
+	if (!character.locked)
+		character.proficiencies.resetAll()
+}
+
 //TODO Если навык включен из выбранных пользователем предустановок, заблокировать его выключение
 </script>
 
 
 <template lang="pug">
-.pageBlock.skills
+.pageBlock.skills(:class="{ locked: character.locked }")
 	.blockTitle 🧠 Навыки
-		span.selectedCount(v-if="checkedSkillsCount" title="Сбросить" @click="character.proficiencies.resetAll()") (Выбрано: {{ checkedSkillsCount }})
+		span.selectedCount(v-if="checkedSkillsCount" title="Сбросить" @click="reset") (Выбрано: {{ checkedSkillsCount }})
 	.blockBody
 		.skill(v-for="skillDescr in fullSkillsList" :key="skillDescr.name" :data-skillstat="skillDescr.statType" :data-skill="skillDescr.skill")
 			label
-				input(type="checkbox" :checked="character.proficiencies.enabled(skillDescr.skill)" @change="changeProficiencyState(skillDescr.skill, $event)")
+				input(type="checkbox" :checked="character.proficiencies.enabled(skillDescr.skill)" :disabled="character.locked" @change="changeProficiencyState(skillDescr.skill, $event)")
 				span.name(:class="{ selected: character.proficiencies.enabled(skillDescr.skill) }") {{ skillDescr.name }}
 				span.stat ({{ statsList[skillDescr.statType].shortName }})
 			span.value {{ 10 + getSkillModifier(skillDescr.skill, character) }}
@@ -54,7 +59,10 @@ function changeProficiencyState(skill: ESkill, ev: Event) {
 		margin-left: 4px;
 		color: #777;
 		font-size: .8rem;
-		cursor: pointer;
+
+		&:not(:is(.locked .selectedCount)) {
+			cursor: pointer;
+		}
 	}
 }
 
@@ -67,8 +75,9 @@ function changeProficiencyState(skill: ESkill, ev: Event) {
 	[type=checkbox] { margin-right: calc(var(--blockPadding) / 2); }
 
 	[type=checkbox], .name, .stat {
-		cursor: pointer;
 		user-select: none;
+
+		&:not(:is(.locked *)) { cursor: pointer; }
 	}
 	.stat {
 		font-size: .75em;
@@ -82,9 +91,9 @@ function changeProficiencyState(skill: ESkill, ev: Event) {
 		margin-right: var(--blockPadding);
 	}
 
-	.name.selected {
-		color: var(--accentColor);
-	}
+
+	.name:is(.locked *) { color: rgb(0 0 0 / .8); }
+	.name.selected { color: var(--accentColor); }
 
 	.value {
 		margin-left: auto;

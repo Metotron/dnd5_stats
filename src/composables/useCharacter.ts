@@ -31,6 +31,12 @@ export const useCharacter = (id?: number) => {
 export class Character {
 	constructor(public id: number) {}
 
+	/** Возможность менять характеристики */
+	#locked = ref(false)
+	get locked() { return this.#locked.value }
+	lock() { this.#locked.value = true }
+	unlock() { this.#locked.value = false }
+
 
 	/** Имя */
 	#name = ref('Персонаж')

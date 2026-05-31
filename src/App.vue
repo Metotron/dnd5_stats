@@ -25,9 +25,11 @@ sessionStorage.setItem('charId', String(character.id))
 
 watch(() => character.name.value, name => document.title = name, { immediate: true })
 
-const { registerHotkey } = useHotkey()
+const registerHotkey = useHotkey()
 const title = useTemplateRef('titleRef')
 registerHotkey('alt', 'shift', 'KeyN', () => title.value && title.value.focus())
+registerHotkey('alt', 'shift', 'KeyL', () => { character.lock() })
+registerHotkey('alt', 'shift', 'KeyU', () => { character.unlock() })
 </script>
 
 
@@ -36,7 +38,13 @@ header
 	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e, 2024)
 	div.name
 		b Имя:
-		input(class="textLike" placeholder="Имя персонажа" v-model="character.name.value" ref="titleRef")
+		input(
+			class="textLike"
+			placeholder="Имя персонажа"
+			v-model="character.name.value"
+			:readonly="character.locked"
+			ref="titleRef")
+		span.lockedText(v-if="character.locked") Заблокирован
 
 .blocksArea
 	.blockCol.col1
@@ -111,6 +119,9 @@ h1 {
 	:deep(.blockBody) {
 		padding: var(--blockPadding);
 	}
+}
+.lockedText {
+	color: var(--greyColor);
 }
 </style>
 

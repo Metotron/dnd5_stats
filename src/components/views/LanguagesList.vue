@@ -22,7 +22,7 @@ const
 
 
 <template lang="pug">
-.pageBlock.languagesList
+.pageBlock.languagesList(v-if="combinedDescription.languages.length > 0")
 	.blockTitle 🎏 Владение языками
 	.blockBody
 		ul

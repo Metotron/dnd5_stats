@@ -53,7 +53,7 @@ function unhighlight() {
 .features:has(li:hover) {
 	li:not(:hover) {
 		filter: grayscale(1);
-		opacity: .4;
+		opacity: .6;
 	}
 }
 

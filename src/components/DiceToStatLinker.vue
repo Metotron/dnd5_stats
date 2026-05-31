@@ -63,7 +63,7 @@ function autoLink() {
 	.blockBody
 		.buttons.asymmetric
 			input.fullWidth(type="button" value="🎲 Перебросить" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3-18)" @click="generateDiceValues")
-			input.short(type="button" value="⤵️" title="Автопривязка" @click="autoLink()")
+			input(type="button" value="⤵️" title="Автопривязка" @click="autoLink()")
 		.valuesToStats
 			value-link(
 				v-for="(value, idx) in diceValues"
@@ -74,7 +74,7 @@ function autoLink() {
 				v-model="linkedToStat[idx]"
 				:key="idx"
 			)
-		.buttons
+		.buttons.bottom
 			input(type="button" value="♻️ Сбросить" @click="resetLinks()")
 </template>
 
@@ -90,14 +90,13 @@ input[type="button"] {
 .valuesToStats { margin-bottom: var(--blockPadding); }
 
 .buttons {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
+	display: flex;
 	gap: 12px;
 
-	&.asymmetric {
-		display: flex;
+	.short { flex-shrink: 0; }
 
-		.short { flex-shrink: 0; }
+	&.bottom {
+		justify-content: flex-end;
 	}
 }
 </style>

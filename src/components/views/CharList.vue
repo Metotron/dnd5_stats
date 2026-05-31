@@ -79,7 +79,7 @@ function textModifier(statName: TStat): string | undefined {
 						| {{ character.stats[statName] }}
 						span.value(:class="{ high: character.statModifier(statName) > 0, low: character.statModifier(statName) < 0 }") [#[span(title="Применяемый модификатор") {{ textModifier(statName) }}]]
 
-		.valueBlock.flexBlock(v-if="character.savingThrows.count.value > 0")
+		.valueBlock.savingThrows(v-if="character.savingThrows.count.value > 0")
 			span Спасброски:
 			span.value(v-for="svt in  character.savingThrows.getAll()" :key="svt") {{ statsList[svt].name }}
 
@@ -145,12 +145,16 @@ function textModifier(statName: TStat): string | undefined {
 		&.low span {	color: var(--lowColor); }
 	}
 
-	&.flexBlock {
+	&.savingThrows {
 		display: flex;
 		flex-wrap: wrap;
 		gap: .4em;
 
 		.value { margin-left: 0; }
+
+		.value:not(:last-child)::after {
+			content: ",";
+		}
 	}
 }
 
