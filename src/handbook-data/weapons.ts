@@ -19,47 +19,47 @@ enum EDamageType {
 }
 
 export enum EWeapon {
-	quaterstaff,   // Боевой посох
-	mace,          // Булава
-	club,          // Дубинка
-	dagger,        // Кинжал
-	spear,         // Копьё
-	lighthammer,   // Лёгкий молот
-	javelin,       // Метательное копьё
-	greatclub,     // Палица
-	handaxe,       // Ручной топор
-	sickle,        // Серп
-	unarmed,       // Безоружный удар
+	quaterstaff = 'weapon.quaterstaff', // Боевой посох
+	mace = 'weapon.mace',               // Булава
+	club = 'weapon.club',               // Дубинка
+	dagger = 'weapon.dagger',           // Кинжал
+	spear = 'weapon.spear',             // Копьё
+	lighthammer = 'weapon.lighthammer', // Лёгкий молот
+	javelin = 'weapon.javelin',         // Метательное копьё
+	greatclub = 'weapon.greatclub',     // Палица
+	handaxe = 'weapon.handaxe',         // Ручной топор
+	sickle = 'weapon.sickle',           // Серп
+	unarmed = 'weapon.unarmed',         // Безоружный удар
 
-	lightcrossbow, // Лёгкий арбалет
-	dart,          // Дротик
-	shortbow,      // Короткий лук
-	sling,         // Праща
+	lightcrossbow = 'weapon.lightcrossbow', // Лёгкий арбалет
+	dart = 'weapon.dart',               // Дротик
+	shortbow = 'weapon.shortbow',       // Короткий лук
+	sling = 'weapon.sling',             // Праща
 
-	glaive,        // Алебарда
-	warpick,       // Боевая кирка
-	warhammer,     // Боевой молот
-	battleaxe,     // Боевой топор
-	halberd,       // Глефа
-	greatsword,    // Двуручный меч
-	lance,         // Длинное копьё
-	longsword,     // Длинный меч
-	whip,          // Кнут
-	shortsword,    // Короткий меч
-	maul,          // Молот
-	morningstar,   // Моргенштерн
-	pike,          // Пика
-	rapier,        // Рапира
-	greataxe,      // Секира
-	scimitar,      // Скимитар
-	trident,       // Трезубец
-	flail,         // Цеп
+	glaive = 'weapon.glaive',           // Алебарда
+	warpick = 'weapon.warpick',         // Боевая кирка
+	warhammer = 'weapon.warhammer',     // Боевой молот
+	battleaxe = 'weapon.battleaxe',     // Боевой топор
+	halberd = 'weapon.halberd',         // Глефа
+	greatsword = 'weapon.greatsword',   // Двуручный меч
+	lance = 'weapon.lance',             // Длинное копьё
+	longsword = 'weapon.longsword',     // Длинный меч
+	whip = 'weapon.whip',               // Кнут
+	shortsword = 'weapon.shortsword',   // Короткий меч
+	maul = 'weapon.maul',               // Молот
+	morningstar = 'weapon.morningstar', // Моргенштерн
+	pike = 'weapon.pike',               // Пика
+	rapier = 'weapon.rapier',           // Рапира
+	greataxe = 'weapon.greataxe',       // Секира
+	scimitar = 'weapon.scimitar',       // Скимитар
+	trident = 'weapon.trident',         // Трезубец
+	flail = 'weapon.flail',             // Цеп
 
-	handcrossbow,  // Ручной арбалет
-	heavycrossbow, // Тяжёлый арбалет
-	longbow,       // Длинный лук
-	blowgun,       // Духовая трубка
-	net            // Сеть
+	handcrossbow = 'weapon.handcrossbow',   // Ручной арбалет
+	heavycrossbow = 'weapon.heavycrossbow', // Тяжёлый арбалет
+	longbow = 'weapon.longbow',         // Длинный лук
+	blowgun = 'weapon.blowgun',         // Духовая трубка
+	net = 'weapon.net',                 // Сеть
 }
 
 /** Свойства оружия */

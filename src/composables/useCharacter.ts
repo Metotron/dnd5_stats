@@ -5,7 +5,7 @@ import { ESkill, fullSkillsList } from '@/handbook-data/skills'
 import { getStatModifier, maxStatValue, type TStat } from '@/handbook-data/stats'
 import { computed, reactive, ref } from 'vue'
 
-import { fullBackgroundsList, type EBackground } from '@/handbook-data/backgrounds'
+import { fullOriginsList, type EOrigin } from '@/handbook-data/origins'
 import { fullWeaponsList, type EWeapon } from '@/handbook-data/weapons'
 import { useCharacterStorage } from './useCharacterStorage'
 
@@ -130,10 +130,10 @@ export class Character {
 
 
 	/** Предыстория */
-	#background = ref<EBackground>()
-	background = computed({
-		get: () => fullBackgroundsList.find(bg => bg.id == this.#background.value),
-		set: (bg: EBackground | undefined) => this.#background.value = bg
+	#origin = ref<EOrigin>()
+	origin = computed({
+		get: () => fullOriginsList.find(({id }) => id == this.#origin.value),
+		set: (origin: EOrigin | undefined) => this.#origin.value = origin
 	})
 
 

@@ -1,43 +1,43 @@
 /** @description Инструменты, транспорт, товары, еда */
 
 export enum ETool {
-    brewer,          // Инструменты пивовара
-    smith,           // Инструменты кузнеца
-    masons,          // Инструменты каменщика
-    tinkers,         // Инструменты жестянщика
-    alchemists,      // Инструменты алхимика
-    calligraphers,   // Инструменты каллиграфа
-    carpenters,      // Инструменты плотника
-    cartographers,   // Инструменты картографа
-    cobblers,        // Инструменты сапожника
-    cooks,           // Инструменты повара
-    glassblowers,    // Инструменты стеклодува
-    jewelers,        // Инструменты ювелира
-    leatherworkers,  // Инструменты кожевника
-    painters,        // Инструменты художника
-    weavers,         // Инструменты ткача
-    woodcarvers,     // Инструменты резчика по дереву
-    disguise,        // Набор для грима
-    forgery,         // Набор для фальсификации
-    dice,            // Кости
-    dragonchess,     // Драконьи шахматы
-    playingcard,     // Карты
-    threedragonante, // Ставка трёх драконов
-    herbalism,       // Набор травника
-    drum,            // Барабан
-    viol,            // Виола
-    bagpipes,        // Волынка
-    lyre,            // Лира
-    lute,            // Лютня
-    horn,            // Рожок
-    panflute,        // Свирель
-    flute,           // Флейта
-    dulcimer,        // Цимбалы
-    shawm,           // Шалмей
-    navigators,      // Инструменты навигатора
-    poisoners,       // Инструменты отравителя
-    thieves,         // Воровские инструменты
-    vehicles,        // Транспорт
+    brewer = 'tool.brewer',                 // Инструменты пивовара
+    smith = 'tool.smith',                   // Инструменты кузнеца
+    masons = 'tool.masons',                 // Инструменты каменщика
+    tinkers = 'tool.tinkers',               // Инструменты жестянщика
+    alchemists = 'tool.alchemists',         // Инструменты алхимика
+    calligraphers = 'tool.calligraphers',   // Инструменты каллиграфа
+    carpenters = 'tool.carpenters',         // Инструменты плотника
+    cartographers = 'tool.cartographers',   // Инструменты картографа
+    cobblers = 'tool.cobblers',             // Инструменты сапожника
+    cooks = 'tool.cooks',                   // Инструменты повара
+    glassblowers = 'tool.glassblowers',     // Инструменты стеклодува
+    jewelers = 'tool.jewelers',             // Инструменты ювелира
+    leatherworkers = 'tool.leatherworkers', // Инструменты кожевника
+    painters = 'tool.painters',             // Инструменты художника
+    weavers = 'tool.weavers',               // Инструменты ткача
+    woodcarvers = 'tool.woodcarvers',       // Инструменты резчика по дереву
+    disguise = 'tool.disguise',             // Набор для грима
+    forgery = 'tool.forgery',               // Набор для фальсификации
+    dice = 'tool.dice',                     // Кости
+    dragonchess = 'tool.dragonchess',       // Драконьи шахматы
+    playingcard = 'tool.playingcard',       // Карты
+    threedragonante = 'tool.threedragonante', // Ставка трёх драконов
+    herbalism = 'tool.herbalism',           // Набор травника
+    drum = 'tool.drum',                     // Барабан
+    viol = 'tool.viol',                     // Виола
+    bagpipes = 'tool.bagpipes',             // Волынка
+    lyre = 'tool.lyre',                     // Лира
+    lute = 'tool.lute',                     // Лютня
+    horn = 'tool.horn',                     // Рожок
+    panflute = 'tool.panflute',             // Свирель
+    flute = 'tool.flute',                   // Флейта
+    dulcimer = 'tool.dulcimer',             // Цимбалы
+    shawm = 'tool.shawm',                   // Шалмей
+    navigators = 'tool.navigators',         // Инструменты навигатора
+    poisoners = 'tool.poisoners',           // Инструменты отравителя
+    thieves = 'tool.thieves',               // Воровские инструменты
+    vehicles = 'tool.vehicles',             // Транспорт
 }
 
 /** Скакуны и другие животные */

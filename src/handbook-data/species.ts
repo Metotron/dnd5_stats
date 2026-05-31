@@ -2,6 +2,7 @@
 
 import { merge } from '@/misc/commonUtils'
 import { EArmorClass, EShieldClass } from './armors'
+import type { EFeat } from './feats'
 import { ESkill } from './skills'
 import type { TStat } from './stats'
 import { ETool } from './tools'
@@ -70,10 +71,13 @@ export type TBaseSpeciesDescription = {
 	features?: string[]
 	weaponProficiencies?: (EWeapon | EWeaponClass)[]
 	armorProficiencies?: (EArmorClass | EShieldClass)[]  // Владение классами доспехов
-	toolProficiencies?: ETool[]         // Владение инструментами
+	toolProficiencies?: ETool[]      // Владение инструментами
 	skills?: ESkill[]
-	goods?: string[]                    // Вещи, которые есть у персонажа
-	savingThrows?: TStat[]              // Владение спасбросками
+	goods?: (string | EWeapon | ETool)[] // Вещи, которые есть у персонажа
+	savingThrows?: TStat[]           // Владение спасбросками
+	// Из предыстории:
+	charsForGrow?: TStat[]           // Характеристики, которые нужно увеличить
+	feat?: EFeat                     // Черта
 }
 
 // Базовые виды, без разделения на подвиды

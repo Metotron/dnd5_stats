@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCharacter } from '@/composables/useCharacter'
-import { fullBackgroundsList } from '@/handbook-data/backgrounds'
+import { fullOriginsList } from '@/handbook-data/origins'
 import { fullCharClassesList } from '@/handbook-data/charClasses'
 import { adjustDescription, baseSpecies } from '@/handbook-data/species'
 import { fullSkillsList } from '@/handbook-data/skills'
@@ -13,7 +13,7 @@ const character = useCharacter(Number(charId))
 const combinedFeatures = computed<string[]>(() => {
 	const speciesDiff = character.species.value?.diff ?? {}
 	const classDiff = fullCharClassesList.find(cl => cl.id == character.charClass.value.id)!.diff ?? {}
-	const bgDiff = fullBackgroundsList.find(bg => bg.id === character.background.value?.id)?.diff ?? {}
+	const bgDiff = fullOriginsList.find(origin => origin.id === character.origin.value?.id)?.diff ?? {}
 
 	const descr = adjustDescription(baseSpecies[character.species.value.baseSpecies], speciesDiff, classDiff, bgDiff)
 	return descr.features ?? []

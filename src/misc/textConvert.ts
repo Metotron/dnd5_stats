@@ -1,22 +1,27 @@
 import type { Character } from '@/composables/useCharacter'
 import { charClassValues } from '@/handbook-data/charClassesLevelValues'
 import { getStatModifier, type TStat } from '@/handbook-data/stats'
+import type { ETool } from '@/handbook-data/tools'
+import type { EWeapon } from '@/handbook-data/weapons'
 
 /** Стилизация текста в соответствии со спец. разметкой */
-export function textMarkToHTML(str: string, character?: Character): string {
-	str = str.replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+export function textMarkToHTML<T extends string | EWeapon | ETool>(str: T, character?: Character): string {
+	if (str.startsWith('weapon.') || str.startsWith('tool.')) 
+		return str
+	
+	let out: string = str.replaceAll('<', '&lt;').replaceAll('>', '&gt;')
 
 	if (character !== undefined) {
-		if (/\[:.+?\/.+?:\]/.test(str))
-			str = classValueByLevel(str, character.level.value)
+		if (/\[:.+?\/.+?:\]/.test(out))
+			out = classValueByLevel(out, character.level.value)
 
-		if (/\[\*\d+:(0\.)?\d+:уровень\*\]/.test(str))
-			str = mathWithLevel(str, character.level.value)
+		if (/\[\*\d+:(0\.)?\d+:уровень\*\]/.test(out))
+			out = mathWithLevel(out, character.level.value)
 	}
 
-	str = str.replace(/\[(?<bold>.+?)\]/g, '<b>$<bold></b>')
+	out = out.replace(/\[(?<bold>.+?)\]/g, '<b>$<bold></b>')
 
-	str = str.replace(/\{((?<prefix>.+?):)?(?<text>.+?)\}/g, (_, ...params) => {
+	out = out.replace(/\{((?<prefix>.+?):)?(?<text>.+?)\}/g, (_, ...params) => {
 		const groups = params.at(-1)
 		if (!groups.prefix)
 			return `<em>${groups.text}</em>`
@@ -26,15 +31,15 @@ export function textMarkToHTML(str: string, character?: Character): string {
 
 	// Есть особая разметка для модификаторов характеристик и других значений
 	if (character !== undefined) {
-		str = str.replaceAll('/*уровень*/', `<span class="modifierValue" title="Уровень">${character.level.value}<i>(ур)</i></span>`)
-		str = str.replaceAll('/*бонус мастерства*/', `<span class="modifierValue" title="Бонус мастерства">${character.proficiencyBonus.value}<i>(бм)</i></span>`)
+		out = out.replaceAll('/*уровень*/', `<span class="modifierValue" title="Уровень">${character.level.value}<i>(ур)</i></span>`)
+		out = out.replaceAll('/*бонус мастерства*/', `<span class="modifierValue" title="Бонус мастерства">${character.proficiencyBonus.value}<i>(бм)</i></span>`)
 	}
 	else {
-		str = str.replaceAll('/*уровень*/', 'уровень')
-		str = str.replaceAll('/*бонус мастерства*/', 'бонус мастерства')
+		out = out.replaceAll('/*уровень*/', 'уровень')
+		out = out.replaceAll('/*бонус мастерства*/', 'бонус мастерства')
 	}
 
-	const modifiers = str.matchAll(/\/\*(?<mod>.+?)\*\//g)
+	const modifiers = out.matchAll(/\/\*(?<mod>.+?)\*\//g)
 	if (character !== undefined && modifiers)
 		for (const mod of modifiers) {
 			const group = mod.groups?.mod
@@ -45,10 +50,10 @@ export function textMarkToHTML(str: string, character?: Character): string {
 			const minValue = splitted.length > 0 && /^min\d+$/.test(splitted[1]) ? Number(splitted[1].replace(/^min/, '')) : Number.MIN_SAFE_INTEGER
 
 			let replaceTo = makeReplaceTxt(char, character.stats, minValue)
-			str = str.replace(`/*${group}*/`, `<span class="modifierValue" title="${splitted[0].replace('мод.', 'Модификатор')}">${replaceTo}<i>(${makeShortName(char)})</i></span>`)
+			out = out.replace(`/*${group}*/`, `<span class="modifierValue" title="${splitted[0].replace('мод.', 'Модификатор')}">${replaceTo}<i>(${makeShortName(char)})</i></span>`)
 		}
 
-	return str
+	return out
 }
 
 function makeReplaceTxt(stat: string, stats: Record<TStat, number>, minValue: number): string {

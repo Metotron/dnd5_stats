@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { EBackground, fullBackgroundsList } from '@/handbook-data/backgrounds'
+import { EOrigin, fullOriginsList } from '@/handbook-data/origins'
 
 import { useCharacter } from '@/composables/useCharacter'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
 
-const selectedBackground = ref<EBackground>()
+const selectedOrigin = ref<EOrigin>()
 const background = computed({
-	get() { return selectedBackground.value ?? '-' },
-	set(bg) { selectedBackground.value = bg == '-' ? undefined : bg }
+	get() { return selectedOrigin.value ?? '-' },
+	set(origin) { selectedOrigin.value = origin == '-' ? undefined : origin }
 })
-watch(selectedBackground, bg => character.background.value = bg)
+watch(selectedOrigin, origin => character.origin.value = origin)
 </script>
 
 
@@ -22,7 +22,7 @@ watch(selectedBackground, bg => character.background.value = bg)
 	.blockBody
 		select(v-model="background" :disabled="character.locked")
 			option -
-			option(v-for="bg in fullBackgroundsList" :key="bg.name" :value="bg.id") {{ bg.name }}
+			option(v-for="origin in fullOriginsList" :key="origin.name" :value="origin.id") {{ origin.name }}
 </template>
 
 

@@ -7,7 +7,7 @@ import { getStatModifier, statsList, type TStat } from '@/handbook-data/stats'
 import { useCharacter } from '@/composables/useCharacter'
 import { adjustDescription, baseSpecies } from '@/handbook-data/species'
 import { ECharClass, fullCharClassesList } from '@/handbook-data/charClasses'
-import { fullBackgroundsList } from '@/handbook-data/backgrounds'
+import { fullOriginsList } from '@/handbook-data/origins'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
@@ -37,7 +37,7 @@ const
 	combinedDescription = computed(() => {
 		const speciesDiff = character.species.value?.diff ?? {}
 		const classDiff = fullCharClassesList.find(cl => cl.id == character.charClass.value.id)!.diff ?? {}
-		const bgDiff = fullBackgroundsList.find(bg => bg.id === character.background.value?.id)?.diff ?? {}
+		const bgDiff = fullOriginsList.find(origin => origin.id === character.origin.value?.id)?.diff ?? {}
 
 		return adjustDescription(baseSpecies[character.species.value.baseSpecies], speciesDiff, classDiff, bgDiff)
 	}),

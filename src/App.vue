@@ -2,7 +2,7 @@
 import { useTemplateRef, watch } from 'vue'
 import ValuesLinker from './components/DiceToStatLinker.vue'
 import ArmorSelector from './components/selectors/ArmorSelector.vue'
-import BackgroundSelector from './components/selectors/BackgroundSelector.vue'
+import OriginSelector from './components/selectors/OriginSelector.vue'
 import ClassSelector from './components/selectors/ClassSelector.vue'
 import SpeciesSelector from './components/selectors/SpeciesSelector.vue'
 import WeaponSelector from './components/selectors/WeaponSelector.vue'
@@ -22,6 +22,8 @@ const character = useCharacter()
 sessionStorage.setItem('charId', String(character.id))
 
 //FIXME Сделать адаптив
+
+//TODO Вывести блок владения инструментами и блок наличия инструментов
 
 watch(() => character.name.value, name => document.title = name, { immediate: true })
 
@@ -55,7 +57,7 @@ header
 		values-linker
 		species-selector
 		class-selector
-		background-selector
+		origin-selector
 		armor-selector
 		weapon-selector
 	.blockCol.col2

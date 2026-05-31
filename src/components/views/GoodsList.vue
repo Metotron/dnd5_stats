@@ -4,21 +4,26 @@ import { adjustDescription, baseSpecies } from '@/handbook-data/species'
 import { textMarkToHTML } from '@/misc/textConvert'
 
 import { useCharacter } from '@/composables/useCharacter'
+import { fullCharClassesList } from '@/handbook-data/charClasses'
+import { fullOriginsList } from '@/handbook-data/origins'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
 
 const goods = computed(() => {
-	if (character.background.value === undefined)
+	if (character.origin.value === undefined)
 		return []
 
 	const speciesDiff = character.species.value?.diff ?? {}
-	// Класс не подразумевает вещей, поэтому тут нет класса
-	const bgDiff = character.background.value?.diff ?? {}
-	const goods = adjustDescription(baseSpecies[character.species.value.baseSpecies], speciesDiff, bgDiff).goods
+	const classDiff = fullCharClassesList.find(cl => cl.id == character.charClass.value.id)!.diff ?? {}
+	const bgDiff = fullOriginsList.find(origin => origin.id === character.origin.value?.id)?.diff ?? {}
+
+	const goods = adjustDescription(baseSpecies[character.species.value.baseSpecies], speciesDiff, classDiff, bgDiff).goods
 	return goods ?? []
 })
 //TODO Нужна возможность вписывать свои строки
+
+//TODO Оружие и инструменты вывести по их названию, а по клику на оружие добавлять его в список
 </script>
 
 

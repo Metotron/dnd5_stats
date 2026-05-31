@@ -8,7 +8,7 @@ import { EBaseSpecies, ESpecies } from '@/handbook-data/species'
 import { ECharClass } from '@/handbook-data/charClasses'
 import { ESkill } from '@/handbook-data/skills'
 import { EWeapon } from '@/handbook-data/weapons'
-import { EBackground } from '@/handbook-data/backgrounds'
+import { EOrigin } from '@/handbook-data/origins'
 
 settings.save_load.AUTOSAVE = false  // Нужно, чтобы стор управлялся
 settings.save_load.AUTOLOAD = false  // только действиями тестов
@@ -213,13 +213,13 @@ describe('Класс персонажа корректно обрабатыва�
 
 
 	test('Выбор предыстории', () => {
-		expect(unref(char.background.value)).toBeUndefined()
+		expect(unref(char.origin.value)).toBeUndefined()
 
-		char.background.value = EBackground['acolyte']
-		expect(unref(char.background.value?.name)).toBe('Прислужник')
+		char.origin.value = EOrigin['acolyte']
+		expect(unref(char.origin.value?.name)).toBe('Прислужник')
 
-		char.background.value = undefined
-		expect(unref(char.background.value)).toBeUndefined()
+		char.origin.value = undefined
+		expect(unref(char.origin.value)).toBeUndefined()
 	})
 
 
