@@ -17,7 +17,7 @@ watch(selectedCharClass, charClass => character.charClass.value = charClass)
 .pageBlock.charClass
 	.blockTitle 👷 Класс
 	.blockBody
-		select(v-model="selectedCharClass")
+		select(v-model="selectedCharClass" :disabled="character.locked")
 			option(v-for="cls in fullCharClassesList" :key="cls.name" :value="cls.id") {{ cls.name }}
 		span.arrow →
 		span.hitDice(title="Базовое количество хитпойнтов") HP: {{ character.hitDice }}

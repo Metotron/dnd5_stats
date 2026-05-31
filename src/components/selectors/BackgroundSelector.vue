@@ -20,7 +20,7 @@ watch(selectedBackground, bg => character.background.value = bg)
 .pageBlock.background
 	.blockTitle 🔮 Предыстория
 	.blockBody
-		select(v-model="background")
+		select(v-model="background" :disabled="character.locked")
 			option -
 			option(v-for="bg in fullBackgroundsList" :key="bg.name" :value="bg.id") {{ bg.name }}
 </template>

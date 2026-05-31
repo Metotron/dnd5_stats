@@ -16,7 +16,7 @@ watch(selectedSpecies, species => character.species.value = species)
 .pageBlock.species
 	.blockTitle 🐒 Вид
 	.blockBody
-		select(v-model="selectedSpecies")
+		select(v-model="selectedSpecies" :disabled="character.locked")
 			option(v-for="species in subspeciesOf(EBaseSpecies.aasimar)" :value="species.species") {{ species.diff.name }}
 			optgroup(label="Голиаф")
 				option(v-for="species in subspeciesOf(EBaseSpecies.goliath)" :value="species.species") {{ species.diff.name }}

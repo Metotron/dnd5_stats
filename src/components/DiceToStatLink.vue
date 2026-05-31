@@ -5,7 +5,8 @@ import { nextTick, ref, watch } from 'vue'
 import type { TStat } from '@/handbook-data/stats'
 type TLnk = TStat | undefined
 
-import { isStatValueInRange, maxStatValue, statsArray, statsList } from '@/handbook-data/stats';
+import { isStatValueInRange, maxStatValue, statsArray, statsList } from '@/handbook-data/stats'
+import { useCharacter } from '@/composables/useCharacter'
 
 
 const props = defineProps<{
@@ -13,6 +14,9 @@ const props = defineProps<{
 	linked: [TLnk, TLnk, TLnk, TLnk, TLnk, TLnk]
 	idx: number
 }>()
+
+const charId = sessionStorage.getItem('charId') ?? 1
+const character = useCharacter(Number(charId))
 
 /** Внутреннее числовое значение, может изменяться вручную */
 const diceValue = defineModel<number>('dicevalue')
@@ -39,9 +43,9 @@ watch(optionSelected, val => linkTo.value = val == '-' ? undefined : val)
 
 <template lang="pug">
 .valueLink
-	input(v-model.number="diceValue" type="number" min="1" :max="maxStatValue")
+	input(v-model.number="diceValue" type="number" min="1" :readonly="character.locked" :max="maxStatValue")
 	span.arrow →
-	select(v-model="optionSelected")
+	select(v-model="optionSelected" :disabled="character.locked")
 		option -
 		option(
 			v-for="stat in statsArray"

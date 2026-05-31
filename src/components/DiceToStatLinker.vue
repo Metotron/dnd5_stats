@@ -62,8 +62,8 @@ function autoLink() {
 	.blockTitle 📜 Числовые значения
 	.blockBody
 		.buttons.asymmetric
-			input.fullWidth(type="button" value="🎲 Перебросить" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3-18)" @click="generateDiceValues")
-			input(type="button" value="⤵️" title="Автопривязка" @click="autoLink()")
+			input.fullWidth(type="button" value="🎲 Перебросить" :disabled="character.locked" title="Сумма 3 наибольших значений на 4 брошенных кубиках (3-18)" @click="generateDiceValues")
+			input(type="button" value="⤵️" title="Автопривязка" :disabled="character.locked" @click="autoLink()")
 		.valuesToStats
 			value-link(
 				v-for="(value, idx) in diceValues"
@@ -75,7 +75,7 @@ function autoLink() {
 				:key="idx"
 			)
 		.buttons.bottom
-			input(type="button" value="♻️ Сбросить" @click="resetLinks()")
+			input(type="button" value="♻️ Сбросить" :disabled="character.locked" @click="resetLinks()")
 </template>
 
 

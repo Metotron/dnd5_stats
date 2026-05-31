@@ -121,7 +121,7 @@ h1 {
 	}
 }
 .lockedText {
-	color: var(--greyColor);
+	color: var(--lowColor);
 }
 </style>
 

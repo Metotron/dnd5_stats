@@ -36,7 +36,13 @@ function resetCharacterWeapons() {
 .pageBlock.weapons
 	.blockTitle ⚔️ Оружие
 	.blockBody
-		select(v-for="(w, idx) in selectedWeapon" v-model="selectedWeapon[idx]" :key="w + idx.toString()" @change="resortSelectedList")
+		select(
+			v-for="(w, idx) in selectedWeapon"
+			v-model="selectedWeapon[idx]"
+			:key="w + idx.toString()"
+			:class="{ hidden: character.locked && selectedWeapon[idx] == '-' }"
+			:disabled="character.locked"
+			@change="resortSelectedList")
 			option -
 			optgroup(v-for="wcl in weaponClasses" :label="wcl.name")
 				option(v-for="weapon in getWeaponsByClass(wcl.classType)" :value="weapon.id") {{ weapon.name }}
@@ -51,4 +57,6 @@ function resetCharacterWeapons() {
 }
 
 select { width: 100%; }
+
+.hidden { display: none; }
 </style>

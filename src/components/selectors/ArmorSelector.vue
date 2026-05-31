@@ -19,6 +19,8 @@ const shieldInUse = computed(() => character.shield.value?.name)
 
 /** Взять/убрать щит */
 function switchShield() {
+	if (character.locked) return
+
 	// Пока что щит один, как в правилах
 	const shield = character.shield.value === undefined ? EShield.standard : undefined
 	character.shield.value = shield
@@ -47,7 +49,7 @@ const titleForSelectTag = computed<string>(() => {
 .pageBlock.armor
 	.blockTitle 🧥 Защита
 	.blockBody
-		select(v-model="armor" :title="titleForSelectTag")
+		select(v-model="armor" :title="titleForSelectTag" :disabled="character.locked")
 			option -
 			optgroup(v-for="armorClass in armorClassList" :label="armorClass.name")
 				option(
@@ -56,7 +58,7 @@ const titleForSelectTag = computed<string>(() => {
 					:value="armorDetails.id"
 				) {{ armorDetails.name }}
 
-		span(@click="switchShield()" class="shield" :class="{ inUse: shieldInUse !== undefined }" :title="shieldInUse ? 'Убрать щит' : 'Экипировать щит'") 🛡️
+		span(@click="switchShield()" class="shield" :class="{ inUse: shieldInUse !== undefined, locked: character.locked }" :title="shieldInUse ? 'Убрать щит' : 'Экипировать щит'") 🛡️
 
 		.alert(v-if="character.needMoreStrength.value" :title="`Требуется ${character.armor.value?.minimumStr} силы`") Скорость уменьшена на 10 футов/сек
 </template>
@@ -89,7 +91,9 @@ select {
 	opacity: .5;
 	filter: grayscale(1);
 	transition: opacity .2s, filter .2s;
-	cursor: pointer;
+	user-select: none;
+
+	&:not(.locked) { cursor: pointer; }
 
 	&.inUse {
 		opacity: 1;
