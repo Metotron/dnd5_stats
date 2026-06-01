@@ -12,9 +12,9 @@ export const useFullDescription = (char: Character | undefined): ComputedRef<TBa
 		return computed(() => ({} as TBaseSpeciesDescription))
 	
 	const speciesDiff = char.species.value?.diff ?? {}
-	const classDiff = fullCharClassesList.find(cl => cl.id == char.charClass.value.id)!.diff ?? {}
+	const classDiff = fullCharClassesList.find(cl => cl.id == char.charClass.value.id)?.diff ?? {}
 	const bgDiff = fullOriginsList.find(origin => origin.id == char.origin.value?.id)?.diff ?? {}
-	const featDiff = fullFeatsList.find(feat => feat.id == char.feat.value?.id)!.diff ?? {}
+	const featDiff = fullFeatsList.find(feat => feat.id == char.feat.value?.id)?.diff ?? {}
 
 	return computed(() => adjustDescription(baseSpecies[char.species.value.baseSpecies], speciesDiff, classDiff, bgDiff, featDiff))
 }
