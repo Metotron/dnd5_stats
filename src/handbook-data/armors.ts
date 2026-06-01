@@ -18,9 +18,9 @@ export enum EArmor {
 }
 
 export enum EArmorClass {
-	light,
-	medium,
-	heavy,
+	light = 'light',
+	medium = 'medium',
+	heavy = 'heavy',
 }
 
 export const armorClassList: { armorClass: EArmorClass, name: string }[] = [{
