@@ -3,18 +3,18 @@
 import { getStatModifier } from './stats'
 
 export enum EArmor {
-	padded,
-	leather,
-	studdedLeather,
-	hide,
-	chainShirt,
-	scaleMail,
-	breastplate,
-	halfPlate,
-	ringMail,
-	chainMail,
-	splint,
-	plate,
+	padded = 'armor.padded',
+	leather = 'armor.leather',
+	studdedLeather = 'armor.studdedLeather',
+	hide = 'armor.hide',
+	chainShirt = 'armor.chainShirt',
+	scaleMail = 'armor.scaleMail',
+	breastplate = 'armor.breastplate',
+	halfPlate = 'armor.halfPlate',
+	ringMail = 'armor.ringMail',
+	chainMail = 'armor.chainMail',
+	splint = 'armor.splint',
+	plate = 'armor.plate',
 }
 
 export enum EArmorClass {
@@ -91,7 +91,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 12,
 	cost: 10,
 	useDexModifier: true,
-	maximumDexModifier: 2
+	maximumDexModifier: 2  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 }, {
 	id: EArmor.chainShirt,
 	group: EArmorClass.medium,
@@ -102,7 +102,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 20,
 	cost: 50,
 	useDexModifier: true,
-	maximumDexModifier: 2
+	maximumDexModifier: 2  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 }, {
 	id: EArmor.scaleMail,
 	group: EArmorClass.medium,
@@ -113,7 +113,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 45,
 	cost: 50,
 	useDexModifier: true,
-	maximumDexModifier: 2,
+	maximumDexModifier: 2, // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 	stealthDisadvantage: true
 }, {
 	id: EArmor.breastplate,
@@ -125,7 +125,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 20,
 	cost: 400,
 	useDexModifier: true,
-	maximumDexModifier: 2
+	maximumDexModifier: 2  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 }, {
 	id: EArmor.halfPlate,
 	group: EArmorClass.medium,
@@ -137,7 +137,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	cost: 750,
 	useDexModifier: true,
 	stealthDisadvantage: true,
-	maximumDexModifier: 2
+	maximumDexModifier: 2  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 }, {
 	id: EArmor.ringMail,
 	group: EArmorClass.heavy,
@@ -186,11 +186,11 @@ export const fullArmorsList: TArmorDescription[] = [{
 
 // Чтобы можно было указывать щиты как группу, а не по отдельности
 export enum EShieldClass {
-	standard
+	standard = 'standard',
 }
 
 export enum EShield {
-	standard,      // Обычный щит с +2 к КД
+	standard = 'standard',  // Обычный щит с +2 к КД
 }
 
 export type TShield = {

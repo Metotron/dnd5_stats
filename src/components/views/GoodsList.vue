@@ -7,9 +7,9 @@ import { useFullDescription } from '@/composables/useFullDescription'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
-const fullDescription = useFullDescription(character)
+const { fullDescription } = useFullDescription()
 
-const goods = computed(() => fullDescription.value.goods ?? [])
+const goods = computed(() => fullDescription(character).goods ?? [])
 
 
 //TODO Нужна возможность вписывать свои строки

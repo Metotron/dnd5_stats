@@ -10,7 +10,7 @@ import { ECharClass } from '@/handbook-data/charClasses'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
-const fullDescription = useFullDescription(character)
+const { fullDescription } = useFullDescription()
 
 const stats: TStat[] = Object.keys(character.stats) as TStat[]
 
@@ -35,7 +35,7 @@ const
 		return { armorClass, AC }
 	}),
 	speed = computed(() => {
-		const speed = fullDescription.value.speed
+		const speed = fullDescription(character).speed
 		return character.needMoreStrength.value ? speed - 10 : speed
 	}),
 	hitpointsTitle = computed(() => {
@@ -44,7 +44,7 @@ const
 	})
 
 watch(fullDescription, () => {
-	const savingThrows = fullDescription.value.savingThrows
+	const savingThrows = fullDescription(character).savingThrows
 	if (!savingThrows) return
 
 	character.savingThrows.resetAll()
@@ -57,7 +57,7 @@ function textModifier(statName: TStat): string | undefined {
 	return modifier < 0 ? modifier.toString() : '+' + modifier
 }
 
-//TODO Обработать fullDescription.value.statsModifiers
+//TODO Обработать fullDescription.statsModifiers
 //TODO Отобразить наличие помехи для скрытности со стороны доспехов
 //TODO Отобразить наличие вдохновения
 //TODO Показать наличие darkvision с описанием его действия

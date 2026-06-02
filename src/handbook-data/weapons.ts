@@ -4,10 +4,10 @@
 //TODO Учесть влияние размера существа на владение оружием
 
 export enum EWeaponClass {
-	'simple.melee',
-	'simple.ranged',
-	'martial.melee',
-	'martial.ranged'
+	'simple.melee' = 'weapon.class.simple.melee',
+	'simple.ranged' = 'weapon.class.simple.ranged',
+	'martial.melee' = 'weapon.class.martial.melee',
+	'martial.ranged' = 'weapon.class.martial.ranged',
 }
 
 enum EDamageType {

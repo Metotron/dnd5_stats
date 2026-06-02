@@ -83,14 +83,14 @@ function italicTextReplacer(str: string): string {
 
 /** Замена заклинаний вида {spell:Заклинание} и {cantrip:Заклинание} */
 function spellReplacer(str: string): string {
-	if (!/\{(spell:cantrip:).+\}/.test(str))
+	if (!/\{(spell:|cantrip:).+\}/.test(str))
 		return str
 
 	const tokens = str.matchAll(/\{(?<type>.+?):(?<name>.+?)\}/g)
 	if (!tokens) return str
 
 	for (const token of tokens)
-		str = str.replace(token[0], `<em class="${token.groups?.type ?? ''}">${token.groups?.text ?? ''}</em>`)
+		str = str.replace(token[0], `<em class="${token.groups?.type ?? ''}">${token.groups?.name ?? ''}</em>`)
 
 	return str
 }
@@ -126,20 +126,19 @@ function shortStatName(stat: string): string {
 	return stat in shortNames ? shortNames[stat] : ''
 }
 
-//FIXME Сделать другой вид
-/** Замена значений вида [:barbarian/rages:] */
+/** Замена значений вида {class:barbarian/rages} значениями из charClassesLevelValues */
 function classValueByLevelReplacer(str: string, character?: Character): string {
 	if (character === undefined)
 		return str
 
-	const tokens = str.match(/\[:.+?\/.+?:\]/g)
+	const tokens = str.match(/\{class:.+?\/.+?\}/g)
 	if (!tokens) return str
 
 	for (const token of tokens) {
 		if (!token.includes('/'))
 			continue
 
-		const [className, valueName] = token.slice(2, -2).split('/')
+		const [className, valueName] = token.slice(7, -1).split('/')
 		const replaceWith = charClassValues[className as keyof typeof charClassValues]?.[valueName]?.[character.level.value - 1] ?? ''
 		str = str.replaceAll(token, `<em class="byLevelValue">${replaceWith}</em>`)
 	}
@@ -164,3 +163,5 @@ function mathWithLevelReplacer(str: string, character?: Character): string {
 
 	return str
 }
+
+//TODO Сделать спец. метку для состояний, пририсовав к ним 🔖?

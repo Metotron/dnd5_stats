@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { useCharacter } from '@/composables/useCharacter'
 import { useFullDescription } from '@/composables/useFullDescription'
+import { computed } from 'vue'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
-const fullDescription = useFullDescription(character)
+const { fullDescription } = useFullDescription()
+
+const languages = computed(() => fullDescription(character).languages ?? [])
 
 //TODO Чтобы вписать произвольный язык, нужно хранить языки не просто как строки
 // Или же заменять строку на выбранный язык и записывать прямо персонажу
@@ -12,11 +15,11 @@ const fullDescription = useFullDescription(character)
 
 
 <template lang="pug">
-.pageBlock.languagesList(v-if="fullDescription.languages && fullDescription.languages.length > 0" :class="{ locked: character.locked }")
+.pageBlock.languagesList(v-if="languages.length > 0" :class="{ locked: character.locked }")
 	.blockTitle 🎏 Владение языками
 	.blockBody
 		ul
-			li.language(v-for="lang in fullDescription.languages" :key="lang")
+			li.language(v-for="lang in languages" :key="lang")
 				span(v-if="lang == 'Язык на выбор'") [{{ lang }}]
 				span(v-else) {{ lang }}
 </template>

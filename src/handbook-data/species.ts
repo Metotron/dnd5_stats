@@ -354,7 +354,7 @@ function createBaseDescription(arg1?: TSpeed | EDarkvision | Partial<TBaseSpecie
 }
 
 /** Создание пустой заготовки для описания базового вида */
-function makeEmptyDescription(speed: TSpeed = 25, darkvision: EDarkvision | false = false): TBaseSpeciesDescription {
+export function makeEmptyDescription(speed: TSpeed = 25, darkvision: EDarkvision | false = false): TBaseSpeciesDescription {
 	return {
 		name: '',
 		speed,

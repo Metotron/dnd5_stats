@@ -2,8 +2,8 @@
 import { useTemplateRef, watch } from 'vue'
 import ValuesLinker from './components/DiceToStatLinker.vue'
 import ArmorSelector from './components/selectors/ArmorSelector.vue'
-import OriginSelector from './components/selectors/OriginSelector.vue'
 import ClassSelector from './components/selectors/ClassSelector.vue'
+import OriginSelector from './components/selectors/OriginSelector.vue'
 import SpeciesSelector from './components/selectors/SpeciesSelector.vue'
 import WeaponSelector from './components/selectors/WeaponSelector.vue'
 import CharList from './components/views/CharList.vue'
@@ -29,9 +29,9 @@ watch(() => character.name.value, name => document.title = name, { immediate: tr
 
 const registerHotkey = useHotkey()
 const title = useTemplateRef('titleRef')
-registerHotkey('alt', 'shift', 'KeyN', () => title.value && title.value.focus())
-registerHotkey('alt', 'shift', 'KeyL', () => { character.lock() })
-registerHotkey('alt', 'shift', 'KeyU', () => { character.unlock() })
+registerHotkey('alt', 'shift', 'ctrl', 'KeyN', () => title.value && title.value.focus())
+registerHotkey('alt', 'shift', 'ctrl', 'KeyL', () => { character.lock() })
+registerHotkey('alt', 'shift', 'ctrl', 'KeyU', () => { character.unlock() })
 </script>
 
 
@@ -40,8 +40,8 @@ header
 	h1 Генерация характеристик персонажа на первом уровне (D&amp;D&nbsp;5e, 2024)
 	div.name
 		div.flexed
-			span.unlock(v-if="character.locked" @click="character.unlock()" title="Разблокировать [alt + shift + U]") 🔒
-			span.lock(v-else @click="character.lock()" title="Заблокировать [alt + shift + L]") 🔓
+			span.unlock(v-if="character.locked" @click="character.unlock()" title="Разблокировать [ctrl + alt + shift + U]") 🔒
+			span.lock(v-else @click="character.lock()" title="Заблокировать [ctrl + alt + shift + L]") 🔓
 			span.lockedText(v-if="character.locked") Заблокирован
 			b Имя:
 		input(
@@ -49,7 +49,7 @@ header
 			placeholder="Имя персонажа"
 			v-model="character.name.value"
 			:readonly="character.locked"
-			title="[alt + shift + N]"
+			title="[ctrl + alt + shift + N]"
 			ref="titleRef" )
 
 .blocksArea

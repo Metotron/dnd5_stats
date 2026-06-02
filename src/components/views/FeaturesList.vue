@@ -7,9 +7,9 @@ import { computed } from 'vue'
 
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
-const fullDescription = useFullDescription(character)
+const { fullDescription } = useFullDescription()
 
-const combinedFeatures = computed<string[]>(() => fullDescription.value.features ?? [])
+const combinedFeatures = computed<string[]>(() => fullDescription(character).features ?? [])
 
 
 function highlightSkill(ev: MouseEvent) {
@@ -17,7 +17,7 @@ function highlightSkill(ev: MouseEvent) {
 		return
 
 	const emText = (<HTMLElement>ev.target).textContent.toLocaleLowerCase()
-	const skillToSelect = fullSkillsList.find(skill => skill.name.toLocaleLowerCase() == emText)
+	const skillToSelect = fullSkillsList.find(skill => skill.name.toLocaleLowerCase().startsWith(emText.slice(0, -1)))
 	if (skillToSelect) {
 		document.body.classList.add('dimSkills')
 		document.body.setAttribute('data-hlskill', skillToSelect.skill)
