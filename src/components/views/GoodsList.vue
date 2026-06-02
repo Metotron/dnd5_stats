@@ -23,7 +23,7 @@ const goods = computed(() => fullDescription(character).goods ?? [])
 	.blockTitle 👜 Вещи при себе
 	.blockBody
 		ul
-			li.good(v-for="good in goods" v-html="textMarkToHTML(good)")
+			li.good(v-for="good in goods" v-html="textMarkToHTML(good, character)")
 </template>
 
 

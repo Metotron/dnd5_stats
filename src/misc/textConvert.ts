@@ -146,17 +146,16 @@ function classValueByLevelReplacer(str: string, character?: Character): string {
 	return str
 }
 
-//FIXME Сделать другой вид формулы
-/** Математические замены с уровнем: [*6:2уровень*] = 6 + 2 * [уровень] */
+/** Математические замены с уровнем: {level:M:N} = [уровень] * M + N */
 function mathWithLevelReplacer(str: string, character?: Character): string {
 	if (character === undefined)
 		return str
 
-	const tokens = str.match(/\[\*(\d+):((0\.)?\d+):уровень\*\]/g)
+	const tokens = str.match(/\{level:(0?\.)?\d+:\d+\}/g)
 	if (!tokens) return str
 
 	for (const token of tokens) {
-		const [base, mult, _] = token.slice(2).split(':')
+		const [mult, base] = token.slice(7, -1).split(':')
 		const replaceWith = String(parseInt(base) + Math.ceil(parseFloat(mult) * character.level.value))
 		str = str.replaceAll(token, `<em class="byLevelValue">${replaceWith}</em>`)
 	}

@@ -6,7 +6,7 @@ import { fullOriginsList } from '@/handbook-data/origins'
 import { adjustDescription, baseSpecies, type TBaseSpeciesDescription } from '@/handbook-data/species'
 import type { Character } from './useCharacter'
 
-function mergeDescriptions(char: Character) {
+function fullDescription(char: Character) {
 	if (char === undefined)
 		return {} as TBaseSpeciesDescription
 
@@ -25,5 +25,5 @@ function mergeDescriptions(char: Character) {
 
 
 export const useFullDescription = () => ({
-	fullDescription: mergeDescriptions
+	fullDescription
 })
