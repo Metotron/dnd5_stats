@@ -715,75 +715,196 @@ export const fullFeatsList: TFeat[] = [{
 	},
 }, {
 	id: EFeat.archery,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Стрельба из лука',
 	diff: {
 		features: ['Получаете +2 к атаке дальнобойным оружием'],
 	},
 }, {
 	id: EFeat.blindfighting,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Сражение вслепую',
 	diff: {
 		features: ['Обладаете {Слепым зрением} с дистанцией 10 фт.'],
 	},
 }, {
 	id: EFeat.defence,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Оборона',
 	diff: {
 		features: ['Пока носите броню, получаете +1 к КД'],
 	},
 }, {
 	id: EFeat.dueling,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Дуэлянт',
 	diff: {
 		features: ['Когда у вас только рукопашное оружие в одной руке, вы получаете +2 к урону от этого оружия'],
 	},
 }, {
 	id: EFeat.greatweaponfighting,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Сражение большим оружием',
 	diff: {
 		features: ['Совершая бросок урона от рукопашного оружия, которое держите двумя руками, можете считать «1» и «2» как «3». Оружие должно быть двуручным или универсальным'],
 	},
 }, {
 	id: EFeat.interception,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Перехват',
 	diff: {
 		features: ['Если у вас в руках щит, простое или воинское оружие, то, когда существо, которое вы видите, попадает по существу в 5 фт. от вас (исключая вас?), можете реакцией уменьшить наносимый урон на d10 + {profBonus:}'],
 	},
 }, {
 	id: EFeat.protection,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Защита',
 	diff: {
 		features: ['Если у вас в руках щит, то, когда существо, которое вы видите, атакует существо в 5 фт. от вас (исключая вас), можете реакцией выставить щит, так вы создадите помеху для этой и всех последующих атак вплоть до начала вашего следующего хода, если продолжите находиться в 5 фт. от цели'],
 	},
 }, {
 	id: EFeat.thrownweaponfighting,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Сражение метательным оружием',
 	diff: {
 		features: ['Получаете +2 к урону от дальнобойной атаки оружием со свойством {метательное}'],
 	},
 }, {
 	id: EFeat.twoweaponfighting,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Сражение двумя оружиями',
 	diff: {
 		features: ['Когда, используя лёгкое оружие, совершаете доп. атаку, можете добавить модификатор характеристики к урону, если ещё не сделали этого'],
 	},
 }, {
 	id: EFeat.unarmedfighting,
-	group: EFeatType.general,
+	group: EFeatType.fightingstyle,
 	name: 'Сражение голыми руками',
 	diff: {
 		features: [
 			'Когда наносите урон при безоружном ударе, можете вместо обычного нанести дробящий урон d6 + {mod:Силы}. Если во время броска атаки вы не держите них оружия, ни щита, то d6 заменяется на d8',
 			'В начале своего хода можете нанести d4 дробящего урона одному схваченному вами существу',
+		],
+	},
+}, {
+	//TODO Продолжить заполнение черт
+	id: EFeat.boonofcombatprowess,
+	group: EFeatType.epicboon,
+	name: 'Дар боевой доблести',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonofdimensionaltravel,
+	group: EFeatType.epicboon,
+	name: 'Дар пространственного путешествия',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonofenergyresistance,
+	group: EFeatType.epicboon,
+	name: 'Дар устойчивости к энергиям',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonoffate,
+	group: EFeatType.epicboon,
+	name: 'Дар судьбы',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonoffortitude,
+	group: EFeatType.epicboon,
+	name: 'Дар стойкости',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonofirresistibleoffence,
+	group: EFeatType.epicboon,
+	name: 'Дар непреодолимого нападения',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonofrecovery,
+	group: EFeatType.epicboon,
+	name: 'Дар восстановления',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonofskill,
+	group: EFeatType.epicboon,
+	name: 'Дар навыка',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonofspeed,
+	group: EFeatType.epicboon,
+	name: 'Дар скорости',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonofspellrecall,
+	group: EFeatType.epicboon,
+	name: 'Дар восстановления чар',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonofnightspirit,
+	group: EFeatType.epicboon,
+	name: 'Дар духа ночи',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
+		],
+	},
+}, {
+	id: EFeat.boonoftruesight,
+	group: EFeatType.epicboon,
+	name: 'Дар истинного зрения',
+	prerequisite: { level: 19 },
+	diff: {
+		features: [
+			'',
 		],
 	},
 }]
