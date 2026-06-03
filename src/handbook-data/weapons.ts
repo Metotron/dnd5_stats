@@ -14,52 +14,53 @@ enum EDamageType {
 	none,
 	bludgeoning,  // Дробящий
 	piercing,     // Колющий
-	slashing      // Рубящий
-
+	slashing,     // Рубящий
 }
 
 export enum EWeapon {
-	quaterstaff = 'weapon.quaterstaff', // Боевой посох
-	mace = 'weapon.mace',               // Булава
-	club = 'weapon.club',               // Дубинка
-	dagger = 'weapon.dagger',           // Кинжал
-	spear = 'weapon.spear',             // Копьё
-	lighthammer = 'weapon.lighthammer', // Лёгкий молот
-	javelin = 'weapon.javelin',         // Метательное копьё
-	greatclub = 'weapon.greatclub',     // Палица
-	handaxe = 'weapon.handaxe',         // Ручной топор
-	sickle = 'weapon.sickle',           // Серп
 	unarmed = 'weapon.unarmed',         // Безоружный удар
 
-	lightcrossbow = 'weapon.lightcrossbow', // Лёгкий арбалет
+	club = 'weapon.club',               // Дубинка
+	dagger = 'weapon.dagger',           // Кинжал
+	greatclub = 'weapon.greatclub',     // Палица
+	handaxe = 'weapon.handaxe',         // Ручной топор
+	javelin = 'weapon.javelin',         // Метательное копьё
+	lighthammer = 'weapon.lighthammer', // Лёгкий молот
+	mace = 'weapon.mace',               // Булава
+	quaterstaff = 'weapon.quaterstaff', // Боевой посох
+	sickle = 'weapon.sickle',           // Серп
+	spear = 'weapon.spear',             // Копьё
+
 	dart = 'weapon.dart',               // Дротик
+	lightcrossbow = 'weapon.lightcrossbow', // Лёгкий арбалет
 	shortbow = 'weapon.shortbow',       // Короткий лук
 	sling = 'weapon.sling',             // Праща
 
-	glaive = 'weapon.glaive',           // Алебарда
-	warpick = 'weapon.warpick',         // Боевая кирка
-	warhammer = 'weapon.warhammer',     // Боевой молот
 	battleaxe = 'weapon.battleaxe',     // Боевой топор
-	halberd = 'weapon.halberd',         // Глефа
+	flail = 'weapon.flail',             // Цеп
+	glaive = 'weapon.glaive',           // Алебарда
+	greataxe = 'weapon.greataxe',       // Секира
 	greatsword = 'weapon.greatsword',   // Двуручный меч
+	halberd = 'weapon.halberd',         // Алебарда
 	lance = 'weapon.lance',             // Длинное копьё
 	longsword = 'weapon.longsword',     // Длинный меч
-	whip = 'weapon.whip',               // Кнут
-	shortsword = 'weapon.shortsword',   // Короткий меч
 	maul = 'weapon.maul',               // Молот
 	morningstar = 'weapon.morningstar', // Моргенштерн
 	pike = 'weapon.pike',               // Пика
 	rapier = 'weapon.rapier',           // Рапира
-	greataxe = 'weapon.greataxe',       // Секира
 	scimitar = 'weapon.scimitar',       // Скимитар
+	shortsword = 'weapon.shortsword',   // Короткий меч
 	trident = 'weapon.trident',         // Трезубец
-	flail = 'weapon.flail',             // Цеп
+	warhammer = 'weapon.warhammer',     // Боевой молот
+	warpick = 'weapon.warpick',         // Боевая кирка
+	whip = 'weapon.whip',               // Кнут
 
+	blowgun = 'weapon.blowgun',         // Духовая трубка
 	handcrossbow = 'weapon.handcrossbow',   // Ручной арбалет
 	heavycrossbow = 'weapon.heavycrossbow', // Тяжёлый арбалет
 	longbow = 'weapon.longbow',         // Длинный лук
-	blowgun = 'weapon.blowgun',         // Духовая трубка
-	net = 'weapon.net',                 // Сеть
+	musket = 'weapon.musket',           // Мушкет
+	pistol = 'weapon.pistol',           // Пистоль
 }
 
 /** Свойства оружия */
@@ -77,14 +78,14 @@ export enum EWeaponProp {
 
 /** Оружейные приёмы */
 export enum EWeaponMastery {
-	cleave,
-	graze,
-	nick,
-	push,
-	sap,
-	slow,
-	toppple,
-	vex,
+	cleave,   // Прорубание
+	graze,    // Задевание
+	nick,     // Выпад
+	push,     // Толкание
+	sap,      // Изнурение
+	slow,     // Замедление
+	topple,   // Опрокидывание
+	vex,      // Подавление
 }
 
 type TProp = { prop: EWeaponProp.light }
@@ -119,6 +120,8 @@ export type TWeapon = {
 	damageType: EDamageType  // Тип урона
 	weight: number           // Вес в фунтах
 	props: TProp[]           // Свойства
+	mastery: EWeaponMastery  // Оружейный приём
+
 }
 
 export const weaponClasses: { classType: EWeaponClass, name: string }[] = [{
@@ -135,29 +138,43 @@ export const weaponClasses: { classType: EWeaponClass, name: string }[] = [{
 	name: 'Воинское дальнобойное'
 }]
 
+export const masteryProperties: { id: EWeaponMastery, name: string, description: string }[] = [{
+	id: EWeaponMastery.cleave,
+	name: 'Прорубание',
+	description: 'Раз в ход, попадая по существу рукопашной атакой, можете атаковать второе существо в 5 фт. от первого и в вашей досягаемости. Не добавляйте модификатор характеристики к урону, если только он не отрицательный',
+}, {
+	id: EWeaponMastery.graze,
+	name: 'Задевание',
+	description: 'При промахе по существу можете нанести ему урон, равный модификатору характеристики, которую использовали для атаки',
+}, {
+	id: EWeaponMastery.nick,
+	name: 'Выпад',
+	description: 'Раз в ход доп. атаку лёгким оружием можете совершить не бонусным действием, а частью действия {Атака}',
+}, {
+	id: EWeaponMastery.push,
+	name: 'Толкание',
+	description: 'Попав по существу, можете оттолкнуть его до 10 фт. от себя, если оно не крупнее размера «большой»',
+}, {
+	id: EWeaponMastery.sap,
+	name: 'Изнурение',
+	description: 'Если вы попали по существу, у него появляется помеха на следующую атаку до начала вашего следующего хода',
+}, {
+	id: EWeaponMastery.slow,
+	name: 'Замедление',
+	description: 'Попав по существу и нанеся урон, можете уменьшить его скорость на 10 фт. до начала вашего следующего хода. Замедление от нескольких таких ударов не превышает 10 фт.',
+}, {
+	id: EWeaponMastery.topple,
+	name: 'Опрокидывание',
+	description: 'Попав по существу, можете заставить его совершить спасбросок Телосложения (сл. 8 + мод. характеристики, с которой совершалась атака + {profBonus:}). При провале существо получает состояние {Лежащий ничком}',
+}, {
+	id: EWeaponMastery.vex,
+	name: 'Подавление',
+	description: 'Попав по существу и нанеся урон, получаете преимущество на следующую атаку по этому существу до конца своего следующего хода',
+}]
+
 export const fullWeaponsList: TWeapon[] = [
 	// Простое рукопашное
 	{
-		id: EWeapon.quaterstaff,
-		group: EWeaponClass['simple.melee'],
-		name: 'Боевой посох',
-		cost: .2,
-		damage: 6,
-		damageDiceCount: 1,
-		damageType: EDamageType.bludgeoning,
-		weight: 4,
-		props: [generateProp(EWeaponProp.versatile, 8)]
-	}, {
-		id: EWeapon.mace,
-		group: EWeaponClass['simple.melee'],
-		name: 'Булава',
-		cost: 5,
-		damage: 6,
-		damageDiceCount: 1,
-		damageType: EDamageType.bludgeoning,
-		weight: 4,
-		props: []
-	}, {
 		id: EWeapon.club,
 		group: EWeaponClass['simple.melee'],
 		name: 'Дубинка',
@@ -166,7 +183,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 2,
-		props: [generateProp(EWeaponProp.light)]
+		props: [generateProp(EWeaponProp.light)],
+		mastery: EWeaponMastery.slow,
 	}, {
 		id: EWeapon.dagger,
 		group: EWeaponClass['simple.melee'],
@@ -180,43 +198,8 @@ export const fullWeaponsList: TWeapon[] = [
 			generateProp(EWeaponProp.light),
 			generateProp(EWeaponProp.finesse),
 			generateProp(EWeaponProp.thrown, 20, 60),
-		]
-	}, {
-		id: EWeapon.spear,
-		group: EWeaponClass['simple.melee'],
-		name: 'Копье',
-		cost: 1,
-		damage: 6,
-		damageDiceCount: 1,
-		damageType: EDamageType.piercing,
-		weight: 3,
-		props: [
-			generateProp(EWeaponProp.versatile, 8),
-			generateProp(EWeaponProp.thrown, 20, 60),
-		]
-	}, {
-		id: EWeapon.lighthammer,
-		group: EWeaponClass['simple.melee'],
-		name: 'Легкий молот',
-		cost: 2,
-		damage: 4,
-		damageDiceCount: 1,
-		damageType: EDamageType.bludgeoning,
-		weight: 2,
-		props: [
-			generateProp(EWeaponProp.light),
-			generateProp(EWeaponProp.thrown, 20, 60),
-		]
-	}, {
-		id: EWeapon.javelin,
-		group: EWeaponClass['simple.melee'],
-		name: 'Метательное копьё',
-		cost: .5,
-		damage: 6,
-		damageDiceCount: 1,
-		damageType: EDamageType.piercing,
-		weight: 2,
-		props: [generateProp(EWeaponProp.thrown, 30, 120)]
+		],
+		mastery: EWeaponMastery.nick,
 	}, {
 		id: EWeapon.greatclub,
 		group: EWeaponClass['simple.melee'],
@@ -226,7 +209,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 10,
-		props: [generateProp(EWeaponProp.twohanded)]
+		props: [generateProp(EWeaponProp.twohanded)],
+		mastery: EWeaponMastery.push,
 	}, {
 		id: EWeapon.handaxe,
 		group: EWeaponClass['simple.melee'],
@@ -239,7 +223,55 @@ export const fullWeaponsList: TWeapon[] = [
 		props: [
 			generateProp(EWeaponProp.light),
 			generateProp(EWeaponProp.thrown, 20, 60),
-		]
+		],
+		mastery: EWeaponMastery.vex,
+	}, {
+		id: EWeapon.javelin,
+		group: EWeaponClass['simple.melee'],
+		name: 'Метательное копьё',
+		cost: .5,
+		damage: 6,
+		damageDiceCount: 1,
+		damageType: EDamageType.piercing,
+		weight: 2,
+		props: [generateProp(EWeaponProp.thrown, 30, 120)],
+		mastery: EWeaponMastery.slow,
+	}, {
+		id: EWeapon.lighthammer,
+		group: EWeaponClass['simple.melee'],
+		name: 'Легкий молот',
+		cost: 2,
+		damage: 4,
+		damageDiceCount: 1,
+		damageType: EDamageType.bludgeoning,
+		weight: 2,
+		props: [
+			generateProp(EWeaponProp.light),
+			generateProp(EWeaponProp.thrown, 20, 60),
+		],
+		mastery: EWeaponMastery.nick,
+	}, {
+		id: EWeapon.mace,
+		group: EWeaponClass['simple.melee'],
+		name: 'Булава',
+		cost: 5,
+		damage: 6,
+		damageDiceCount: 1,
+		damageType: EDamageType.bludgeoning,
+		weight: 4,
+		props: [],
+		mastery: EWeaponMastery.sap,
+	}, {
+		id: EWeapon.quaterstaff,
+		group: EWeaponClass['simple.melee'],
+		name: 'Боевой посох',
+		cost: .2,
+		damage: 6,
+		damageDiceCount: 1,
+		damageType: EDamageType.bludgeoning,
+		weight: 4,
+		props: [generateProp(EWeaponProp.versatile, 8)],
+		mastery: EWeaponMastery.topple,
 	}, {
 		id: EWeapon.sickle,
 		group: EWeaponClass['simple.melee'],
@@ -249,11 +281,40 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 2,
-		props: [generateProp(EWeaponProp.light)]
+		props: [generateProp(EWeaponProp.light)],
+		mastery: EWeaponMastery.nick,
+	}, {
+		id: EWeapon.spear,
+		group: EWeaponClass['simple.melee'],
+		name: 'Копье',
+		cost: 1,
+		damage: 6,
+		damageDiceCount: 1,
+		damageType: EDamageType.piercing,
+		weight: 3,
+		props: [
+			generateProp(EWeaponProp.versatile, 8),
+			generateProp(EWeaponProp.thrown, 20, 60),
+		],
+		mastery: EWeaponMastery.sap,
 	},
 
 	// Простое дальнобойное
 	{
+		id: EWeapon.dart,
+		group: EWeaponClass['simple.ranged'],
+		name: 'Дротик',
+		cost: .05,
+		damage: 4,
+		damageDiceCount: 1,
+		damageType: EDamageType.piercing,
+		weight: .25,
+		props: [
+			generateProp(EWeaponProp.finesse),
+			generateProp(EWeaponProp.thrown, 20, 60),
+		],		
+		mastery: EWeaponMastery.vex,
+	}, {
 		id: EWeapon.lightcrossbow,
 		group: EWeaponClass['simple.ranged'],
 		name: 'Лёгкий арбалет',
@@ -266,20 +327,8 @@ export const fullWeaponsList: TWeapon[] = [
 			generateProp(EWeaponProp.ammunition, 80, 320),
 			generateProp(EWeaponProp.loading),
 			generateProp(EWeaponProp.twohanded),
-		]
-	}, {
-		id: EWeapon.dart,
-		group: EWeaponClass['simple.ranged'],
-		name: 'Дротик',
-		cost: .05,
-		damage: 4,
-		damageDiceCount: 1,
-		damageType: EDamageType.piercing,
-		weight: .25,
-		props: [
-			generateProp(EWeaponProp.finesse),
-			generateProp(EWeaponProp.thrown, 20, 60),
-		]
+		],
+		mastery: EWeaponMastery.slow,
 	}, {
 		id: EWeapon.shortbow,
 		group: EWeaponClass['simple.ranged'],
@@ -292,7 +341,8 @@ export const fullWeaponsList: TWeapon[] = [
 		props: [
 			generateProp(EWeaponProp.ammunition, 80, 320),
 			generateProp(EWeaponProp.twohanded),
-		]
+		],
+		mastery: EWeaponMastery.vex,
 	}, {
 		id: EWeapon.sling,
 		group: EWeaponClass['simple.ranged'],
@@ -302,11 +352,34 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
 		weight: 0,
-		props: [generateProp(EWeaponProp.ammunition, 30, 120)]
+		props: [generateProp(EWeaponProp.ammunition, 30, 120)],
+		mastery: EWeaponMastery.slow,
 	},
 
 	// Воинское рукопашное
 	{
+		id: EWeapon.battleaxe,
+		group: EWeaponClass['martial.melee'],
+		name: 'Боевой топор',
+		cost: 10,
+		damage: 8,
+		damageDiceCount: 1,
+		damageType: EDamageType.slashing,
+		weight: 4,
+		props: [generateProp(EWeaponProp.versatile, 10)],
+		mastery: EWeaponMastery.topple,
+	}, {
+		id: EWeapon.flail,
+		group: EWeaponClass['martial.melee'],
+		name: 'Цеп',
+		cost: 10,
+		damage: 8,
+		damageDiceCount: 1,
+		damageType: EDamageType.bludgeoning,
+		weight: 2,
+		props: [],
+		mastery: EWeaponMastery.sap,
+	}, {
 		id: EWeapon.glaive,
 		group: EWeaponClass['martial.melee'],
 		name: 'Алебарда',
@@ -319,37 +392,36 @@ export const fullWeaponsList: TWeapon[] = [
 			generateProp(EWeaponProp.heavy),
 			generateProp(EWeaponProp.reach),
 			generateProp(EWeaponProp.twohanded),
-		]
+		],
+		mastery: EWeaponMastery.graze,
 	}, {
-		id: EWeapon.warpick,
+		id: EWeapon.greataxe,
 		group: EWeaponClass['martial.melee'],
-		name: 'Боевая кирка',
-		cost: 5,
-		damage: 8,
-		damageDiceCount: 1,
-		damageType: EDamageType.piercing,
-		weight: 2,
-		props: []
-	}, {
-		id: EWeapon.warhammer,
-		group: EWeaponClass['martial.melee'],
-		name: 'Боевой молот',
-		cost: 15,
-		damage: 8,
-		damageDiceCount: 1,
-		damageType: EDamageType.bludgeoning,
-		weight: 2,
-		props: [generateProp(EWeaponProp.versatile, 10)]
-	}, {
-		id: EWeapon.battleaxe,
-		group: EWeaponClass['martial.melee'],
-		name: 'Боевой топор',
-		cost: 10,
-		damage: 8,
+		name: 'Секира',
+		cost: 30,
+		damage: 12,
 		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
-		weight: 4,
-		props: [generateProp(EWeaponProp.versatile, 10)]
+		weight: 7,
+		props: [
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.twohanded),
+		],
+		mastery: EWeaponMastery.cleave,
+	}, {
+		id: EWeapon.greatsword,
+		group: EWeaponClass['martial.melee'],
+		name: 'Двуручный меч',
+		cost: 50,
+		damage: 6,
+		damageDiceCount: 2,
+		damageType: EDamageType.slashing,
+		weight: 6,
+		props: [
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.twohanded),
+		],
+		mastery: EWeaponMastery.graze,
 	}, {
 		id: EWeapon.halberd,
 		group: EWeaponClass['martial.melee'],
@@ -363,20 +435,8 @@ export const fullWeaponsList: TWeapon[] = [
 			generateProp(EWeaponProp.heavy),
 			generateProp(EWeaponProp.reach),
 			generateProp(EWeaponProp.twohanded),
-		]
-	}, {
-		id: EWeapon.greatsword,
-		group: EWeaponClass['martial.melee'],
-		name: 'Двуручный меч',
-		cost: 50,
-		damage: 6,
-		damageDiceCount: 2,
-		damageType: EDamageType.slashing,
-		weight: 6,
-		props: [
-			generateProp(EWeaponProp.heavy),
-			generateProp(EWeaponProp.twohanded),
-		]
+		],
+		mastery: EWeaponMastery.cleave,
 	}, {
 		id: EWeapon.lance,
 		group: EWeaponClass['martial.melee'],
@@ -386,9 +446,13 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 6,
-		props: [generateProp(EWeaponProp.reach)]
-	},
-	{
+		props: [
+			generateProp(EWeaponProp.heavy),
+			generateProp(EWeaponProp.reach),
+			generateProp(EWeaponProp.twohanded),  // Когда не верхом
+		],
+		mastery: EWeaponMastery.topple,
+	}, {
 		id: EWeapon.longsword,
 		group: EWeaponClass['martial.melee'],
 		name: 'Длинный меч',
@@ -397,37 +461,9 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDiceCount: 1,
 		damageType: EDamageType.slashing,
 		weight: 3,
-		props: [generateProp(EWeaponProp.versatile, 10)]
-	},
-	{
-		id: EWeapon.whip,
-		group: EWeaponClass['martial.melee'],
-		name: 'Кнут',
-		cost: 2,
-		damage: 4,
-		damageDiceCount: 1,
-		damageType: EDamageType.slashing,
-		weight: 3,
-		props: [
-			generateProp(EWeaponProp.finesse),
-			generateProp(EWeaponProp.reach),
-		]
-	},
-	{
-		id: EWeapon.shortsword,
-		group: EWeaponClass['martial.melee'],
-		name: 'Короткий меч',
-		cost: 10,
-		damage: 6,
-		damageDiceCount: 1,
-		damageType: EDamageType.piercing,
-		weight: 2,
-		props: [
-			generateProp(EWeaponProp.finesse),
-			generateProp(EWeaponProp.light),
-		]
-	},
-	{
+		props: [generateProp(EWeaponProp.versatile, 10)],
+		mastery: EWeaponMastery.sap,
+	}, {
 		id: EWeapon.maul,
 		group: EWeaponClass['martial.melee'],
 		name: 'Молот',
@@ -439,7 +475,8 @@ export const fullWeaponsList: TWeapon[] = [
 		props: [
 			generateProp(EWeaponProp.heavy),
 			generateProp(EWeaponProp.twohanded),
-		]
+		],
+		mastery: EWeaponMastery.topple,
 	}, {
 		id: EWeapon.morningstar,
 		group: EWeaponClass['martial.melee'],
@@ -449,7 +486,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 4,
-		props: []
+		props: [],
+		mastery: EWeaponMastery.sap,
 	}, {
 		id: EWeapon.pike,
 		group: EWeaponClass['martial.melee'],
@@ -463,7 +501,8 @@ export const fullWeaponsList: TWeapon[] = [
 			generateProp(EWeaponProp.heavy),
 			generateProp(EWeaponProp.reach),
 			generateProp(EWeaponProp.twohanded),
-		]
+		],
+		mastery: EWeaponMastery.push,
 	}, {
 		id: EWeapon.rapier,
 		group: EWeaponClass['martial.melee'],
@@ -473,20 +512,8 @@ export const fullWeaponsList: TWeapon[] = [
 		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 2,
-		props: [generateProp(EWeaponProp.finesse)]
-	}, {
-		id: EWeapon.greataxe,
-		group: EWeaponClass['martial.melee'],
-		name: 'Секира',
-		cost: 30,
-		damage: 12,
-		damageDiceCount: 1,
-		damageType: EDamageType.slashing,
-		weight: 7,
-		props: [
-			generateProp(EWeaponProp.heavy),
-			generateProp(EWeaponProp.twohanded),
-		]
+		props: [generateProp(EWeaponProp.finesse)],
+		mastery: EWeaponMastery.vex,
 	}, {
 		id: EWeapon.scimitar,
 		group: EWeaponClass['martial.melee'],
@@ -499,34 +526,90 @@ export const fullWeaponsList: TWeapon[] = [
 		props: [
 			generateProp(EWeaponProp.finesse),
 			generateProp(EWeaponProp.light),
-		]
+		],
+		mastery: EWeaponMastery.nick,
+	}, {
+		id: EWeapon.shortsword,
+		group: EWeaponClass['martial.melee'],
+		name: 'Короткий меч',
+		cost: 10,
+		damage: 6,
+		damageDiceCount: 1,
+		damageType: EDamageType.piercing,
+		weight: 2,
+		props: [
+			generateProp(EWeaponProp.finesse),
+			generateProp(EWeaponProp.light),
+		],
+		mastery: EWeaponMastery.vex,
 	}, {
 		id: EWeapon.trident,
 		group: EWeaponClass['martial.melee'],
 		name: 'Трезубец',
 		cost: 5,
-		damage: 6,
+		damage: 8,
 		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
 		weight: 4,
 		props: [
 			generateProp(EWeaponProp.thrown, 20, 60),
-			generateProp(EWeaponProp.versatile, 8),
-		]
+			generateProp(EWeaponProp.versatile, 10),
+		],
+		mastery: EWeaponMastery.topple,
 	}, {
-		id: EWeapon.flail,
+		id: EWeapon.warhammer,
 		group: EWeaponClass['martial.melee'],
-		name: 'Цеп',
-		cost: 10,
+		name: 'Боевой молот',
+		cost: 15,
 		damage: 8,
 		damageDiceCount: 1,
 		damageType: EDamageType.bludgeoning,
+		weight: 5,
+		props: [generateProp(EWeaponProp.versatile, 10)],
+		mastery: EWeaponMastery.push,
+	}, {
+		id: EWeapon.warpick,
+		group: EWeaponClass['martial.melee'],
+		name: 'Боевая кирка',
+		cost: 5,
+		damage: 8,
+		damageDiceCount: 1,
+		damageType: EDamageType.piercing,
 		weight: 2,
-		props: []
+		props: [generateProp(EWeaponProp.versatile, 10)],
+		mastery: EWeaponMastery.sap,
+	}, {
+		id: EWeapon.whip,
+		group: EWeaponClass['martial.melee'],
+		name: 'Кнут',
+		cost: 2,
+		damage: 4,
+		damageDiceCount: 1,
+		damageType: EDamageType.slashing,
+		weight: 3,
+		props: [
+			generateProp(EWeaponProp.finesse),
+			generateProp(EWeaponProp.reach),
+		],
+		mastery: EWeaponMastery.slow,
 	},
 
 	// Воинское дальнобойное
 	{
+		id: EWeapon.blowgun,
+		group: EWeaponClass['martial.ranged'],
+		name: 'Духовая трубка',
+		cost: 10,
+		damage: 1,
+		damageDiceCount: 1,
+		damageType: EDamageType.piercing,
+		weight: 1,
+		props: [
+			generateProp(EWeaponProp.ammunition, 25, 100),
+			generateProp(EWeaponProp.loading),
+		],
+		mastery: EWeaponMastery.vex,
+	}, {
 		id: EWeapon.handcrossbow,
 		group: EWeaponClass['martial.ranged'],
 		name: 'Ручной арбалет',
@@ -539,7 +622,8 @@ export const fullWeaponsList: TWeapon[] = [
 			generateProp(EWeaponProp.ammunition, 30, 120),
 			generateProp(EWeaponProp.light),
 			generateProp(EWeaponProp.loading),
-		]
+		],
+		mastery: EWeaponMastery.vex,
 	}, {
 		id: EWeapon.heavycrossbow,
 		group: EWeaponClass['martial.ranged'],
@@ -554,7 +638,8 @@ export const fullWeaponsList: TWeapon[] = [
 			generateProp(EWeaponProp.heavy),
 			generateProp(EWeaponProp.loading),
 			generateProp(EWeaponProp.twohanded),
-		]
+		],
+		mastery: EWeaponMastery.push,
 	}, {
 		id: EWeapon.longbow,
 		group: EWeaponClass['martial.ranged'],
@@ -568,31 +653,38 @@ export const fullWeaponsList: TWeapon[] = [
 			generateProp(EWeaponProp.ammunition, 150, 600),
 			generateProp(EWeaponProp.heavy),
 			generateProp(EWeaponProp.twohanded),
-		]
+		],
+		mastery: EWeaponMastery.slow,
 	}, {
-		id: EWeapon.blowgun,
+		id: EWeapon.musket,
 		group: EWeaponClass['martial.ranged'],
-		name: 'Духовая трубка',
-		cost: 10,
-		damage: 1,
+		name: 'Мушкет',
+		cost: 500,
+		damage: 12,
 		damageDiceCount: 1,
 		damageType: EDamageType.piercing,
-		weight: 1,
+		weight: 10,
 		props: [
-			generateProp(EWeaponProp.ammunition, 25, 100),
+			generateProp(EWeaponProp.ammunition, 40, 120),
 			generateProp(EWeaponProp.loading),
-		]
-	},  {
-		id: EWeapon.net,
+			generateProp(EWeaponProp.twohanded),
+		],
+		mastery: EWeaponMastery.slow,
+	}, {
+		id: EWeapon.pistol,
 		group: EWeaponClass['martial.ranged'],
-		name: 'Сеть',
-		cost: 1,
-		damage: 0,
+		name: 'Пистоль',
+		cost: 250,
+		damage: 10,
 		damageDiceCount: 1,
-		damageType: EDamageType.none,
+		damageType: EDamageType.piercing,
 		weight: 3,
-		props: [generateProp(EWeaponProp.thrown, 5, 15)]
-	}
+		props: [
+			generateProp(EWeaponProp.ammunition, 30, 90),
+			generateProp(EWeaponProp.loading),
+		],
+		mastery: EWeaponMastery.vex,
+	},
 ] as const
 
 function generateProp(prop: EWeaponProp.versatile, damage: number): Extract<TProp, { prop: EWeaponProp.versatile }>
