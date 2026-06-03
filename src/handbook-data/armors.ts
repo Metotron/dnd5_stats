@@ -5,14 +5,14 @@ import { getStatModifier } from './stats'
 export enum EArmor {
 	padded = 'armor.padded',
 	leather = 'armor.leather',
-	studdedLeather = 'armor.studdedLeather',
+	studdedleather = 'armor.studdedleather',
 	hide = 'armor.hide',
-	chainShirt = 'armor.chainShirt',
-	scaleMail = 'armor.scaleMail',
+	chainshirt = 'armor.chainshirt',
+	scalemail = 'armor.scalemail',
 	breastplate = 'armor.breastplate',
-	halfPlate = 'armor.halfPlate',
-	ringMail = 'armor.ringMail',
-	chainMail = 'armor.chainMail',
+	halfplate = 'armor.halfplate',
+	ringmail = 'armor.ringmail',
+	chainmail = 'armor.chainmail',
 	splint = 'armor.splint',
 	plate = 'armor.plate',
 }
@@ -60,7 +60,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 8,
 	cost: 5,
 	useDexModifier: true,
-	stealthDisadvantage: true
+	stealthDisadvantage: true,
 }, {
 	id: EArmor.leather,
 	group: EArmorClass.light,
@@ -70,9 +70,9 @@ export const fullArmorsList: TArmorDescription[] = [{
 	AC: 11,
 	weight: 10,
 	cost: 10,
-	useDexModifier: true
+	useDexModifier: true,
 }, {
-	id: EArmor.studdedLeather,
+	id: EArmor.studdedleather,
 	group: EArmorClass.light,
 	putOnTime: 1,
 	takeOffTime: 1,
@@ -80,7 +80,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	AC: 12,
 	weight: 13,
 	cost: 45,
-	useDexModifier: true
+	useDexModifier: true,
 }, {
 	id: EArmor.hide,
 	group: EArmorClass.medium,
@@ -91,9 +91,9 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 12,
 	cost: 10,
 	useDexModifier: true,
-	maximumDexModifier: 2  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
+	maximumDexModifier: 2,  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 }, {
-	id: EArmor.chainShirt,
+	id: EArmor.chainshirt,
 	group: EArmorClass.medium,
 	putOnTime: 5,
 	takeOffTime: 1,
@@ -102,9 +102,9 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 20,
 	cost: 50,
 	useDexModifier: true,
-	maximumDexModifier: 2  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
+	maximumDexModifier: 2,  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 }, {
-	id: EArmor.scaleMail,
+	id: EArmor.scalemail,
 	group: EArmorClass.medium,
 	putOnTime: 5,
 	takeOffTime: 1,
@@ -113,8 +113,8 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 45,
 	cost: 50,
 	useDexModifier: true,
-	maximumDexModifier: 2, // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
-	stealthDisadvantage: true
+	maximumDexModifier: 2,  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
+	stealthDisadvantage: true,
 }, {
 	id: EArmor.breastplate,
 	group: EArmorClass.medium,
@@ -125,9 +125,9 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 20,
 	cost: 400,
 	useDexModifier: true,
-	maximumDexModifier: 2  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
+	maximumDexModifier: 2,  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 }, {
-	id: EArmor.halfPlate,
+	id: EArmor.halfplate,
 	group: EArmorClass.medium,
 	putOnTime: 5,
 	takeOffTime: 1,
@@ -136,10 +136,10 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 40,
 	cost: 750,
 	useDexModifier: true,
+	maximumDexModifier: 2,  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 	stealthDisadvantage: true,
-	maximumDexModifier: 2  // Черта EFeat.mediumarmormaster может увеличивать это значение до 3
 }, {
-	id: EArmor.ringMail,
+	id: EArmor.ringmail,
 	group: EArmorClass.heavy,
 	putOnTime: 10,
 	takeOffTime: 5,
@@ -147,9 +147,9 @@ export const fullArmorsList: TArmorDescription[] = [{
 	AC: 14,
 	weight: 40,
 	cost: 30,
-	stealthDisadvantage: true
+	stealthDisadvantage: true,
 }, {
-	id: EArmor.chainMail,
+	id: EArmor.chainmail,
 	group: EArmorClass.heavy,
 	putOnTime: 10,
 	takeOffTime: 5,
@@ -158,7 +158,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 55,
 	cost: 75,
 	minimumStr: 13,
-	stealthDisadvantage: true
+	stealthDisadvantage: true,
 }, {
 	id: EArmor.splint,
 	group: EArmorClass.heavy,
@@ -169,7 +169,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 60,
 	cost: 200,
 	minimumStr: 15,
-	stealthDisadvantage: true
+	stealthDisadvantage: true,
 }, {
 	id: EArmor.plate,
 	group: EArmorClass.heavy,
@@ -180,7 +180,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	weight: 65,
 	cost: 1500,
 	minimumStr: 15,
-	stealthDisadvantage: true
+	stealthDisadvantage: true,
 }] as const
 
 
