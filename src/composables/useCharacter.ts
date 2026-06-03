@@ -29,6 +29,18 @@ export const useCharacter = (id?: number) => {
 	return newCharacter
 }
 
+// Функции для работы с владением бронёй, оружием и инструментами
+type TProficienciesMap = {
+	armor: (EArmorClass | EShieldClass)[]
+	weapons: EWeaponClass[]
+	tools: ETool[]
+}
+type TProficiencyType = keyof TProficienciesMap
+type TProficiencies = {
+	list<T extends TProficiencyType>(type: T): TProficienciesMap[T]
+	add<T extends TProficiencyType>(type: T, prof: TProficienciesMap[T]): void
+	clear(type: TProficiencyType): void
+}
 
 export class Character {
 	constructor(public id: number) {}
@@ -224,34 +236,16 @@ export class Character {
 		weapons: [] as EWeaponClass[],
 		tools: [] as ETool[],
 	})
-	get armorProficiencies() {
+	get proficiencies(): TProficiencies {
 		return {
-			list: () => this.#proficiencies.armor,
-			add: (aClass: EArmorClass) => {
-				if (this.#proficiencies.armor.includes(aClass)) return
-				this.#proficiencies.armor.push(aClass)
+			list: (type) => this.#proficiencies[type],
+			add: (type, prof) => {
+				if (this.#proficiencies[type].includes(prof as never))
+					return
+				this.#proficiencies.armor.push(prof as never)
 			},
-			clear: () => this.#proficiencies.armor.splice(0),
-		}
-	}
-	get weaponProficiencies() {
-		return {
-			list: () => this.#proficiencies.weapons,
-			add: (wClass: EWeaponClass) => {
-				if (this.#proficiencies.weapons.includes(wClass)) return
-				this.#proficiencies.weapons.push(wClass)
-			},
-			clear: () => this.#proficiencies.weapons.splice(0),
-		}
-	}
-	get toolsProficiencies() {
-		return {
-			list: () => this.#proficiencies.tools,
-			add: (tool: ETool) => {
-				if (this.#proficiencies.tools.includes(tool)) return
-				this.#proficiencies.tools.push(tool)
-			},
-			clear: () => this.#proficiencies.tools.splice(0),
+			clear: (type) => this.#proficiencies[type].splice(0)
+
 		}
 	}
 
@@ -307,11 +301,11 @@ export function isCharacterMeetPrerequisite(char: Character, feat: TFeat): boole
 			result = char.level.value >= <number>value
 
 		// Владение щитом (в value может быть только true)
-		else if (req.startsWith('shield.class.') && !char.armorProficiencies.list().includes(<EShieldClass>req))
+		else if (req.startsWith('shield.class.') && !char.proficiencies.list('armor').includes(<EShieldClass>req))
 			result = false
 
 		// Владение типом доспехов (в value может быть только true)
-		else if (req.startsWith('armor.class.') && !char.armorProficiencies.list().includes(<EArmorClass>req))
+		else if (req.startsWith('armor.class.') && !char.proficiencies.list('armor').includes(<EArmorClass>req))
 			result = false
 
 		// 1-3 характеристик через /, нужно иметь хотя бы одну больше, чем value
