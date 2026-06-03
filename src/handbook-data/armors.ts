@@ -143,7 +143,7 @@ export const fullArmorsList: TArmorDescription[] = [{
 	group: EArmorClass.heavy,
 	putOnTime: 10,
 	takeOffTime: 5,
-	name: 'Колечный доспех',
+	name: 'Кольчатый доспех',
 	AC: 14,
 	weight: 40,
 	cost: 30,

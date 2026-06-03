@@ -23,7 +23,6 @@ function fullDescription(char: Character) {
 	return result
 }
 
-
 export const useFullDescription = () => ({
 	fullDescription
 })
