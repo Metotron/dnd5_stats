@@ -310,7 +310,6 @@ export function isCharacterMeetPrerequisite(char: Character, feat: TFeat): boole
 		else if (req.startsWith('shield.class.') && !char.armorProficiencies.list().includes(<EShieldClass>req))
 			result = false
 
-
 		// Владение типом доспехов (в value может быть только true)
 		else if (req.startsWith('armor.class.') && !char.armorProficiencies.list().includes(<EArmorClass>req))
 			result = false
