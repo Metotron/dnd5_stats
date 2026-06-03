@@ -95,7 +95,7 @@ function textModifier(statName: TStat): string | undefined {
 
 		.valueBlock
 			span(title="Если выбран соответствующий навык, добавляется бонус мастерства") Пассивная внимательность:
-			span.value {{ character.proficiencies.getValue(ESkill.perception) }}
+			span.value {{ character.skills.getValue(ESkill.perception) }}
 
 		.valueBlock
 			span(:title="hitpointsTitle") Количество хитов:

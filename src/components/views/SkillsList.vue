@@ -8,15 +8,15 @@ import { statsList } from '@/handbook-data/stats'
 const charId = sessionStorage.getItem('charId') ?? 1
 const character = useCharacter(Number(charId))
 
-const checkedSkillsCount = computed(() => character.proficiencies.count)
+const checkedSkillsCount = computed(() => character.skills.count)
 
-function changeProficiencyState(skill: ESkill, ev: Event) {
-	character.proficiencies.set(skill, (<HTMLInputElement>ev.target).checked)
+function changeSkillState(skill: ESkill, ev: Event) {
+	character.skills.set(skill, (<HTMLInputElement>ev.target).checked)
 }
 
 function reset() {
 	if (!character.locked)
-		character.proficiencies.resetAll()
+		character.skills.resetAll()
 }
 
 //TODO Добавить возможность выставить не просто владение, а компетентность
@@ -30,8 +30,8 @@ function reset() {
 	.blockBody
 		.skill(v-for="skillDescr in fullSkillsList" :key="skillDescr.name" :data-skillstat="skillDescr.statType" :data-skill="skillDescr.skill")
 			label
-				input(type="checkbox" :checked="character.proficiencies.enabled(skillDescr.skill)" :disabled="character.locked" @change="changeProficiencyState(skillDescr.skill, $event)")
-				span.name(:class="{ selected: character.proficiencies.enabled(skillDescr.skill) }") {{ skillDescr.name }}
+				input(type="checkbox" :checked="character.skills.enabled(skillDescr.skill)" :disabled="character.locked" @change="changeSkillState(skillDescr.skill, $event)")
+				span.name(:class="{ selected: character.skills.enabled(skillDescr.skill) }") {{ skillDescr.name }}
 				span.stat ({{ statsList[skillDescr.statType].shortName }})
 			span.value {{ 10 + getSkillModifier(skillDescr.skill, character) }}
 </template>

@@ -12,7 +12,7 @@ function weaponDescription(weapon: TWeapon): string {
 	return weapon.name + `${damage}${damageType}`
 }
 
-//TODO Отобразить особенности каждого оружия
+//TODO Отобразить детали для каждого оружия
 </script>
 
 

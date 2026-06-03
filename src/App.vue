@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { useTemplateRef, watch } from 'vue'
-import ValuesLinker from './components/DiceToStatLinker.vue'
-import ArmorSelector from './components/selectors/ArmorSelector.vue'
-import ClassSelector from './components/selectors/ClassSelector.vue'
-import OriginSelector from './components/selectors/OriginSelector.vue'
-import SpeciesSelector from './components/selectors/SpeciesSelector.vue'
-import WeaponSelector from './components/selectors/WeaponSelector.vue'
-import CharList from './components/views/CharList.vue'
-import FeaturesList from './components/views/FeaturesList.vue'
-import GoodsList from './components/views/GoodsList.vue'
-import LanguagesList from './components/views/LanguagesList.vue'
-import SkillsList from './components/views/SkillsList.vue'
-import Weapon from './components/views/Weapon.vue'
+import ValuesLinker from '@/components/DiceToStatLinker.vue'
+import ArmorSelector from '@/components/selectors/ArmorSelector.vue'
+import ClassSelector from '@/components/selectors/ClassSelector.vue'
+import FeatSelector from '@/components/selectors/FeatSelector.vue'
+import OriginSelector from '@/components/selectors/OriginSelector.vue'
+import SpeciesSelector from '@/components/selectors/SpeciesSelector.vue'
+import WeaponSelector from '@/components/selectors/WeaponSelector.vue'
+import CharList from '@/components/views/CharList.vue'
+import FeaturesList from '@/components/views/FeaturesList.vue'
+import GoodsList from '@/components/views/GoodsList.vue'
+import LanguagesList from '@/components/views/LanguagesList.vue'
+import SkillsList from '@/components/views/SkillsList.vue'
+import Weapon from '@/components/views/Weapon.vue'
 
-import { useCharacter } from './composables/useCharacter.ts'
-import { useHotkey } from './composables/useHotkeys.ts'
+import { useCharacter } from '@/composables/useCharacter.ts'
+import { useHotkey } from '@/composables/useHotkeys.ts'
 
 //FIXME Временное решение
 sessionStorage.clear()
@@ -58,6 +59,7 @@ header
 		species-selector
 		class-selector
 		origin-selector
+		feat-selector
 		armor-selector
 		weapon-selector
 	.blockCol.col2

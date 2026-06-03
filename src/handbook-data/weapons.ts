@@ -640,3 +640,7 @@ export function damageTypeName(type: EDamageType): string {
 		case EDamageType.slashing: return 'рубящий'
 	}
 }
+
+export const simpleWeapons: EWeaponClass[] = [EWeaponClass['simple.melee'], EWeaponClass['simple.ranged']]
+export const martialWeapons: EWeaponClass[] = [EWeaponClass['martial.melee'], EWeaponClass['martial.ranged']]
+export const allWeapons: EWeaponClass[] = [...simpleWeapons, ...martialWeapons]

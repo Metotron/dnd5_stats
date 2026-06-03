@@ -98,20 +98,20 @@ export enum EFeatType {
 	epicboon
 }
 
-type TFeat = {
+export type TPrerequisite =
+	& { level: number }
+	& { [k in TStat | `${TStat}/${TStat}` | `${TStat}/${TStat}/${TStat}`]?: number }
+	& { [k in EArmorClass]?: true }
+	& { [k in EShieldClass]?: true }
+
+export type TFeat = {
 	id: EFeat,
 	group: EFeatType
 	name: string
 	moreThanOnce?: true  // Повторяемая черта. Можно брать несколько раз
 	diff?: Partial<TBaseSpeciesDescription>
 	 // Требования для взятия черты:
-	prerequisite?: {
-		[k in 'level' | TStat | `${TStat}/${TStat}` | `${TStat}/${TStat}/${TStat}`]?: number
-	} & {
-		[k in EArmorClass.light | EArmorClass.medium | EArmorClass.heavy]?: true
-	} & {
-		[k in EShieldClass]?: true
-	}
+	prerequisite?: TPrerequisite
 }
 
 export const fullFeatsList: TFeat[] = [{
@@ -925,3 +925,8 @@ export const fullFeatsList: TFeat[] = [{
 		],
 	},
 }]
+
+
+export function featsByType(type: EFeatType) {
+	return fullFeatsList.filter(feat => feat.group == type)
+}

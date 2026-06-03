@@ -18,9 +18,9 @@ export enum EArmor {
 }
 
 export enum EArmorClass {
-	light = 'light',
-	medium = 'medium',
-	heavy = 'heavy',
+	light = 'armor.class.light',
+	medium = 'armor.class.medium',
+	heavy = 'armor.class.heavy',
 }
 
 export const armorClassList: { armorClass: EArmorClass, name: string }[] = [{
@@ -186,11 +186,11 @@ export const fullArmorsList: TArmorDescription[] = [{
 
 // Чтобы можно было указывать щиты как группу, а не по отдельности
 export enum EShieldClass {
-	standard = 'standard',
+	standard = 'shield.class.standard',
 }
 
 export enum EShield {
-	standard = 'standard',  // Обычный щит с +2 к КД
+	standard = 'shield.standard',  // Обычный щит с +2 к КД
 }
 
 export type TShield = {

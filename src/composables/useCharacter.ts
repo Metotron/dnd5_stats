@@ -1,14 +1,15 @@
-import { calculateArmorValues, fullArmorsList, fullShieldsList, type EArmor, type EShield } from '@/handbook-data/armors'
+import { calculateArmorValues, EArmorClass, EShieldClass, fullArmorsList, fullShieldsList, type EArmor, type EShield } from '@/handbook-data/armors'
 import { ECharClass, fullCharClassesList } from '@/handbook-data/charClasses'
-import { ESpecies, fullSpeciesList } from '@/handbook-data/species'
 import { ESkill, fullSkillsList } from '@/handbook-data/skills'
+import { ESpecies, fullSpeciesList } from '@/handbook-data/species'
 import { getStatModifier, maxStatValue, type TStat } from '@/handbook-data/stats'
 import { computed, reactive, ref } from 'vue'
 
+import { fullFeatsList, type EFeat, type TFeat, type TPrerequisite } from '@/handbook-data/feats'
 import { fullOriginsList, type EOrigin } from '@/handbook-data/origins'
-import { fullWeaponsList, type EWeapon } from '@/handbook-data/weapons'
+import { ETool } from '@/handbook-data/tools'
+import { EWeaponClass, fullWeaponsList, type EWeapon } from '@/handbook-data/weapons'
 import { useCharacterStorage } from './useCharacterStorage'
-import { fullFeatsList, type EFeat } from '@/handbook-data/feats'
 
 const { findCharacterById, storeCharacter } = useCharacterStorage()
 
@@ -138,12 +139,40 @@ export class Character {
 	})
 
 
-	/** Черта */
-	#feat = ref<EFeat>()
-	feat = computed({
-		get: () => fullFeatsList.find(feat => feat.id == this.#feat.value),
-		set: (feat: EFeat | undefined) => this.#feat.value = feat
-	})
+	/** Черты */
+	#feats = ref<EFeat[]>([])
+	get feats() {
+		const feats = this.#feats
+		const char = this
+
+		return {
+			list: computed(() => feats.value.map(f => fullFeatsList.find(feat => feat.id == f)!)),
+
+			/** Добавить черту персонажу */
+			add(feat: EFeat) {
+				const newFeat = fullFeatsList.find(f => f.id == feat)
+				if (!newFeat) return
+
+				// Можно ли добавлять черту несколько раз
+				const isMoreThanOnce = newFeat.moreThanOnce ?? false
+				if (feats.value.includes(feat) && !isMoreThanOnce) return
+
+				// Некоторые черты имеют ограничения
+				if (isCharacterMeetPrerequisite(char, newFeat))
+					feats.value.push(feat)
+			},
+
+			/** Убрать черту персонажа */
+			remove(feat: EFeat) {
+				const featIdx = feats.value.findIndex(f => f === feat)
+				if (featIdx != -1)
+					feats.value.splice(featIdx, 1)
+			},
+
+			/** Убрать все черты */
+			removeAll() { feats.value.splice(0) }
+		}
+	}
 
 
 	/** Уровень */
@@ -157,26 +186,26 @@ export class Character {
 
 
 	/** Включенные навыки */
-	#proficiencies = ref<Set<ESkill>>(new Set())
-	get proficiencies() {
-		const proficiencies = this.#proficiencies
+	#skills = ref<Set<ESkill>>(new Set())
+	get skills() {
+		const skills = this.#skills
 		const char = this
 
 		return {
 			/** Количество установленных навыков */
-			count: computed(() => proficiencies.value.size),
+			count: computed(() => skills.value.size),
 
 			/** Установлен ли навык */
-			enabled(skill: ESkill): boolean { return proficiencies.value.has(skill) },
+			enabled(skill: ESkill): boolean { return skills.value.has(skill) },
 
 			/** Получение численного значения навыка */
 			getValue(skill: ESkill): number { return 10 + getSkillModifier(skill, char) },
 
 			/** Сброс навыков */
-			resetAll() { proficiencies.value.clear() },
+			resetAll() { skills.value.clear() },
 
 			/** Включение-выключение навыка */
-			set(skill: ESkill, value: boolean) { proficiencies.value[value ? 'add' : 'delete'](skill) },
+			set(skill: ESkill, value: boolean) { skills.value[value ? 'add' : 'delete'](skill) },
 		}
 	}
 
@@ -187,6 +216,44 @@ export class Character {
 		get: () => this.#inspiration.value,
 		set: (inspiration: boolean) => this.#inspiration.value = inspiration
 	})
+
+
+	/** Владение оружием, доспехами, инструментами */
+	#proficiencies = reactive({
+		armor: [] as (EArmorClass | EShieldClass)[],
+		weapons: [] as EWeaponClass[],
+		tools: [] as ETool[],
+	})
+	get armorProficiencies() {
+		return {
+			list: () => this.#proficiencies.armor,
+			add: (aClass: EArmorClass) => {
+				if (this.#proficiencies.armor.includes(aClass)) return
+				this.#proficiencies.armor.push(aClass)
+			},
+			clear: () => this.#proficiencies.armor.splice(0),
+		}
+	}
+	get weaponProficiencies() {
+		return {
+			list: () => this.#proficiencies.weapons,
+			add: (wClass: EWeaponClass) => {
+				if (this.#proficiencies.weapons.includes(wClass)) return
+				this.#proficiencies.weapons.push(wClass)
+			},
+			clear: () => this.#proficiencies.weapons.splice(0),
+		}
+	}
+	get toolsProficiencies() {
+		return {
+			list: () => this.#proficiencies.tools,
+			add: (tool: ETool) => {
+				if (this.#proficiencies.tools.includes(tool)) return
+				this.#proficiencies.tools.push(tool)
+			},
+			clear: () => this.#proficiencies.tools.splice(0),
+		}
+	}
 
 
 	/** Вооружение */
@@ -219,7 +286,42 @@ export function getSkillModifier(skillName: ESkill, character: Character): numbe
 	const statAbbr: TStat = fullSkillsList.find(s => s.skill == skillName)!.statType
 	const statValue = character.stats[statAbbr]
 	const modifier = statValue > 0 ? Math.ceil((statValue - 11) / 2) : 0
-	const bonus = character.proficiencies.enabled(skillName) ? character.proficiencyBonus.value : 0
+	const bonus = character.skills.enabled(skillName) ? character.proficiencyBonus.value : 0
 
 	return modifier + bonus
+}
+
+
+/** Проврка соответствия персонажа требованию черты, которую он пытается получить */
+export function isCharacterMeetPrerequisite(char: Character, feat: TFeat): boolean {
+	const prerequisite = feat.prerequisite
+	if (prerequisite == undefined) return true
+
+	let result = true
+
+	for (const req in prerequisite) {
+		const value = prerequisite[req as keyof TPrerequisite]
+
+		// Уровень
+		if (req == 'level')
+			result = char.level.value >= <number>value
+
+		// Владение щитом (в value может быть только true)
+		else if (req.startsWith('shield.class.') && !char.armorProficiencies.list().includes(<EShieldClass>req))
+			result = false
+
+
+		// Владение типом доспехов (в value может быть только true)
+		else if (req.startsWith('armor.class.') && !char.armorProficiencies.list().includes(<EArmorClass>req))
+			result = false
+
+		// 1-3 характеристик через /, нужно иметь хотя бы одну больше, чем value
+		else if (typeof value == 'number') {
+			const statCheck = req.split('/').some(stat => char.stats[<TStat>stat] >= value)
+			if (!statCheck)
+				result = false
+		}
+	}
+
+	return result
 }
