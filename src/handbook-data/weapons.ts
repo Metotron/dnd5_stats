@@ -153,7 +153,7 @@ export const masteryProperties: { id: EWeaponMastery, name: string, description:
 }, {
 	id: EWeaponMastery.push,
 	name: 'Толкание',
-	description: 'Попав по существу, можете оттолкнуть его до 10 фт. от себя, если оно не крупнее размера «большой»',
+	description: 'Попав по существу, можете оттолкнуть его до 10 фт. от себя, если оно не крупнее размера {Большой}',
 }, {
 	id: EWeaponMastery.sap,
 	name: 'Изнурение',

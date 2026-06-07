@@ -22,8 +22,15 @@ export enum EWarlockInvocation {
 	masterofmyriadforms = 'invocation.masterofmyriadforms', // Мастер бесчисленных обликов
 	mistyvisions = 'invocation.mistyvisions',       // Туманные видения
 	onewithshadows = 'invocation.onewithshadows',   // Единение с тенями
-	otherwordlyleap = 'invocation.otherwordlyeap',   // Потусторонний прыжок
-	//TODO Продолжить список воззваний
+	otherwordlyleap = 'invocation.otherwordlyeap',  // Потусторонний прыжок
+	pactoftheblade = 'invocation.pactoftheblade',   // Договор клинка
+	pactofthechain = 'invocation.pactofthechain',   // Договор цепи
+	pactofthetome = 'invocation.pactofthetome',     // Договор гримуара
+	repellingblast = 'invocation.repellingblast',   // Отталкивающий заряд
+	thirstingblade = 'invocation.thirstingblade',   // Жаждущий клинок
+	visionsofdistantrealms = 'invocation.visionsofdistantrealms',  // Видения далёких королевств
+	whispersofthegrave = 'invocation.whispersofthegrave',  // Могильный шёпот
+	witchsight = 'invocation.witchsight',           // Ведьмачий взор
 }
 
 export type TWarlockInvocation = {
@@ -185,5 +192,70 @@ export const fullWarlockInvocationsList: TWarlockInvocation[] = [{
 	prerequisite: { level: 2 },
 	diff: {
 		features: ['Можете накладывать на себя заклинание {spell:Прыжок}, не тратя ячейку заклинания'],
+	},
+}, {
+	id: EWarlockInvocation.pactoftheblade,
+	name: 'Договор клинка',
+	diff: {
+		features: [
+			'Бонусным действием можете создать оружие договора в своей руке или создать связь с магическим оружием, которого касаетесь. Нельзя создать связь с магическим оружием, на которое кто-то настроен, или если у другого колдуна есть с ним связь. Пока связь не закончится, у вас есть владение этим оружием и можете использовать его для заклинательной фокусировки.',
+			'Атакуя оружием, с которым вы связаны, можете использовать {mod:Харизмы} вместо {mod:Силы}, также можете сделать, чтобы оружие вместо нормального наносило некротический, психический урон или урон излучением',
+			'Связь с оружием заканчивается, если: 1) вы снова совершаете это бонусное действие; 2) оружие как минимум 1 минуту находится дальше 5 фт. от вас; 3) если вы умерли. Созданное оружие исчезает, если связь прервана'
+		],
+	},
+}, {
+	id: EWarlockInvocation.pactofthechain,
+	name: 'Договор цепи',
+	diff: {
+		features: [
+			'Вы знаете заклинание {spell:Поиск фамильяра} и можете накладывать его действием {Магия}, не тратя ячейку заклинаний',
+			'Накладывая заклинание, можете выбрать для фамильяра обычную форму или одну из специальных: {бес}, {псевдодракон}, {квазит}, {скелет}, {слаад головастик}, {сфинкс чудес}, {спрайт}, {ядовитая змея}.',
+			'Совершая действие {Атака}, можете истратить одну из своих атак, чтобы позволить фамильяру атаковать с помощью его реакции',
+		],
+	},
+}, {
+	id: EWarlockInvocation.pactofthetome,
+	name: 'Договор гримуара',
+	diff: {
+		features: [
+			'После любого отдыха вы создаёте в своей руке книгу. Эта {Книга теней} содержит магию, доступную только вам; можете использовать её для заклинательной фокусировки. Книга исчезает, если вы создаёте другую, или если вы умерли',
+			'Когда книга появляется, выберите 3 заговора и 2 заклинания 1 уровня с меткой «ритуал», заклинания должны быть не теми, которые вы уже подготовили. Пока книга рядом с вами, эти заклинания считаются подготовленными и считаются заклинаниями колдуна',
+		],
+	},
+}, {
+	id: EWarlockInvocation.repellingblast,
+	name: 'Отталкивающий заряд',
+	prerequisite: { level: 2 },
+	repeatable: true,
+	diff: {
+		features: ['Выберите один известный вас заговор колдуна, требующий броска атаки. Поражая существо не крупнее {Большого}, можете оттолкнуть его в направлении от себя на 10 фт.'],
+	},
+}, {
+	id: EWarlockInvocation.thirstingblade,
+	name: 'Жаждущий клинок',
+	prerequisite: { level: 5 },
+	diff: {
+		features: ['Получаете доп. атаку для своего оружия договора: можете атаковать дважды, совершая действие {Атака} этим оружием'],
+	},
+}, {
+	id: EWarlockInvocation.visionsofdistantrealms,
+	name: 'Видения далёких королевств',
+	prerequisite: { level: 9 },
+	diff: {
+		features: ['Можете накладывать заклинание {spell:Магический глаз}, не тратя ячейку заклинаний'],
+	},
+}, {
+	id: EWarlockInvocation.whispersofthegrave,
+	name: 'Могильный шёпот',
+	prerequisite: { level: 7 },
+	diff: {
+		features: ['Можете накладывать заклинание {spell:Разговор с мёртвыми}, не тратя ячейку заклинаний'],
+	},
+}, {
+	id: EWarlockInvocation.witchsight,
+	name: 'Ведьмачий взор',
+	prerequisite: { level: 15 },
+	diff: {
+		features: ['Вы получаете {Истинное зрение} в пределах 30 фт.'],
 	},
 }]
