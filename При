@@ -1,6 +1,0 @@
-yarn run v1.22.22
-$ vitest --environment jsdom run Проверка методов класса персонажа запросе персонажа с несуществующим id выпадает исключение
-
-[1m[30m[46m RUN [49m[39m[22m [36mv4.1.7 [39m[90m/mnt/ssd50/projects/dnd5_stats[39m
-
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
